@@ -1,13 +1,43 @@
-/build/
+build/
 /.deps/
 /.cache/
-/dist/
+dist/
 /evidence/
 **/.langmake/
 *.log
 
 # Personal game projects belong in their own repositories; bundled examples stay tracked.
 /games/
+
+# Generated native/mobile binaries and compiler output, regardless of location.
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+*.exe
+*.dll
+*.so
+*.so.*
+*.dylib
+*.a
+*.lib
+*.o
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.pch
+*.gch
+*.idb
+*.ipch
+*.res
+*.bin
+*.class
+*.wasm
+*.apk
+*.aab
+*.ipa
+*.app/
+*.dSYM/
 
 # Local dependencies, generated caches and editor/OS metadata.
 **/node_modules/
