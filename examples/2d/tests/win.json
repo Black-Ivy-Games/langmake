@@ -1,0 +1,108 @@
+{
+  "format": "langmake.input.v1",
+  "description": "Input-only complete playthrough: walk to the first orb, jump each raised island, stop over the landing pad while falling, and walk to the unlocked beacon. No falls or respawns required.",
+  "steps": 354,
+  "fixed_dt": 0.016666666666666666,
+  "expected": {
+    "won": true,
+    "collected": 5
+  },
+  "events": [
+    {
+      "from": 0,
+      "to": 30,
+      "move_x": 0,
+      "jump": false
+    },
+    {
+      "from": 30,
+      "to": 60,
+      "move_x": 1,
+      "jump": false
+    },
+    {
+      "from": 60,
+      "to": 61,
+      "move_x": 1,
+      "jump": true
+    },
+    {
+      "from": 61,
+      "to": 105,
+      "move_x": 1,
+      "jump": false
+    },
+    {
+      "from": 105,
+      "to": 120,
+      "move_x": 0,
+      "jump": false
+    },
+    {
+      "from": 120,
+      "to": 138,
+      "move_x": 1,
+      "jump": false
+    },
+    {
+      "from": 138,
+      "to": 139,
+      "move_x": 1,
+      "jump": true
+    },
+    {
+      "from": 139,
+      "to": 183,
+      "move_x": 1,
+      "jump": false
+    },
+    {
+      "from": 183,
+      "to": 198,
+      "move_x": 0,
+      "jump": false
+    },
+    {
+      "from": 198,
+      "to": 203,
+      "move_x": 1,
+      "jump": false
+    },
+    {
+      "from": 203,
+      "to": 204,
+      "move_x": 1,
+      "jump": true
+    },
+    {
+      "from": 204,
+      "to": 245,
+      "move_x": 1,
+      "jump": false
+    },
+    {
+      "from": 245,
+      "to": 265,
+      "move_x": 0,
+      "jump": false
+    },
+    {
+      "from": 265,
+      "to": 307,
+      "move_x": 1,
+      "jump": false
+    },
+    {
+      "from": 307,
+      "to": 337,
+      "move_x": 0,
+      "jump": false
+    },
+    {
+      "from": 337,
+      "to": 354,
+      "move_x": 1,
+      "jump": false
+    }
+  ]
+}

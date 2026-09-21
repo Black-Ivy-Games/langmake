@@ -1,0 +1,7 @@
+<rml><head><title>Glow Garden</title><link type="text/rcss" href="shared.rcss"/><link type="text/rcss" href="phone.rcss"/></head><body>
+<div id="hud"><h1>Glow Garden</h1><p id="objective"></p><p id="count"></p><progress id="progress" value="0" max="3"/><p id="status"></p></div>
+<button id="pause-button" data-action="pause">Pause</button><button id="save-button" data-action="save">Save</button><button id="load-button" data-action="load">Load</button>
+<button id="lamp-button" data-action="lamp" data-hit-padding="10"><span>LIGHT</span></button>
+<div id="pause-panel"><p>Paused. Use Continue to return.</p><p>Save and Load use the garden slot.</p></div>
+<div id="controls">WASD: move | Hold Space: LIGHT | P: pause | F6/F9: save/load</div>
+</body></rml>

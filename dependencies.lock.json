@@ -1,0 +1,660 @@
+{
+  "format_version": 1,
+  "product": "Langmake",
+  "release": "0.5.0",
+  "dependencies": [
+    {
+      "name": "SDL",
+      "source_path": ".deps/source/SDL",
+      "repository": "https://github.com/libsdl-org/SDL.git",
+      "revision": "fa2c02bb6e21974a89ea9824bc53c9932abe5f9c",
+      "working_tree_modified": false
+    },
+    {
+      "name": "Luau",
+      "source_path": ".deps/source/luau",
+      "repository": "https://github.com/luau-lang/luau.git",
+      "revision": "9457397af45f9d69423c5168d23fddd998a5f0fd",
+      "working_tree_modified": false
+    },
+    {
+      "name": "JoltPhysics",
+      "source_path": ".deps/source/JoltPhysics",
+      "repository": "https://github.com/jrouwe/JoltPhysics.git",
+      "revision": "0373ec0dd762e4bc2f6acdb08371ee84fa23c6db",
+      "working_tree_modified": false
+    },
+    {
+      "name": "Box2D",
+      "source_path": ".deps/source/box2d",
+      "repository": "https://github.com/erincatto/box2d.git",
+      "revision": "8c661469c9507d3ad6fbd2fea3f1aa71669c2fe3",
+      "working_tree_modified": false
+    },
+    {
+      "name": "Flecs",
+      "source_path": ".deps/source/flecs",
+      "repository": "https://github.com/SanderMertens/flecs.git",
+      "revision": "9e06477db0fdf9317bf583ff4b1318622283165f",
+      "working_tree_modified": false
+    },
+    {
+      "name": "nlohmann-json",
+      "source_path": ".deps/source/json",
+      "repository": "https://github.com/nlohmann/json.git",
+      "revision": "55f93686c01528224f448c19128836e7df245f72",
+      "working_tree_modified": false
+    },
+    {
+      "name": "miniaudio",
+      "source_path": ".deps/source/miniaudio",
+      "repository": "https://github.com/mackron/miniaudio.git",
+      "revision": "f40cf03f80cdb7e741d43e53b7e706e8c1394bcf",
+      "working_tree_modified": false
+    },
+    {
+      "name": "bgfx.cmake",
+      "source_path": ".deps/source/bgfx.cmake",
+      "repository": "https://github.com/bkaradzic/bgfx.cmake.git",
+      "revision": "0fb9ec06bdaa7c3ae31ce6a3521e211183a0cead",
+      "working_tree_modified": false
+    },
+    {
+      "name": "bgfx",
+      "source_path": ".deps/source/bgfx.cmake/bgfx",
+      "repository": "https://github.com/bkaradzic/bgfx.git",
+      "revision": "dd38b306c85472d0c89bb025970da7c2d42838d4",
+      "working_tree_modified": false
+    },
+    {
+      "name": "bx",
+      "source_path": ".deps/source/bgfx.cmake/bx",
+      "repository": "https://github.com/bkaradzic/bx.git",
+      "revision": "f86bece7967be1b8a7fd39262cdc8ce99d123c3b",
+      "working_tree_modified": false
+    },
+    {
+      "name": "bimg",
+      "source_path": ".deps/source/bgfx.cmake/bimg",
+      "repository": "https://github.com/bkaradzic/bimg.git",
+      "revision": "ddbeeae05779f84f97694553eb41605a60f86f0a",
+      "working_tree_modified": false
+    },
+    {
+      "name": "Manifold",
+      "source_path": ".deps/source/manifold",
+      "repository": "https://github.com/elalish/manifold.git",
+      "version": "3.5.3",
+      "revision": "0edd9d54876f3135e431575214dd6d8a72866fee",
+      "license": "Apache-2.0",
+      "working_tree_modified": false
+    },
+    {
+      "name": "ozz-animation",
+      "source_path": ".deps/source/ozz-animation",
+      "repository": "https://github.com/guillaumeblanc/ozz-animation.git",
+      "version": "0.17.0",
+      "revision": "744eb9d99f606eda849acb0b1204f7a3dc20bca1",
+      "license": "MIT",
+      "working_tree_modified": false
+    },
+    {
+      "name": "RecastNavigation",
+      "source_path": ".deps/source/recastnavigation",
+      "repository": "https://github.com/recastnavigation/recastnavigation.git",
+      "version": "1.6.0",
+      "revision": "6dc1667f580357e8a2154c28b7867bea7e8ad3a7",
+      "license": "Zlib",
+      "working_tree_modified": false
+    },
+    {
+      "name": "RmlUi",
+      "source_path": ".deps/source/RmlUi",
+      "repository": "https://github.com/mikke89/RmlUi.git",
+      "version": "6.3",
+      "revision": "ba95ffe8bfb6370efb2cdcca927eaad4710c5413",
+      "license": "MIT",
+      "working_tree_modified": false
+    },
+    {
+      "name": "FreeType",
+      "source_path": ".deps/source/freetype",
+      "repository": "https://github.com/freetype/freetype.git",
+      "version": "2.14.3",
+      "revision": "0a0221a1347e2f1e07c395263540026e9a0aa7c7",
+      "license": "FTL",
+      "working_tree_modified": false
+    }
+  ],
+  "license_files": [
+    {
+      "path": "licenses/SDL/LICENSE.txt",
+      "source_path": ".deps/source/SDL/LICENSE.txt",
+      "sha256": "f4c406cd23df8e2ea3e8bb1af62f15cb6b2439e4e5385828cf90301baea4d944"
+    },
+    {
+      "path": "licenses/SDL/hidapi/LICENSE.txt",
+      "source_path": ".deps/source/SDL/src/hidapi/LICENSE.txt",
+      "sha256": "ece65294d852f2f32a291ed1c2b6cddd57a5630e37626aa02c80cd62eed6f222"
+    },
+    {
+      "path": "licenses/SDL/hidapi/LICENSE-bsd.txt",
+      "source_path": ".deps/source/SDL/src/hidapi/LICENSE-bsd.txt",
+      "sha256": "b1a506483de4fc32a73568370aa248bf6c5f820b5e2891ca3f29b8844ea6bf33"
+    },
+    {
+      "path": "licenses/SDL/hidapi/LICENSE-orig.txt",
+      "source_path": ".deps/source/SDL/src/hidapi/LICENSE-orig.txt",
+      "sha256": "2a594f88505cd994559bba97b6ca6f81601536f36d980af51e312c8ba2d282e1"
+    },
+    {
+      "path": "licenses/SDL/yuv2rgb/LICENSE",
+      "source_path": ".deps/source/SDL/src/video/yuv2rgb/LICENSE",
+      "sha256": "577769384d44f033ec1ccc28393f25055981fc3aecfeab87c8ed44810473277d"
+    },
+    {
+      "path": "licenses/Luau/LICENSE.txt",
+      "source_path": ".deps/source/luau/LICENSE.txt",
+      "sha256": "1ceedfcc375343e3ec8e56861fa73ba3bd186ed178d5d000546447d358d38949"
+    },
+    {
+      "path": "licenses/Luau/lua_LICENSE.txt",
+      "source_path": ".deps/source/luau/lua_LICENSE.txt",
+      "sha256": "1d913b8bad19567e42303dfbc18e9c1e937c3c3f9ad64ae994f1bd18704dd020"
+    },
+    {
+      "path": "licenses/JoltPhysics/LICENSE",
+      "source_path": ".deps/source/JoltPhysics/LICENSE",
+      "sha256": "8d1c7e0303333dfdafcc6583c620eb163e9c6c53c7cebcb53db78eaa9807e76c"
+    },
+    {
+      "path": "licenses/Box2D/LICENSE",
+      "source_path": ".deps/source/box2d/LICENSE",
+      "sha256": "0085a12e93e9f9fdc25a3fa206042302f9298d3d472ada43844c10ccad700a0b"
+    },
+    {
+      "path": "licenses/Flecs/LICENSE",
+      "source_path": ".deps/source/flecs/LICENSE",
+      "sha256": "5f89f3edd5d1e458cd48509818e23b57d85869f7d57d0ebe31bcfd3a73e5dd60"
+    },
+    {
+      "path": "licenses/nlohmann-json/LICENSE.MIT",
+      "source_path": ".deps/source/json/LICENSE.MIT",
+      "sha256": "b9715282b2f1db1359a919bb3a542dd4362fd9e38ae72d421367eb11abe62eec"
+    },
+    {
+      "path": "licenses/miniaudio/LICENSE",
+      "source_path": ".deps/source/miniaudio/LICENSE",
+      "sha256": "cf00884e3bae1ec7b49e96bc014079f5b4c803987586b894ac431779927c67b3"
+    },
+    {
+      "path": "licenses/bgfx.cmake/LICENSE",
+      "source_path": ".deps/source/bgfx.cmake/LICENSE",
+      "sha256": "f4e7f373b9b996950337e8d41a4a2939c2d90b7725e9baf3d5084a22717ad328"
+    },
+    {
+      "path": "licenses/bgfx/LICENSE",
+      "source_path": ".deps/source/bgfx.cmake/bgfx/LICENSE",
+      "sha256": "2791a69b0fc5337cd704ecffeba80d7ee080aa95cfde5255704365f26887f0f0"
+    },
+    {
+      "path": "licenses/bx/LICENSE",
+      "source_path": ".deps/source/bgfx.cmake/bx/LICENSE",
+      "sha256": "2791a69b0fc5337cd704ecffeba80d7ee080aa95cfde5255704365f26887f0f0"
+    },
+    {
+      "path": "licenses/bx/tinystl/LICENSE",
+      "source_path": ".deps/source/bgfx.cmake/bx/include/tinystl/LICENSE",
+      "sha256": "fe3d97eadde681e3e7f0b97987cbe6ddd4f0812f8e564335a08d58fd42e587e7"
+    },
+    {
+      "path": "licenses/bimg/LICENSE",
+      "source_path": ".deps/source/bgfx.cmake/bimg/LICENSE",
+      "sha256": "2791a69b0fc5337cd704ecffeba80d7ee080aa95cfde5255704365f26887f0f0"
+    },
+    {
+      "path": "licenses/LodePNG/LICENSE",
+      "source_path": ".deps/source/bgfx.cmake/bimg/3rdparty/lodepng/LICENSE",
+      "sha256": "a035922e0bb0c8d6738a4a677c40a0e8471036e91bd510786802736d0959493b"
+    },
+    {
+      "path": "licenses/bimg/astc-encoder/LICENSE.txt",
+      "source_path": ".deps/source/bgfx.cmake/bimg/3rdparty/astc-encoder/LICENSE.txt",
+      "sha256": "a2aea85fac9ba9ed4985fe513d2b0d321c87a02c2a447c65f8e59dcfe79f55ed"
+    },
+    {
+      "path": "licenses/bimg/miniz/LICENSE",
+      "source_path": ".deps/source/bgfx.cmake/bimg/3rdparty/tinyexr/deps/miniz/LICENSE",
+      "sha256": "0115478d567121238cf6cc1c0c361926cf07a49d9e4c9e66da97fac6a01646b3"
+    },
+    {
+      "path": "licenses/bgfx/directx-headers/LICENSE",
+      "source_path": ".deps/source/bgfx.cmake/bgfx/3rdparty/directx-headers/LICENSE",
+      "sha256": "903df5512f7d02609fed0c780a9b704f5a3eeb6e4d84ebe42a29845c81899a3c"
+    },
+    {
+      "path": "licenses/bgfx/stb/LICENSE",
+      "source_path": ".deps/source/bgfx.cmake/bgfx/3rdparty/stb/LICENSE",
+      "sha256": "11dd149dbc50748419a22fcec275b5bcfb4c2d86d9fba8802e5c4ffd40c94609"
+    },
+    {
+      "path": "licenses/GCC/COPYING3",
+      "source_url": "https://raw.githubusercontent.com/gcc-mirror/gcc/releases/gcc-15.1.0/COPYING3",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "path": "licenses/GCC/COPYING.RUNTIME",
+      "source_url": "https://raw.githubusercontent.com/gcc-mirror/gcc/releases/gcc-15.1.0/COPYING.RUNTIME",
+      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+    },
+    {
+      "path": "licenses/winpthreads/COPYING",
+      "source_url": "https://raw.githubusercontent.com/mingw-w64/mingw-w64/6de5d3b4db33c23e404148321ccb4a7bf92ca4fc/mingw-w64-libraries/winpthreads/COPYING",
+      "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177"
+    },
+    {
+      "path": "licenses/mingw-w64/COPYING",
+      "source_url": "https://raw.githubusercontent.com/mingw-w64/mingw-w64/6de5d3b4db33c23e404148321ccb4a7bf92ca4fc/COPYING",
+      "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f"
+    },
+    {
+      "path": "licenses/bgfx/KHRONOS-HEADERS.txt",
+      "source_paths": [
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/EGL/egl.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/EGL/eglext.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/EGL/eglplatform.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/gl/glcorearb.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/gl/glext.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/GLES2/gl2ext.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/GLES3/gl3.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/GLES3/gl31.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/GLES3/gl32.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/glx/glxext.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/wgl/wgl.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/wgl/wglext.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/GLES3/gl3platform.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/KHR/khrplatform.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_icd.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_layer.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_platform.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_sdk_platform.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_av1std.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_av1std_decode.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_av1std_encode.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_h264std.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_h264std_decode.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_h264std_encode.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_h265std.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_h265std_decode.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_h265std_encode.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_vp9std.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_vp9std_decode.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codecs_common.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_android.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_beta.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_core.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_directfb.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_fuchsia.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_ggp.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_ios.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_macos.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_metal.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_ohos.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_screen.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_ubm.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_vi.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_wayland.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_win32.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_xcb.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_xlib.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_xlib_xrandr.h",
+        ".deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan.h"
+      ],
+      "transformation": "Verbatim initial copyright/license comment blocks grouped by identical text; source paths added.",
+      "sha256": "a2ae6f68800058a11c101a7c901fe6947c95b4636fb5b1fb1a98a8ab441cce5a"
+    },
+    {
+      "path": "licenses/Manifold/LICENSE",
+      "source_path": ".deps/source/manifold/LICENSE",
+      "sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6"
+    },
+    {
+      "path": "licenses/Manifold/AUTHORS",
+      "source_path": ".deps/source/manifold/AUTHORS",
+      "sha256": "9e6e21c75344afd433233c5162511fed9891726f45274c535adfedbb39e43bc8"
+    },
+    {
+      "path": "licenses/Manifold/linalg-NOTICE.txt",
+      "source_path": ".deps/source/manifold/include/manifold/linalg.h",
+      "sha256": "7a01b0fd1ceedec0fef56017bba1d686aac4d4bed964657bdff1e6b2ac2282a8",
+      "transformation": "Verbatim initial copyright/license and attribution comments; source path added. Upstream Manifold-modified linalg header is Apache-2.0 and credits Sterling Orsten public-domain linalg 2.2."
+    },
+    {
+      "path": "licenses/ozz-animation/LICENSE.md",
+      "source_path": ".deps/source/ozz-animation/LICENSE.md",
+      "sha256": "aeafc5feb0c0961cd993008dc9a1017289cd0e6e867e0e39755b42744a9b8fb2"
+    },
+    {
+      "path": "licenses/RecastNavigation/License.txt",
+      "source_path": ".deps/source/recastnavigation/License.txt",
+      "sha256": "ffad87821cce7cfd3be00b63ffadd01b04e83a4c6a0bcc68f06362ffd42d705e"
+    },
+    {
+      "path": "licenses/RmlUi/LICENSE.txt",
+      "source_path": ".deps/source/RmlUi/LICENSE.txt",
+      "sha256": "02c6fa90f6a2c1cf69124014fbaaf524affc71ebf76dd4176321bc50a5b0746c"
+    },
+    {
+      "path": "licenses/RmlUi/containers-LICENSE.txt",
+      "source_path": ".deps/source/RmlUi/Include/RmlUi/Core/Containers/LICENSE.txt",
+      "sha256": "d863c46bf2d89839000a61993568663187e897c2d4c40b98bab432f413a2f487"
+    },
+    {
+      "path": "licenses/LatoLatin/LICENSE.txt",
+      "source_path": ".deps/source/RmlUi/Samples/assets/LICENSE.txt",
+      "sha256": "bed153b0c43270d88983fbe77f8bee52faf167b37488ff8e3dd8d4bb699d18bd"
+    },
+    {
+      "path": "licenses/FreeType/LICENSE.TXT",
+      "source_path": ".deps/source/freetype/LICENSE.TXT",
+      "sha256": "84f47dc7f0887dd56b05f2f218060581c055e443bd7af18e46677bec3dcc2473"
+    },
+    {
+      "path": "licenses/FreeType/FTL.TXT",
+      "source_path": ".deps/source/freetype/docs/FTL.TXT",
+      "sha256": "308dca54b5aaa4a6ba0880621fe3bcf287956821aa948430263062a8333625c0"
+    },
+    {
+      "path": "licenses/FreeType/BDF-README.txt",
+      "source_path": ".deps/source/freetype/src/bdf/README",
+      "sha256": "5a810592dc77bea5d6aaf7202d81c3a355b00792e3e6e410d4577b96310a5b79"
+    },
+    {
+      "path": "licenses/FreeType/PCF-README.txt",
+      "source_path": ".deps/source/freetype/src/pcf/README",
+      "sha256": "8ed3ed3d30b5d652a4e6c50ed398f421c540a7b2b30074891832fa42657b188a"
+    },
+    {
+      "path": "licenses/cgltf/LICENSE",
+      "source_path": ".deps/source/bgfx.cmake/bgfx/3rdparty/cgltf/LICENSE",
+      "sha256": "b4fce2d58d6716e4b5df1caa7217f761a3c62e0c82e23747d04ee5ca24d05adb"
+    },
+    {
+      "path": "licenses/FreeType/zlib-NOTICE.txt",
+      "source_path": ".deps/source/freetype/src/gzip/zlib.h",
+      "sha256": "c9e67393c37f15f3f9c02b708d4c6b739881db9c1bbcd504d3c7b65880c5509a",
+      "transformation": "Verbatim license comment or section extracted from the unmodified upstream source; source identity retained in this inventory."
+    },
+    {
+      "path": "licenses/FreeType/fthash-NOTICE.txt",
+      "source_path": ".deps/source/freetype/src/base/fthash.c",
+      "sha256": "9a0bfab255aaa0ff3b89f0b2346179b343bad40bff9dcbbef87ee173bfbc08d8",
+      "transformation": "Verbatim license comment or section extracted from the unmodified upstream source; source identity retained in this inventory."
+    },
+    {
+      "path": "licenses/FreeType/harfbuzz-ft-NOTICE.txt",
+      "source_path": ".deps/source/freetype/src/autofit/ft-hb-ft.c",
+      "sha256": "92cca3ce02d0e1d4aa82b7079eb171f0baaf1352cfe3f50867288411f01ebec1",
+      "transformation": "Verbatim license comment or section extracted from the unmodified upstream source; source identity retained in this inventory."
+    },
+    {
+      "path": "licenses/FreeType/harfbuzz-decls-NOTICE.txt",
+      "source_path": ".deps/source/freetype/src/autofit/ft-hb-decls.h",
+      "sha256": "92cca3ce02d0e1d4aa82b7079eb171f0baaf1352cfe3f50867288411f01ebec1",
+      "transformation": "Verbatim license comment or section extracted from the unmodified upstream source; source identity retained in this inventory."
+    },
+    {
+      "path": "licenses/FreeType/harfbuzz-types-NOTICE.txt",
+      "source_path": ".deps/source/freetype/src/autofit/ft-hb-types.h",
+      "sha256": "92cca3ce02d0e1d4aa82b7079eb171f0baaf1352cfe3f50867288411f01ebec1",
+      "transformation": "Verbatim license comment or section extracted from the unmodified upstream source; source identity retained in this inventory."
+    },
+    {
+      "path": "licenses/FreeType/harfbuzz-script-list-NOTICE.txt",
+      "source_path": ".deps/source/freetype/src/autofit/hb-script-list.h",
+      "sha256": "f1540a915f6bb4ce8c468a9f954d09f248e17b07e8cb7f2dd6ca954b0770d86e",
+      "transformation": "Verbatim license comment or section extracted from the unmodified upstream source; source identity retained in this inventory."
+    },
+    {
+      "path": "licenses/stb_image/LICENSE.txt",
+      "source_path": ".deps/source/bgfx.cmake/bimg/3rdparty/stb/stb_image.h",
+      "sha256": "7587efcca32db8f95bf5860dea6dfa4be410ee723e1964db3689c8ddf2a2e4a9",
+      "transformation": "Verbatim license comment or section extracted from the unmodified upstream source; source identity retained in this inventory."
+    },
+    {
+      "path": "licenses/Android-NDK/NOTICE",
+      "sha256": "faf0dc52cf6ce9ab09a04b0c074a378dd2565ee1ed9bc1179d83793bcdba012e"
+    },
+    {
+      "path": "licenses/Android-NDK/NOTICE.toolchain",
+      "sha256": "789714a9076571c580cf531bdcebec776a4d889c12c3c1108adafc6e4338710a"
+    }
+  ],
+  "toolchain": {
+    "family": "MinGW-w64 GCC",
+    "gcc_version": "15.1.0",
+    "target": "x86_64-w64-mingw32",
+    "runtime": "Full-static MinGW linkage: libgcc and libstdc++ with GCC Runtime Library Exception, plus statically linked winpthreads; Windows system DLLs remain OS-provided",
+    "winpthreads_notice_revision": "6de5d3b4db33c23e404148321ccb4a7bf92ca4fc",
+    "winpthreads_binary_revision": "not inferred from upstream notice revision"
+  },
+  "bundled_upstream_assets": [
+    {
+      "path": "shaders/vs_cubes.bin",
+      "source_path": ".deps/source/bgfx.cmake/bgfx/examples/runtime/shaders/dxbc/vs_cubes.bin",
+      "source_dependency": "bgfx",
+      "sha256": "093af972008023a5be1e3dba1ad8d69b8b649cf1de0a8b0846a1a04f2d059b96",
+      "license": "BSD-2-Clause",
+      "modified": false
+    },
+    {
+      "path": "shaders/fs_cubes.bin",
+      "source_path": ".deps/source/bgfx.cmake/bgfx/examples/runtime/shaders/dxbc/fs_cubes.bin",
+      "source_dependency": "bgfx",
+      "sha256": "aea27fe1a2988d67c8f21b4eb6cce200291c28889a43ec9fac5c5070e71fb471",
+      "license": "BSD-2-Clause",
+      "modified": false
+    },
+    {
+      "path": "fonts/LatoLatin-Regular.ttf",
+      "source_path": ".deps/source/RmlUi/Samples/assets/LatoLatin-Regular.ttf",
+      "source_dependency": "RmlUi",
+      "sha256": "d785334ac4e7810f571def986bbad41161f68ac385db8813f798bf04d71478e1",
+      "license": "OFL-1.1",
+      "modified": false
+    }
+  ],
+  "embedded_upstream_assets": [
+    {
+      "source_path": ".deps/source/bgfx.cmake/bgfx/examples/common/debugdraw/vs_debugdraw_fill_texture.bin.h",
+      "source_dependency": "bgfx",
+      "symbol": "vs_debugdraw_fill_texture_dxbc",
+      "source_sha256": "8505597c7e27d9e1879a438eb7d537721c1bd9f8779d49259f7d1dd96b62df9e",
+      "hash_scope": "Complete unmodified upstream generated header; Windows selects DXBC, Android selects ESSL arrays.",
+      "license": "BSD-2-Clause",
+      "modified": false,
+      "android_symbol": "vs_debugdraw_fill_texture_essl"
+    },
+    {
+      "source_path": ".deps/source/bgfx.cmake/bgfx/examples/common/debugdraw/fs_debugdraw_fill_texture.bin.h",
+      "source_dependency": "bgfx",
+      "symbol": "fs_debugdraw_fill_texture_dxbc",
+      "source_sha256": "49ef26c853a96b6d3f94c2ce075dd44bc86ef5d286d9b2f8ff21d3eb943d213e",
+      "hash_scope": "Complete unmodified upstream generated header; Windows selects DXBC, Android selects ESSL arrays.",
+      "license": "BSD-2-Clause",
+      "modified": false,
+      "android_symbol": "fs_debugdraw_fill_texture_essl"
+    },
+    {
+      "source_path": ".deps/source/bgfx.cmake/bgfx/examples/common/debugdraw/vs_debugdraw_fill_lit.bin.h",
+      "source_dependency": "bgfx",
+      "symbol": "vs_debugdraw_fill_lit_dxbc",
+      "source_sha256": "bb725aa3c0d0622c0b3f6c28b58000b05c127ce7c4978cee00db483339d39f15",
+      "hash_scope": "Complete unmodified upstream generated header; Windows selects DXBC, Android selects ESSL arrays.",
+      "license": "BSD-2-Clause",
+      "modified": false,
+      "android_symbol": "vs_debugdraw_fill_lit_essl"
+    },
+    {
+      "source_path": ".deps/source/bgfx.cmake/bgfx/examples/common/debugdraw/fs_debugdraw_fill_lit.bin.h",
+      "source_dependency": "bgfx",
+      "symbol": "fs_debugdraw_fill_lit_dxbc",
+      "source_sha256": "60f5dbe42ebd5656004bdb61ff88f8c7d66deedd4f39adb7e6c5e246cefe6852",
+      "hash_scope": "Complete unmodified upstream generated header; Windows selects DXBC, Android selects ESSL arrays.",
+      "license": "BSD-2-Clause",
+      "modified": false,
+      "android_symbol": "fs_debugdraw_fill_lit_essl"
+    }
+  ],
+  "vendored_headers": [
+    {
+      "name": "cgltf",
+      "source_path": ".deps/source/bgfx.cmake/bgfx/3rdparty/cgltf/cgltf.h",
+      "source_dependency": "bgfx",
+      "source_sha256": "efb169dee911696b5d35fc8e3f7ea0c56d679debc529eba9ca6aa6443ba9d5e9",
+      "license": "MIT",
+      "modified": false
+    },
+    {
+      "name": "stb_image",
+      "source_path": ".deps/source/bgfx.cmake/bimg/3rdparty/stb/stb_image.h",
+      "source_dependency": "bimg",
+      "source_sha256": "59f03939da221568c1d5f4fb0f23a8a91ee5b9f2caa0dc8132f45ae759e303b4",
+      "license": "MIT",
+      "modified": false
+    }
+  ],
+  "build_options": {
+    "configuration": "Release",
+    "renderer": "Direct3D11",
+    "linkage": "static",
+    "ozz": {
+      "tools": false,
+      "fbx": false,
+      "gltf": false,
+      "data": false,
+      "samples": false,
+      "howtos": false,
+      "tests": false
+    },
+    "RecastNavigation": {
+      "demo": false,
+      "tests": false,
+      "examples": false
+    },
+    "RmlUi": {
+      "samples": false,
+      "tests": false,
+      "lua_bindings": false,
+      "font_engine": "freetype"
+    },
+    "FreeType": {
+      "external_zlib": false,
+      "bundled_zlib": true,
+      "bzip2": false,
+      "png": false,
+      "harfbuzz": false,
+      "brotli": false
+    },
+    "Manifold": {
+      "parallel": false,
+      "cross_section": false,
+      "tests": false,
+      "c_bindings": false,
+      "python_bindings": false,
+      "downloads": false
+    },
+    "android": {
+      "renderer": "OpenGL ES 3",
+      "shader_profile": "300_es",
+      "linkage": "Shared libmain.so with static dependencies and C++ runtime",
+      "abi": [
+        "arm64-v8a",
+        "x86_64"
+      ],
+      "minimum_api": 26,
+      "elf_page_alignment": 16384,
+      "development_bridge": "Release disables development launch arguments; Android run-as/debugging disabled; shared app-private player mailbox retained",
+      "host_shaderc": true,
+      "qualification": "See docs/20-android-qualification.md for actual native builds, emulator and physical-device evidence",
+      "toolchain_lock": "scripts/android/toolchain.lock.json"
+    },
+    "ios": {
+      "renderer": "Metal",
+      "shader_platform": "ios",
+      "shader_profile": "metal",
+      "minimum_os": "17.0",
+      "device_architectures": [
+        "arm64"
+      ],
+      "simulator_architectures": [
+        "arm64",
+        "x86_64"
+      ],
+      "linkage": "Standalone app with static runtime dependencies",
+      "host_shaderc": true,
+      "luau_jit": false,
+      "objcxx_audio": true,
+      "development_arguments": "Compile-time gated; native committed inbox validates size and SHA-256 before enqueuing",
+      "qualification": "Source implementation only; Apple compilation/device verification pending in docs/24-ios-qualification.md"
+    }
+  },
+  "optional_studio": {
+    "path": "studio",
+    "independent_of_runtime": true,
+    "dependency_lock": "studio/package-lock.json",
+    "notices": "studio/THIRD_PARTY_NOTICES.md"
+  },
+  "android_bundled_upstream_assets": [
+    {
+      "path": "android-player/runtime/shaders/vs_cubes.bin",
+      "source_path": ".deps/source/bgfx.cmake/bgfx/examples/runtime/shaders/essl/vs_cubes.bin",
+      "source_dependency": "bgfx",
+      "sha256": "7a38cd866d3e6f637ec2a2f27268285d33de7777ff7898eef18a3caf1c36927c",
+      "license": "BSD-2-Clause",
+      "modified": false
+    },
+    {
+      "path": "android-player/runtime/shaders/fs_cubes.bin",
+      "source_path": ".deps/source/bgfx.cmake/bgfx/examples/runtime/shaders/essl/fs_cubes.bin",
+      "source_dependency": "bgfx",
+      "sha256": "b2d1a77cca84ccf831cfcbdb346998f76c17abe8726e4e36a0e4d4e6e1ae6bef",
+      "license": "BSD-2-Clause",
+      "modified": false
+    },
+    {
+      "path": "android-player/runtime/fonts/LatoLatin-Regular.ttf",
+      "source_path": ".deps/source/RmlUi/Samples/assets/LatoLatin-Regular.ttf",
+      "source_dependency": "RmlUi",
+      "sha256": "d785334ac4e7810f571def986bbad41161f68ac385db8813f798bf04d71478e1",
+      "license": "OFL-1.1",
+      "modified": false
+    }
+  ],
+  "ios_bundled_upstream_assets": [
+    {
+      "path": "runtime/shaders/vs_cubes.bin",
+      "source_path": ".deps/source/bgfx.cmake/bgfx/examples/runtime/shaders/metal/vs_cubes.bin",
+      "source_dependency": "bgfx",
+      "sha256": "055a6a2b2b5f5eddb6c34bd07e53ce265f679d38ee14a9a4e5540b052c78a05c",
+      "license": "BSD-2-Clause",
+      "modified": false
+    },
+    {
+      "path": "runtime/shaders/fs_cubes.bin",
+      "source_path": ".deps/source/bgfx.cmake/bgfx/examples/runtime/shaders/metal/fs_cubes.bin",
+      "source_dependency": "bgfx",
+      "sha256": "3da2353d73eed670e30f9406fe720f58ddf95bd703eea0e6a3a3dd2fb2c67bd4",
+      "license": "BSD-2-Clause",
+      "modified": false
+    },
+    {
+      "path": "runtime/fonts/LatoLatin-Regular.ttf",
+      "source_path": ".deps/source/RmlUi/Samples/assets/LatoLatin-Regular.ttf",
+      "source_dependency": "RmlUi",
+      "sha256": "d785334ac4e7810f571def986bbad41161f68ac385db8813f798bf04d71478e1",
+      "license": "OFL-1.1",
+      "modified": false
+    }
+  ]
+}

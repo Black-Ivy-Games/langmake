@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "description": "Original animated collectible signal star, authored with native draw operations.",
+  "width": 16,
+  "height": 16,
+  "palette": {
+    ".": "#00000000",
+    "O": "#14243FFF",
+    "D": "#405F80FF",
+    "S": "#86ABC2FF",
+    "W": "#E4F5F3FF",
+    "H": "#FFFFFFFF",
+    "R": "#F76467FF",
+    "r": "#B5385EFF",
+    "B": "#25BDD4FF",
+    "b": "#137693FF",
+    "Y": "#FFD279FF",
+    "F": "#FF8459FF",
+    "P": "#9675DDFF",
+    "G": "#ACED78FF",
+    "g": "#56B87AFF",
+    "E": "#18253BFF"
+  },
+  "frames": [
+    {
+      "id": "spark0",
+      "draw": [
+        {
+          "op": "line",
+          "x1": 8,
+          "y1": 1,
+          "x2": 8,
+          "y2": 14,
+          "thickness": 3,
+          "color": "F"
+        },
+        {
+          "op": "line",
+          "x1": 1,
+          "y1": 8,
+          "x2": 14,
+          "y2": 8,
+          "thickness": 3,
+          "color": "Y"
+        },
+        {
+          "op": "circle",
+          "cx": 8,
+          "cy": 8,
+          "radius": 3,
+          "color": "Y"
+        },
+        {
+          "op": "circle",
+          "cx": 8,
+          "cy": 8,
+          "radius": 1,
+          "color": "H"
+        }
+      ]
+    },
+    {
+      "id": "spark1",
+      "draw": [
+        {
+          "op": "line",
+          "x1": 8,
+          "y1": 2,
+          "x2": 8,
+          "y2": 13,
+          "thickness": 3,
+          "color": "F"
+        },
+        {
+          "op": "line",
+          "x1": 2,
+          "y1": 8,
+          "x2": 13,
+          "y2": 8,
+          "thickness": 3,
+          "color": "Y"
+        },
+        {
+          "op": "circle",
+          "cx": 8,
+          "cy": 8,
+          "radius": 3,
+          "color": "Y"
+        },
+        {
+          "op": "circle",
+          "cx": 8,
+          "cy": 8,
+          "radius": 1,
+          "color": "H"
+        }
+      ]
+    },
+    {
+      "id": "spark2",
+      "draw": [
+        {
+          "op": "line",
+          "x1": 8,
+          "y1": 3,
+          "x2": 8,
+          "y2": 12,
+          "thickness": 3,
+          "color": "F"
+        },
+        {
+          "op": "line",
+          "x1": 3,
+          "y1": 8,
+          "x2": 12,
+          "y2": 8,
+          "thickness": 3,
+          "color": "Y"
+        },
+        {
+          "op": "circle",
+          "cx": 8,
+          "cy": 8,
+          "radius": 3,
+          "color": "Y"
+        },
+        {
+          "op": "circle",
+          "cx": 8,
+          "cy": 8,
+          "radius": 1,
+          "color": "H"
+        }
+      ]
+    }
+  ],
+  "animations": {
+    "idle": {
+      "frames": [
+        "spark0",
+        "spark1",
+        "spark2",
+        "spark1"
+      ],
+      "durations": [
+        0.15,
+        0.15,
+        0.15,
+        0.15
+      ],
+      "loop": true
+    }
+  },
+  "default_animation": "idle"
+}

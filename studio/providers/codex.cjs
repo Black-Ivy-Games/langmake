@@ -1,0 +1,25 @@
+'use strict';
+const {spawn}=require('node:child_process'),{EventEmitter}=require('node:events'),{kill,schemas}=require('../core/tools.cjs'),{safeTool}=require('./api.cjs');
+class Codex extends EventEmitter{
+ constructor(command,home,cwd){super();this.pending=new Map();this.next=1;this.buffer='';this.child=spawn(command,['app-server'],{cwd,env:{...process.env,CODEX_HOME:home},shell:false,windowsHide:true,stdio:['pipe','pipe','pipe']});this.child.stdout.setEncoding('utf8');this.child.stdout.on('data',b=>{this.buffer+=b.toString();if(this.buffer.length>16*1024*1024){this.close();return;}let i;while((i=this.buffer.indexOf('\n'))>=0){const line=this.buffer.slice(0,i);this.buffer=this.buffer.slice(i+1);try{this.message(JSON.parse(line));}catch(e){this.emit('protocol_error',e);}}});this.child.stderr.on('data',()=>{});this.child.on('error',e=>this.fail(e));this.child.on('close',()=>this.fail(Error('Codex app-server closed')));}
+ fail(error){for(const p of this.pending.values()){clearTimeout(p.timer);p.reject(error);}this.pending.clear();this.emit('closed',error);}
+ send(value){this.child.stdin.write(JSON.stringify(value)+'\n');}
+ request(method,params){const id=this.next++;return new Promise((resolve,reject)=>{const timer=setTimeout(()=>{this.pending.delete(id);reject(Error('Codex request timed out: '+method));},60000);this.pending.set(id,{resolve,reject,timer});this.send({id,method,params});});}
+ message(m){if(m.method){this.emit(m.id===undefined?'notification':'request',m);return;}const p=this.pending.get(m.id);if(!p)return;this.pending.delete(m.id);clearTimeout(p.timer);m.error?p.reject(Error(m.error.message)):p.resolve(m.result);}
+ async init(){await this.request('initialize',{clientInfo:{name:'langmake_studio',title:'Langmake Studio',version:'0.4.0'},capabilities:{experimentalApi:true}});this.send({method:'initialized'});}
+ close(){kill(this.child);}
+}
+async function runCodex({profile,home,project,context,signal,emit,tools,ask,connection}){
+ if(signal.aborted)throw Error('Cancelled');const rpc=connection||new Codex(profile.command,home,project.root);let thread,turn;
+ const abort=()=>{if(thread&&turn)rpc.request('turn/interrupt',{threadId:thread,turnId:turn}).catch(()=>{});rpc.close();};signal.addEventListener('abort',abort,{once:true});
+ try{if(!connection)await rpc.init();if(signal.aborted)throw Error('Cancelled');const result=await rpc.request('thread/start',{cwd:project.root,model:profile.model||undefined,sandbox:'read-only',approvalPolicy:'on-request',ephemeral:true,
+  developerInstructions:'Use ONLY the supplied Langmake tools to read/write project files and run engine commands. Built-in shell, patch, networking and other filesystem tools are unavailable. The human is the decision-making developer and primary gameplay playtester.',
+  config:{'features.shell_tool':false,'features.apply_patch_freeform':false,'web_search':'disabled','mcp_servers':{}},dynamicTools:schemas.map(t=>({type:'function',name:t.name,description:t.description,inputSchema:t.input_schema}))});thread=result.thread.id;
+  await new Promise((resolve,reject)=>{let complete=false;const finish=e=>{if(complete)return;complete=true;rpc.off('notification',notify);rpc.off('request',request);rpc.off('closed',closed);signal.removeEventListener('abort',cancel);e?reject(e):resolve();};const closed=e=>finish(signal.aborted?Error('Cancelled'):e),cancel=()=>finish(Error('Cancelled'));
+   const notify=m=>{const p=m.params||{};if(p.threadId&&p.threadId!==thread)return;if(m.method==='item/agentMessage/delta')emit({kind:'delta',text:p.delta});if(m.method==='item/started'&&p.item?.type!=='agentMessage')emit({kind:'activity',text:p.item?.type||'Working'});if(m.method==='turn/completed')finish(p.turn?.status==='failed'||p.turn?.status==='interrupted'?Error(p.turn?.error?.message||'Codex turn '+p.turn.status):undefined);};
+   const request=async m=>{try{if(m.method==='item/tool/call'){const result=await safeTool(tools,m.params.tool,m.params.arguments);rpc.send({id:m.id,result:{contentItems:[result?.type==='image'?{type:'inputImage',imageUrl:`data:${result.mimeType};base64,${result.data}`}:{type:'inputText',text:JSON.stringify(result)}],success:!result.error}});}else if(m.method==='item/tool/requestUserInput'){const answers=await ask(m.params.questions);rpc.send({id:m.id,result:{answers}});}else if(m.method.includes('requestApproval')){emit({kind:'activity',text:'A built-in operation was blocked. Project edits must use Studio tools.'});rpc.send({id:m.id,result:{decision:'decline'}});}else rpc.send({id:m.id,error:{code:-32601,message:'Studio does not expose this capability'}});}catch(e){rpc.send({id:m.id,error:{code:-32000,message:e.message}});}};
+   rpc.on('notification',notify);rpc.on('request',request);rpc.on('closed',closed);signal.addEventListener('abort',cancel,{once:true});rpc.request('turn/start',{threadId:thread,input:[{type:'text',text:context}]}).then(r=>{turn=r.turn.id;if(signal.aborted)abort();}).catch(finish);
+  });
+ }finally{signal.removeEventListener('abort',abort);rpc.close();}
+}
+module.exports={Codex,runCodex};

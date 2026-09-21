@@ -1,0 +1,90 @@
+{
+  "entities": [
+    {
+      "id": "player",
+      "position": [
+        -5,
+        0,
+        0
+      ],
+      "size": [
+        1,
+        1,
+        1
+      ],
+      "body": "dynamic",
+      "role": "player",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "asset": "walker"
+    },
+    {
+      "id": "keeper",
+      "position": [
+        -3,
+        1,
+        0
+      ],
+      "size": [
+        1,
+        1,
+        1
+      ],
+      "body": "none",
+      "role": "decoration",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "asset": "walker"
+    },
+    {
+      "id": "star",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "size": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "body": "none",
+      "role": "decoration",
+      "color": [
+        1,
+        0.8,
+        0.2,
+        1
+      ]
+    },
+    {
+      "id": "post",
+      "position": [
+        5,
+        0,
+        0
+      ],
+      "size": [
+        1,
+        2,
+        1
+      ],
+      "body": "none",
+      "role": "decoration",
+      "color": [
+        0.3,
+        0.5,
+        0.6,
+        1
+      ]
+    }
+  ]
+}

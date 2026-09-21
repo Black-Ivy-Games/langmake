@@ -1,0 +1,80 @@
+{
+  "events": [
+    {
+      "from": 0,
+      "to": 35,
+      "move_x": 1
+    },
+    {
+      "from": 36,
+      "to": 37,
+      "actions": {
+        "interact": 1
+      }
+    },
+    {
+      "from": 38,
+      "to": 39,
+      "actions": {
+        "choice1": 1
+      }
+    },
+    {
+      "from": 40,
+      "to": 41,
+      "actions": {
+        "interact": 1
+      }
+    },
+    {
+      "from": 42,
+      "to": 147,
+      "move_x": 1
+    },
+    {
+      "from": 150,
+      "to": 151,
+      "actions": {
+        "attack": 1
+      }
+    },
+    {
+      "from": 185,
+      "to": 186,
+      "actions": {
+        "attack": 1
+      }
+    },
+    {
+      "from": 220,
+      "to": 221,
+      "actions": {
+        "attack": 1
+      }
+    },
+    {
+      "from": 250,
+      "to": 330,
+      "move_x": 1
+    },
+    {
+      "from": 332,
+      "to": 333,
+      "actions": {
+        "interact": 1
+      }
+    },
+    {
+      "from": 340,
+      "to": 390,
+      "move_x": 1
+    },
+    {
+      "from": 392,
+      "to": 393,
+      "actions": {
+        "interact": 1
+      }
+    }
+  ]
+}

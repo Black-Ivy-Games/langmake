@@ -1,0 +1,32 @@
+{
+  "events": [
+    {
+      "from": 5,
+      "to": 6,
+      "actions": {
+        "command": 1
+      }
+    },
+    {
+      "from": 1500,
+      "to": 1501,
+      "actions": {
+        "recall": 1
+      }
+    },
+    {
+      "from": 3000,
+      "to": 3001,
+      "actions": {
+        "spawn": 1
+      }
+    },
+    {
+      "from": 3002,
+      "to": 3003,
+      "actions": {
+        "dismiss": 1
+      }
+    }
+  ]
+}

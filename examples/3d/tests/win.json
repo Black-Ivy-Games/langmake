@@ -1,0 +1,103 @@
+{
+  "format": "langmake.input.v1",
+  "description": "Input-only complete playthrough: collect the west and north orbs, walk around the east garden, collect east and south, then jump onto the altar to collect the final orb and unlock the beacon. No falls or respawns required.",
+  "steps": 876,
+  "fixed_dt": 0.016666666666666666,
+  "expected": {
+    "won": true,
+    "collected": 5
+  },
+  "events": [
+    {
+      "from": 0,
+      "to": 30,
+      "move_x": 0,
+      "move_z": 0,
+      "jump": false
+    },
+    {
+      "from": 30,
+      "to": 55,
+      "move_x": -1,
+      "move_z": -0.5,
+      "jump": false
+    },
+    {
+      "from": 55,
+      "to": 241,
+      "move_x": 1,
+      "move_z": -0.06,
+      "jump": false
+    },
+    {
+      "from": 241,
+      "to": 295,
+      "move_x": 0,
+      "move_z": 1,
+      "jump": false
+    },
+    {
+      "from": 295,
+      "to": 326,
+      "move_x": 1,
+      "move_z": 0,
+      "jump": false
+    },
+    {
+      "from": 326,
+      "to": 462,
+      "move_x": 0,
+      "move_z": 1,
+      "jump": false
+    },
+    {
+      "from": 462,
+      "to": 479,
+      "move_x": -1,
+      "move_z": 0,
+      "jump": false
+    },
+    {
+      "from": 479,
+      "to": 668,
+      "move_x": -1,
+      "move_z": 0,
+      "jump": false
+    },
+    {
+      "from": 668,
+      "to": 757,
+      "move_x": 1,
+      "move_z": 0,
+      "jump": false
+    },
+    {
+      "from": 757,
+      "to": 807,
+      "move_x": 0,
+      "move_z": -1,
+      "jump": false
+    },
+    {
+      "from": 807,
+      "to": 808,
+      "move_x": 0,
+      "move_z": -1,
+      "jump": true
+    },
+    {
+      "from": 808,
+      "to": 846,
+      "move_x": 0,
+      "move_z": -1,
+      "jump": false
+    },
+    {
+      "from": 846,
+      "to": 876,
+      "move_x": 0,
+      "move_z": 0,
+      "jump": false
+    }
+  ]
+}

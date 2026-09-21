@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "type": "music",
+  "bpm": 100,
+  "ppq": 24,
+  "length": 192,
+  "gain": 0.35,
+  "instruments": {
+    "bell": {
+      "wave": "triangle",
+      "gain": 0.18,
+      "attack": 0.005,
+      "decay": 0.2,
+      "sustain": 0.2,
+      "release": 0.3
+    }
+  },
+  "notes": [
+    {
+      "tick": 0,
+      "duration": 10,
+      "note": 60,
+      "instrument": "bell"
+    },
+    {
+      "tick": 12,
+      "duration": 10,
+      "note": 64,
+      "instrument": "bell"
+    },
+    {
+      "tick": 24,
+      "duration": 10,
+      "note": 67,
+      "instrument": "bell"
+    },
+    {
+      "tick": 36,
+      "duration": 10,
+      "note": 72,
+      "instrument": "bell"
+    },
+    {
+      "tick": 48,
+      "duration": 10,
+      "note": 67,
+      "instrument": "bell"
+    },
+    {
+      "tick": 60,
+      "duration": 10,
+      "note": 64,
+      "instrument": "bell"
+    },
+    {
+      "tick": 72,
+      "duration": 10,
+      "note": 62,
+      "instrument": "bell"
+    },
+    {
+      "tick": 84,
+      "duration": 10,
+      "note": 67,
+      "instrument": "bell"
+    },
+    {
+      "tick": 96,
+      "duration": 10,
+      "note": 60,
+      "instrument": "bell"
+    },
+    {
+      "tick": 108,
+      "duration": 10,
+      "note": 64,
+      "instrument": "bell"
+    },
+    {
+      "tick": 120,
+      "duration": 10,
+      "note": 67,
+      "instrument": "bell"
+    },
+    {
+      "tick": 132,
+      "duration": 10,
+      "note": 72,
+      "instrument": "bell"
+    },
+    {
+      "tick": 144,
+      "duration": 10,
+      "note": 67,
+      "instrument": "bell"
+    },
+    {
+      "tick": 156,
+      "duration": 10,
+      "note": 64,
+      "instrument": "bell"
+    },
+    {
+      "tick": 168,
+      "duration": 10,
+      "note": 62,
+      "instrument": "bell"
+    },
+    {
+      "tick": 180,
+      "duration": 10,
+      "note": 67,
+      "instrument": "bell"
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "schema_version": 2,
+  "title": "Lantern Post",
+  "dimension": "2d",
+  "gravity": [
+    0,
+    0,
+    0
+  ],
+  "camera": {
+    "position": [
+      0,
+      0,
+      20
+    ],
+    "target": [
+      0,
+      0,
+      0
+    ]
+  },
+  "script": "scripts/game.luau",
+  "entities": [],
+  "modules": {
+    "inventory": "modules/inventory.luau",
+    "quests": "modules/quests.luau",
+    "dialogue": "modules/dialogue.luau",
+    "fsm": "modules/fsm.luau",
+    "combat": "modules/combat.luau",
+    "cinematics": "modules/cinematics.luau",
+    "orders": "modules/orders.luau"
+  },
+  "assets": {
+    "theme": {
+      "type": "music",
+      "path": "assets/theme.music.json"
+    },
+    "walker": {
+      "type": "sprite",
+      "path": "assets/walker.sprite.json"
+    }
+  },
+  "music": "theme",
+  "definitions": {
+    "items": "data/items.json",
+    "quests": "data/quests.json",
+    "dialogue": "data/dialogue.json"
+  },
+  "ui": {
+    "documents": {
+      "hud": "ui/hud.rml"
+    },
+    "styles": {
+      "hud": "ui/hud.rcss"
+    }
+  },
+  "input": {
+    "actions": {
+      "interact": {
+        "keys": [
+          "E"
+        ],
+        "gamepad": "south"
+      },
+      "attack": {
+        "keys": [
+          "Space"
+        ],
+        "gamepad": "west"
+      },
+      "choice1": {
+        "keys": [
+          "1"
+        ]
+      },
+      "choice2": {
+        "keys": [
+          "2"
+        ]
+      },
+      "save": {
+        "keys": [
+          "F6"
+        ]
+      },
+      "load": {
+        "keys": [
+          "F9"
+        ]
+      }
+    }
+  },
+  "entry_scene": "village",
+  "scenes": {
+    "village": "scenes/village.json",
+    "garden": "scenes/garden.json"
+  }
+}

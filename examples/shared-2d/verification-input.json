@@ -1,0 +1,35 @@
+{
+  "events": [
+    {
+      "from": 0,
+      "to": 30,
+      "move_x": 1
+    },
+    {
+      "from": 31,
+      "to": 32,
+      "actions": {
+        "interact": 1
+      }
+    },
+    {
+      "from": 33,
+      "to": 34,
+      "actions": {
+        "choice1": 1
+      }
+    },
+    {
+      "from": 35,
+      "to": 175,
+      "move_x": 1
+    },
+    {
+      "from": 176,
+      "to": 177,
+      "actions": {
+        "interact": 1
+      }
+    }
+  ]
+}

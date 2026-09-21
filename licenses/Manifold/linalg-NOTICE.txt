@@ -1,0 +1,35 @@
+Preserved upstream attribution and license header from .deps/source/manifold/include/manifold/linalg.h
+
+// Copyright 2026 The Manifold Authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// Based on linalg.h - 2.2 - Single-header public domain linear algebra library
+//
+// The intent of this library is to provide the bulk of the functionality
+// you need to write programs that frequently use small, fixed-size vectors
+// and matrices, in domains such as computational geometry or computer
+// graphics. It strives for terse, readable source code.
+//
+// The original author of this software is Sterling Orsten, and its permanent
+// home is <http://github.com/sgorsten/linalg/>. If you find this software
+// useful, an acknowledgement in your source text and/or product documentation
+// is appreciated, but not required.
+//
+// The author acknowledges significant insights and contributions by:
+//     Stan Melax <http://github.com/melax/>
+//     Dimitri Diakopoulos <http://github.com/ddiakopoulos/>
+//
+// Some features are deprecated. Define LINALG_FORWARD_COMPATIBLE to remove
+// them.
+

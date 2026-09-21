@@ -1,0 +1,119 @@
+{
+  "entities": [
+    {
+      "id": "ground",
+      "position": [
+        0,
+        -0.5,
+        0
+      ],
+      "size": [
+        22,
+        1,
+        14
+      ],
+      "body": "static",
+      "role": "decoration",
+      "color": [
+        0.12,
+        0.22,
+        0.2,
+        1
+      ]
+    },
+    {
+      "id": "player",
+      "position": [
+        -2,
+        1,
+        0
+      ],
+      "size": [
+        0.7,
+        1.8,
+        0.7
+      ],
+      "body": "dynamic",
+      "role": "player",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "shape": "capsule",
+      "controller": "character",
+      "asset": "robot",
+      "animation": "idle",
+      "visual_scale": [
+        1.8,
+        1,
+        1.8
+      ]
+    },
+    {
+      "id": "relay",
+      "position": [
+        2,
+        1,
+        0
+      ],
+      "size": [
+        1,
+        2,
+        1
+      ],
+      "body": "static",
+      "role": "decoration",
+      "color": [
+        0.65,
+        0.45,
+        0.18,
+        1
+      ]
+    },
+    {
+      "id": "signal_orb",
+      "position": [
+        2,
+        2,
+        0
+      ],
+      "size": [
+        0.35,
+        0.35,
+        0.35
+      ],
+      "body": "none",
+      "role": "decoration",
+      "color": [
+        0.5,
+        1,
+        0.65,
+        1
+      ],
+      "shape": "sphere"
+    },
+    {
+      "id": "return",
+      "position": [
+        -5,
+        1,
+        0
+      ],
+      "size": [
+        1,
+        2,
+        1
+      ],
+      "body": "none",
+      "role": "decoration",
+      "color": [
+        0.3,
+        0.5,
+        0.8,
+        1
+      ]
+    }
+  ]
+}

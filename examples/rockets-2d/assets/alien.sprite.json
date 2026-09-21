@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "description": "Original friendly lime moonling, three tentacle poses and a blink.",
+  "width": 24,
+  "height": 24,
+  "palette": {
+    ".": "#00000000",
+    "O": "#14243FFF",
+    "D": "#405F80FF",
+    "S": "#86ABC2FF",
+    "W": "#E4F5F3FF",
+    "H": "#FFFFFFFF",
+    "R": "#F76467FF",
+    "r": "#B5385EFF",
+    "B": "#25BDD4FF",
+    "b": "#137693FF",
+    "Y": "#FFD279FF",
+    "F": "#FF8459FF",
+    "P": "#9675DDFF",
+    "G": "#ACED78FF",
+    "g": "#56B87AFF",
+    "E": "#18253BFF"
+  },
+  "frames": [
+    {
+      "id": "float1",
+      "pixels": [
+        "........................",
+        ".....PP..........PP.....",
+        "......O..........O......",
+        "......O..........O......",
+        "......O..........O......",
+        "......O.OGGGGGGO.O......",
+        "......OOGGGGGGGGOO......",
+        ".....OGHHGGGGGGGGGO.....",
+        ".....OGGGGGGGGGGGGO.....",
+        "....OGGGEGGGGGGEGGGO....",
+        "....OGEHHEEGGEHHEEGO....",
+        "....OGEHHEEGGEHHEEGO....",
+        "...OGEEEEEEEEEEEEEEGO...",
+        "....OGEEEBEGGEEEBEGO....",
+        "....OGEEEEEGGEEEEEGO....",
+        "....ORggEggggggEggRO....",
+        ".....OggggggggggggO.....",
+        ".....ggggggEEggggggg....",
+        ".....ggOggggggggO.gg....",
+        ".....gg..gg...gg..gg....",
+        "....GGO..GGO...GGGGO....",
+        "....OOO..OOO...OOOOO....",
+        "........................",
+        "........................"
+      ]
+    },
+    {
+      "id": "float2",
+      "pixels": [
+        "........................",
+        ".....PP..........PP.....",
+        "......O..........O......",
+        "......O..........O......",
+        "......O..........O......",
+        "......O.OGGGGGGO.O......",
+        "......OOGGGGGGGGOO......",
+        ".....OGHHGGGGGGGGGO.....",
+        ".....OGGGGGGGGGGGGO.....",
+        "....OGGGEGGGGGGEGGGO....",
+        "....OGEHHEEGGEHHEEGO....",
+        "....OGEHHEEGGEHHEEGO....",
+        "...OGEEEEEEEEEEEEEEGO...",
+        "....OGEEEBEGGEEEBEGO....",
+        "....OGEEEEEGGEEEEEGO....",
+        "....ORggEggggggEggRO....",
+        ".....OggggggggggggO.....",
+        ".....ggggggEEggggggg....",
+        ".....ggOggggggggO.gg....",
+        ".....gg..gg...gg..gg....",
+        ".....GGO..GGOGGO..GGO...",
+        ".....OOO..OOOOOO..OOO...",
+        "........................",
+        "........................"
+      ]
+    },
+    {
+      "id": "float3",
+      "pixels": [
+        "........................",
+        ".....PP..........PP.....",
+        "......O..........O......",
+        "......O..........O......",
+        "......O..........O......",
+        "......O.OGGGGGGO.O......",
+        "......OOGGGGGGGGOO......",
+        ".....OGHHGGGGGGGGGO.....",
+        ".....OGGGGGGGGGGGGO.....",
+        "....OGGGEGGGGGGEGGGO....",
+        "....OGEHHEEGGEHHEEGO....",
+        "....OGEHHEEGGEHHEEGO....",
+        "...OGEEEEEEEEEEEEEEGO...",
+        "....OGEEEBEGGEEEBEGO....",
+        "....OGEEEEEGGEEEEEGO....",
+        "....ORggEggggggEggRO....",
+        ".....OggggggggggggO.....",
+        ".....ggggggEEggggggg....",
+        ".....ggOggggggggO.gg....",
+        ".....gg..gg...gg..gg....",
+        "......GGGGO...GGO..GGO..",
+        "......OOOOO...OOO..OOO..",
+        "........................",
+        "........................"
+      ]
+    },
+    {
+      "id": "blink",
+      "pixels": [
+        "........................",
+        ".....PP..........PP.....",
+        "......O..........O......",
+        "......O..........O......",
+        "......O..........O......",
+        "......O.OGGGGGGO.O......",
+        "......OOGGGGGGGGOO......",
+        ".....OGHHGGGGGGGGGO.....",
+        ".....OGGGGGGGGGGGGO.....",
+        "....OGGGGGGGGGGGGGGO....",
+        "....OGGGGGGGGGGGGGGO....",
+        "....OGgGGGGGGgGGGGGO....",
+        "...OGGEEEEGGGEEEEGGGO...",
+        "....OGGGGGGGGGGGGGGO....",
+        "....OGGGGGGGGGGGGGGO....",
+        "....ORggggggggggggRO....",
+        ".....OggggggggggggO.....",
+        ".....ggggggEEggggggg....",
+        ".....ggOggggggggO.gg....",
+        ".....gg..gg...gg..gg....",
+        "....GGO..GGO...GGGGO....",
+        "....OOO..OOO...OOOOO....",
+        "........................",
+        "........................"
+      ]
+    }
+  ],
+  "animations": {
+    "idle": {
+      "frames": [
+        "float1",
+        "float2",
+        "float3",
+        "float2",
+        "blink"
+      ],
+      "durations": [
+        0.19,
+        0.19,
+        0.19,
+        0.19,
+        0.1
+      ],
+      "loop": true
+    },
+    "blink": {
+      "frames": [
+        "blink",
+        "float1"
+      ],
+      "durations": [
+        0.12,
+        0.3
+      ],
+      "loop": false
+    }
+  },
+  "default_animation": "idle"
+}

@@ -1,0 +1,416 @@
+{
+  "format_version": 1,
+  "version": "0.5.0",
+  "date": "2026-09-20",
+  "status": "implementation and scoped technical/human qualification complete; ready for another agent game-creation iteration",
+  "qualification_summary": "docs/27-workflow-qualification.md",
+  "evidence_paths": "Workspace-relative references; private host paths, device identifiers and credentials are excluded.",
+  "windows_regression": {
+    "ok": true,
+    "command": "powershell -ExecutionPolicy Bypass -File scripts/test.ps1 -Graphics",
+    "log": ".cache/workflow-qualification/full-regression-retry.log",
+    "ctest_suites": 12,
+    "project_checks": 173,
+    "game_system_checks": 141,
+    "skipped": [
+      "Optional symlink fixture could not be created on this host."
+    ]
+  },
+  "host_tests": [
+    {
+      "suite": "workflow Python contracts",
+      "passed": 82,
+      "log": ".cache/workflow-qualification/workflow-unit-82.log",
+      "log_sha256": "0968807e4750be398d23941fbf44c44f56f62ffae2d64ed3a7e27dbcc3106995"
+    },
+    {
+      "suite": "iOS tools including physical iPad classification",
+      "passed": 64,
+      "log": ".cache/workflow-qualification/ios-private-pull-tests.log",
+      "log_sha256": "a2d1beb9613ed6e6bdad4e287f877a2921b5514150f8e9be4c5ca79907c69f5e"
+    },
+    {
+      "suite": "Android tools",
+      "passed": 32,
+      "log": ".cache/workflow-qualification/android-private-pull-tests.log",
+      "log_sha256": "f03305752c0baae7e0bfa4b9fd4eb8cf62ec92062b1e5bbefa26d67cd4a7c421"
+    },
+    {
+      "suite": "Shared icon and PNG tools",
+      "passed": 8,
+      "log": ".cache/workflow-qualification/indexed-icon-tests.log"
+    },
+    {
+      "suite": "Windows resource tools",
+      "passed": 3,
+      "log": ".cache/workflow-windows-resource-tests.log"
+    },
+    {
+      "suite": "Studio including runtime-package privacy and integrity",
+      "passed": 70,
+      "log": ".cache/workflow-qualification/studio-70-final.log",
+      "node_major": 24
+    }
+  ],
+  "workflow_integration": {
+    "ok": true,
+    "log": ".cache/workflow-qualification/workflow-integration.log",
+    "covers": [
+      "Per-game target isolation",
+      "Desktop/phone/tablet profile scenarios",
+      "Graphics and sidecar comparison",
+      "Fresh-process save restore twice",
+      "Windows icon/version export",
+      "Completed-operation resume",
+      "Portable handoff"
+    ]
+  },
+  "android_native_variants": {
+    "ok": true,
+    "count": 4,
+    "abis": [
+      "arm64-v8a",
+      "x86_64"
+    ],
+    "configurations": [
+      "debug",
+      "release"
+    ],
+    "page_alignment": 16384,
+    "inventory": ".cache/workflow-qualification/android-player-0.5.0-final/manifest.json",
+    "final_metadata_rebuild_status": "complete; rebuilt variants and all 11 inventory file hashes verified",
+    "initial_inventory": ".cache/workflow-qualification/android-player-0.5.0/manifest.json",
+    "report": ".cache/workflow-qualification/android-build-logs-final/receipt.json",
+    "manifest_files_verified": 11,
+    "device_scope": "Initial native scenarios used the preceding build; the final source delta was discovery/help metadata only. The Android presentation-update audit used the final arm64 debug player."
+  },
+  "final_windows_discovery_build": {
+    "ok": true,
+    "log": ".cache/workflow-qualification/final-discovery-build.log",
+    "focused_regression_status": "passed: 12 CTest suites and 6 integration groups; graphics not repeated",
+    "executable_sha256": "9205660996e0d7a6cf0d9c90b4242ce0aface6db02cf37bcb38c47f8d633c5a0",
+    "report": ".cache/workflow-qualification/final-discovery-evidence.json",
+    "ctest_suites": 12,
+    "integration_groups": 6
+  },
+  "devices": [
+    {
+      "platform": "android",
+      "model": "SM-A146U",
+      "classification": "physical",
+      "profile": "phone",
+      "renderer": "OpenGL ES",
+      "viewport": [
+        2408,
+        1080
+      ],
+      "deployment": {
+        "ok": true,
+        "report": ".cache/workflow-qualification/android-deploy.json"
+      },
+      "scenarios": [
+        {
+          "name": "release",
+          "ok": true,
+          "ticks": [
+            0,
+            60,
+            120
+          ],
+          "report": ".cache/workflow-qualification/android-native-release-v2.json"
+        },
+        {
+          "name": "delivery",
+          "ok": true,
+          "ticks": [
+            0,
+            100,
+            220
+          ],
+          "report": ".cache/workflow-qualification/android-native-delivery.json"
+        }
+      ],
+      "capture_count": 6,
+      "native_host_state_comparison": true,
+      "human_feedback": {
+        "quote": "yes loading moving and light all work",
+        "confirms": [
+          "Loading",
+          "Movement",
+          "Light control"
+        ],
+        "exhaustive_input_lifecycle_audio_qualification": false
+      }
+    },
+    {
+      "platform": "ios",
+      "model": "iPhone 17 Pro Max",
+      "classification": "physical",
+      "profile": "phone",
+      "renderer": "Metal",
+      "viewport": [
+        2868,
+        1320
+      ],
+      "deployment": {
+        "ok": true,
+        "signed": true,
+        "resumed": true,
+        "report": ".cache/workflow-qualification/iphone-resume.json"
+      },
+      "scenarios": [
+        {
+          "name": "release",
+          "ok": true,
+          "ticks": [
+            0,
+            60,
+            120
+          ],
+          "report": ".cache/workflow-qualification/iphone-native-release.json"
+        },
+        {
+          "name": "delivery",
+          "ok": true,
+          "ticks": [
+            0,
+            100,
+            220
+          ],
+          "report": ".cache/workflow-qualification/iphone-native-delivery.json"
+        }
+      ],
+      "capture_count": 6,
+      "native_host_state_comparison": true,
+      "human_feedback_for_this_iteration": "not recorded; historical feedback remains separate"
+    },
+    {
+      "platform": "ios",
+      "model": "iPad ninth generation",
+      "hardware_model": "iPad12,2",
+      "os_version": "26.6.1",
+      "classification": "physical",
+      "profile": "tablet",
+      "renderer": "Metal",
+      "viewport": [
+        2160,
+        1620
+      ],
+      "deployment": {
+        "ok": true,
+        "signed": true,
+        "transport": "Explicitly selected Mac local-network device connection",
+        "report": ".cache/workflow-qualification/ipad-installed.json"
+      },
+      "scenarios": [
+        {
+          "name": "release",
+          "ok": true,
+          "ticks": [
+            0,
+            60,
+            120
+          ],
+          "report": ".cache/workflow-qualification/ipad-native-release.json"
+        },
+        {
+          "name": "delivery",
+          "ok": true,
+          "ticks": [
+            0,
+            100,
+            220
+          ],
+          "report": ".cache/workflow-qualification/ipad-native-delivery.json"
+        }
+      ],
+      "capture_count": 6,
+      "native_host_state_comparison": true,
+      "visually_reviewed": {
+        "scenario": "release",
+        "tick": 120
+      },
+      "human_playtesting": "focused checks confirmed",
+      "final_player_scenarios": [
+        {
+          "name": "release",
+          "ok": true,
+          "report": ".cache/workflow-qualification/ipad-final-release.json"
+        },
+        {
+          "name": "delivery",
+          "ok": true,
+          "report": ".cache/workflow-qualification/ipad-final-delivery.json"
+        }
+      ],
+      "final_player_capture_count": 6,
+      "human_launch": ".cache/workflow-qualification/ipad-human-launch.json",
+      "human_feedback": {
+        "quote": "yep all works",
+        "question_scope": [
+          "Simultaneous movement and held LIGHT",
+          "Release and drag-out cancellation",
+          "Pause",
+          "Background/reopen",
+          "Save then move then load",
+          "Readable text",
+          "Audible music"
+        ],
+        "exhaustive_device_qualification": false,
+        "creative_approval_inferred": false
+      }
+    }
+  ],
+  "android_manual_save_baseline": {
+    "ok": true,
+    "report": ".cache/workflow-qualification/android-receipt-baseline.json",
+    "report_sha256": "e2993ef29f19a2e3128a508d2704838c175ea9b5327496a19f28e4f1ae8486e6",
+    "assertions": 17,
+    "successful_commands": 9,
+    "restores": 2,
+    "tick": 120,
+    "seeds": 2,
+    "held_ticks": 120,
+    "rewards": 0,
+    "state_entities_ui_camera_equal": true,
+    "transient_input_clear": true,
+    "scope": "Two manual loads in the existing native session; not fresh-process or update-preservation evidence."
+  },
+  "fresh_agent_authoring": {
+    "ok": true,
+    "distribution": "Candidate authoring exercise passed; final runtime archive and fresh extraction are independently tested.",
+    "report": "dist/Langmake-0.5.0-candidate/games/fresh-lantern/authoring-report.md",
+    "game": "Amber Lantern Garden",
+    "custom_helpers": 0,
+    "setup_questions": 0,
+    "final_game_workarounds": 0,
+    "declared_icon_export_passed": true,
+    "original_failed_operation_resumed": true,
+    "standalone_exported_runtime_capture_passed": true,
+    "human_creative_approval": false
+  },
+  "resolved_findings": [
+    "Starter shared stylesheet must be linked explicitly; revised layout visually reviewed.",
+    "Native indexed PNG icon exports now pass the standard icon pipeline without conversion helpers.",
+    "Android debug timeline paths must be storage-relative; failed initial attempt retained and corrected runs passed.",
+    "Capture receipt completion requires its matching session/revision/image/tick sidecar.",
+    "Android private pull/inspect checks remote status through non-PTY shell-v2 and publishes binary pulls atomically; missing optional save no longer becomes error-text data. Five regression tests and physical missing/valid pull checks passed; a new explicit update deployment then completed with preserved progress.",
+    "A failed mobile copy acknowledgment is resolved only by the matching native receipt for the original request; eight audited iPad recoveries dispatched once each.",
+    "iOS generic CoreDevice7000 does not mean missing file. A successful scoped parent listing must verify absence; successful reads publish atomically. 64 iOS tests pass on host and Mac; physical absent and valid-save pulls verified."
+  ],
+  "pending": [],
+  "android_private_pull_regression": {
+    "ok": true,
+    "missing_file": {
+      "expected_failure": true,
+      "output_created": false,
+      "report": ".cache/workflow-qualification/android-missing-file-fixed.json"
+    },
+    "valid_save": {
+      "ok": true,
+      "report": ".cache/workflow-qualification/android-valid-pull-fixed.json",
+      "output_sha256": "0478202eea6f0e1760982ba08002b61a365033132492190cf4e3120dd10a2629"
+    },
+    "failed_update_operation_preserved": "12c0a6a03ad344709af0837b62e13d2f",
+    "scope": "Physical-device private-file transfer correctness; subsequent corrected Android update completed and audited separately."
+  },
+  "human_creative_approval": "not inferred from technical verification",
+  "ios_portable_stages": {
+    "ok": true,
+    "templates": 8,
+    "commands": 16,
+    "report": ".cache/workflow-qualification/ios-stage-logs-final/receipt.json",
+    "scope": "Host portable source/resource staging and verification only; not final native signing or device qualification."
+  },
+  "staged_runtime_package_smoke": {
+    "ok": true,
+    "report": ".cache/package-smoke/ad8413fe2fa346a1a115b45f0c1092e1/report.json",
+    "check_groups": 14,
+    "commands": 59,
+    "manifest_files": 352,
+    "templates": 8,
+    "empty_path": true,
+    "archive_extraction": false,
+    "scope": "Initial staged package check, followed by runtime-package-final archive and extracted-package verification."
+  },
+  "android_presentation_update": {
+    "ok": true,
+    "report": ".cache/workflow-qualification/android-presentation-update-evidence.json",
+    "report_sha256": "4fd176f9ef66893e31d34edbaab6f073c9c52cbd126489a8c198920e6bfaf297",
+    "assertions": 44,
+    "build_before": 1,
+    "build_after": 2,
+    "version": "1.0",
+    "final_native_player": true,
+    "installed_apk_matches_built_artifact": true,
+    "apk_sha256": "8c71093911ee67f2ea7518a592ea1a9a0b030608303c0cdad571de517172f089",
+    "installed_icon_resources_verified": 7,
+    "original_first_install_time_preserved": true,
+    "presentation_compatibility_preflight_and_restore": true,
+    "fresh_cold_process": true,
+    "repeated_loads": 2,
+    "tick": 120,
+    "seeds": 2,
+    "held_ticks": 120,
+    "rewards": 0,
+    "exact_state_entities_ui_camera_viewport_match": true,
+    "transient_input_clear": true,
+    "scope": "Actual native Android update and fresh-process loads of existing manual progress; no tablet update or additional physical input/lifecycle/audio claim."
+  },
+  "distributions": {
+    "runtime_archive_tests": {
+      "ok": true,
+      "commands": 64,
+      "check_groups": 15
+    },
+    "runtime_fresh_extraction": {
+      "ok": true,
+      "commands": 59,
+      "check_groups": 14,
+      "manifest_files": 352
+    },
+    "runtime_report": ".cache/workflow-qualification/runtime-package-final/receipt.json",
+    "studio_gui": {
+      "ok": true,
+      "actual_packaged_electron": true,
+      "fake_provider_only": true,
+      "visual_review": true,
+      "reports": [
+        "studio/.cache/ui-1789947629014/evidence.json",
+        "studio/.cache/ui-selection-1789947660987/evidence.json"
+      ]
+    },
+    "final_archive_integrity_report": ".cache/workflow-qualification/distribution-final.json",
+    "payload_refresh": "Documentation plus regression-tested workflow/iOS Python transport fixes; native binaries unchanged. Final archive identities and checks recorded outside payload.",
+    "ios_source": "Eight verified stages, no Apple SDK or private configuration; not a universal signed app",
+    "final_runtime_report": ".cache/workflow-qualification/runtime-distribution-final/receipt.json",
+    "final_studio_report": ".cache/workflow-qualification/studio-distribution-final.json"
+  },
+  "ipad_presentation_update": {
+    "ok": true,
+    "report": ".cache/workflow-qualification/ipad-presentation-update-evidence.json",
+    "report_sha256": "2b534fdfabaf93edd87ae96c1333cd7a3a15328d44a054441b15590ceea73e60",
+    "assertions": 69,
+    "installed_build_before": 1,
+    "installed_build_after": 2,
+    "version": "1.0",
+    "fresh_process": true,
+    "repeated_loads": 2,
+    "tick": 120,
+    "seeds": 2,
+    "held_ticks": 120,
+    "rewards": 0,
+    "state_entities_ui_camera_viewport_equal": true,
+    "transient_input_clear": true,
+    "recovered_delivery_acknowledgments": 8,
+    "duplicate_dispatches": 0,
+    "installed_bundle_icon_readback": false,
+    "native_executable_sha256": "45ee6bef7c37710cb44a6cb65f19ae7ce93fb0b9f501de551f5e7e47d7af453d"
+  },
+  "limits": [
+    "iPad Stage Manager and windowed multitasking not qualified",
+    "All device models and exhaustive lifecycle/input combinations not qualified",
+    "App Store distribution not part of this milestone",
+    "Human creative acceptance of a finished game remains separate"
+  ]
+}

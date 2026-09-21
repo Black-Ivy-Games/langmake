@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "joints": [
+    {
+      "id": "root"
+    },
+    {
+      "id": "head",
+      "parent": "root",
+      "translation": [
+        0,
+        0.36,
+        0
+      ]
+    },
+    {
+      "id": "arm",
+      "parent": "root",
+      "translation": [
+        0.32,
+        0.02,
+        0
+      ]
+    },
+    {
+      "id": "left",
+      "parent": "root",
+      "translation": [
+        -0.15,
+        -0.32,
+        0
+      ]
+    },
+    {
+      "id": "right",
+      "parent": "root",
+      "translation": [
+        0.15,
+        -0.32,
+        0
+      ]
+    }
+  ],
+  "parts": [
+    {
+      "id": "body",
+      "joint": "root",
+      "color": "#75CCA8",
+      "geometry": {
+        "op": "box",
+        "size": [
+          0.5,
+          0.45,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "head",
+      "joint": "head",
+      "color": "#BCEBCA",
+      "geometry": {
+        "op": "box",
+        "size": [
+          0.45,
+          0.3,
+          0.4
+        ]
+      }
+    },
+    {
+      "id": "visor",
+      "joint": "head",
+      "color": "#233744",
+      "geometry": {
+        "op": "box",
+        "size": [
+          0.3,
+          0.09,
+          0.04
+        ],
+        "translate": [
+          0,
+          0.02,
+          0.21
+        ]
+      }
+    },
+    {
+      "id": "arm",
+      "joint": "arm",
+      "color": "#F0BD69",
+      "geometry": {
+        "op": "box",
+        "size": [
+          0.16,
+          0.32,
+          0.18
+        ],
+        "translate": [
+          0,
+          -0.1,
+          0
+        ]
+      }
+    },
+    {
+      "id": "left",
+      "joint": "left",
+      "color": "#43766B",
+      "geometry": {
+        "op": "box",
+        "size": [
+          0.16,
+          0.26,
+          0.22
+        ]
+      }
+    },
+    {
+      "id": "right",
+      "joint": "right",
+      "color": "#43766B",
+      "geometry": {
+        "op": "box",
+        "size": [
+          0.16,
+          0.26,
+          0.22
+        ]
+      }
+    }
+  ],
+  "default_animation": "idle",
+  "animations": {
+    "idle": {
+      "duration": 1.5,
+      "tracks": {
+        "head": {
+          "translation": [
+            {
+              "time": 0,
+              "value": [
+                0,
+                0.36,
+                0
+              ]
+            },
+            {
+              "time": 0.75,
+              "value": [
+                0,
+                0.39,
+                0
+              ]
+            },
+            {
+              "time": 1.5,
+              "value": [
+                0,
+                0.36,
+                0
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "walk": {
+      "duration": 0.6,
+      "tracks": {
+        "left": {
+          "rotation": [
+            {
+              "time": 0,
+              "value": [
+                -0.22310636213174545,
+                0,
+                0,
+                0.9747941070689433
+              ]
+            },
+            {
+              "time": 0.3,
+              "value": [
+                0.22310636213174545,
+                0,
+                0,
+                0.9747941070689433
+              ]
+            },
+            {
+              "time": 0.6,
+              "value": [
+                -0.22310636213174545,
+                0,
+                0,
+                0.9747941070689433
+              ]
+            }
+          ]
+        },
+        "right": {
+          "rotation": [
+            {
+              "time": 0,
+              "value": [
+                0.22310636213174545,
+                0,
+                0,
+                0.9747941070689433
+              ]
+            },
+            {
+              "time": 0.3,
+              "value": [
+                -0.22310636213174545,
+                0,
+                0,
+                0.9747941070689433
+              ]
+            },
+            {
+              "time": 0.6,
+              "value": [
+                0.22310636213174545,
+                0,
+                0,
+                0.9747941070689433
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "attack": {
+      "duration": 0.45,
+      "loop": false,
+      "tracks": {
+        "arm": {
+          "rotation": [
+            {
+              "time": 0,
+              "value": [
+                0.0,
+                0,
+                0,
+                1.0
+              ]
+            },
+            {
+              "time": 0.15,
+              "value": [
+                -0.6816387600233341,
+                0,
+                0,
+                0.7316888688738209
+              ]
+            },
+            {
+              "time": 0.45,
+              "value": [
+                0.0,
+                0,
+                0,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "markers": [
+        {
+          "name": "strike",
+          "time": 0.15
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,403 @@
+{
+  "milestone": "physical-ios-adventure-smoke",
+  "date": "2026-09-20",
+  "release_qualified": false,
+  "human_feedback": {
+    "initial_phone_test_passed": true,
+    "quote": "yes it's working! movement and interact work. Music was good and the text is readable",
+    "verified": [
+      "movement",
+      "interaction",
+      "audible music and satisfactory level",
+      "readable text"
+    ],
+    "complete_gameplay_acceptance": false,
+    "finished_playing_confirmed": false
+  },
+  "environment": {
+    "device": "iPhone 17 Pro Max",
+    "ios": "26.6.2",
+    "mac": "Apple silicon",
+    "macos": "26.6.2",
+    "xcode": "27.0 (27A266a)",
+    "sdk": "iOS 27.0"
+  },
+  "artifact": {
+    "configuration": "debug",
+    "architecture": "arm64",
+    "bundle_id": "org.langmake.iospreview.gameadventure",
+    "signed_executable_sha256": "588918812511a3e0386b46e6ba31ebd718595b02fd90a0254f928b1a4403faee",
+    "packaged_revision": "fnv1a64-6312bf1e46d84c31",
+    "content_id": "780f17a3c41fe10a6ab419253e9c08edad4828162fd7afb75919b08d874dc18b",
+    "signature_verified": true,
+    "installed": true
+  },
+  "verification": {
+    "native_capture_count": 9,
+    "final_tick": 600,
+    "final_scene": "relay",
+    "final_won": true,
+    "renderer": "Metal",
+    "parity": {
+      "ok": true,
+      "comparison": "All headless snapshot fields, including entities, animation, camera and audio event history",
+      "absolute_tolerance": 0.0001,
+      "relative_tolerance": 1e-06,
+      "checks": [
+        {
+          "tick": 0,
+          "ok": true,
+          "mismatches": [],
+          "mismatch_count": 0,
+          "maximum_numeric_difference": 0.0
+        },
+        {
+          "tick": 150,
+          "ok": true,
+          "mismatches": [],
+          "mismatch_count": 0,
+          "maximum_numeric_difference": 4.76837158203125e-07
+        },
+        {
+          "tick": 333,
+          "ok": true,
+          "mismatches": [],
+          "mismatch_count": 0,
+          "maximum_numeric_difference": 0.0
+        },
+        {
+          "tick": 35,
+          "ok": true,
+          "mismatches": [],
+          "mismatch_count": 0,
+          "maximum_numeric_difference": 0.0
+        },
+        {
+          "tick": 36,
+          "ok": true,
+          "mismatches": [],
+          "mismatch_count": 0,
+          "maximum_numeric_difference": 0.0
+        },
+        {
+          "tick": 38,
+          "ok": true,
+          "mismatches": [],
+          "mismatch_count": 0,
+          "maximum_numeric_difference": 0.0
+        },
+        {
+          "tick": 393,
+          "ok": true,
+          "mismatches": [],
+          "mismatch_count": 0,
+          "maximum_numeric_difference": 2.9802322387695312e-08
+        },
+        {
+          "tick": 40,
+          "ok": true,
+          "mismatches": [],
+          "mismatch_count": 0,
+          "maximum_numeric_difference": 0.0
+        },
+        {
+          "tick": 600,
+          "ok": true,
+          "mismatches": [],
+          "mismatch_count": 0,
+          "maximum_numeric_difference": 0.0
+        }
+      ]
+    },
+    "audio_initialization": "ready",
+    "audio_backend": "Core Audio",
+    "audio_null": false,
+    "audible_output_verified": true,
+    "normal_player_handoff": {
+      "running": true,
+      "mode": "play",
+      "paused": false,
+      "fresh_session": "1789935397537785",
+      "scene": "orchard"
+    },
+    "launch_argument_regression": "Removed extra -- forwarded after the bundle identifier; frame and timeline captures now complete through the official wrapper.",
+    "host_tests": {
+      "windows": 49,
+      "mac": 49
+    }
+  },
+  "pending": [
+    "physical persistence and update verification",
+    "physical lifecycle/interruption checks",
+    "extended touch/interruption coverage",
+    "release configuration and final package verification",
+    "broader iOS device and game coverage"
+  ],
+  "known_sample_limits": [
+    "Desktop control hints remain in this sample HUD.",
+    "Generic Jump/Fire buttons are unused; combat uses attack.",
+    "Human confirmed readable text and working movement/interaction; full layout coverage remains unqualified."
+  ],
+  "files": [
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-01.stderr.txt",
+      "bytes": 137,
+      "sha256": "ada2d873ec511ecd89c9cb51e9609944fafe3bab0c6bb1e8ff801c7bfac3b0ef"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-02.stderr.txt",
+      "bytes": 624,
+      "sha256": "c86f3a307f279f76d6d02836d1d6ab2cc0e0c9a84671921a1db12d1426f7064c"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-03.stderr.txt",
+      "bytes": 512,
+      "sha256": "95ea75615c7c7db681baffd9c4b121ef9daddb0870212c964d7a2668b4a6eaf1"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-04.stderr.txt",
+      "bytes": 694,
+      "sha256": "6fa84a2933445e70686bb17c0876f3e04f88d1550f78c7f22beb35adf08efbde"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-05.stderr.txt",
+      "bytes": 704,
+      "sha256": "e9b93614b235a6f2e6725e1839d2913dfada34a937eadb386e801bbc73fd13e3"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-06.stderr.txt",
+      "bytes": 691,
+      "sha256": "fd974f4aaaaa084bfa37dc8883047e316fe2beb9f6d59a29c36c8426399a2c38"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-07.stderr.txt",
+      "bytes": 633,
+      "sha256": "97a7eec2aa43efcf19862fc8afdbed7f5bedd076019085c8603d235bb6a0371e"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-08.stderr.txt",
+      "bytes": 711,
+      "sha256": "194b38de93ba4cf5090e2d4e7cca311b2453214cfee6a2c2433621eaa9f9473b"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-09.stderr.txt",
+      "bytes": 721,
+      "sha256": "6f02e39d9c12c8ee66cc818e8bf81129cf56827eeb6e61fe87cc8e4e8e208848"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-10.stderr.txt",
+      "bytes": 713,
+      "sha256": "de5f99d58467652e80fff2f393563b192d7d5e09f02ec20a6b737306c03c8a21"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-11.stderr.txt",
+      "bytes": 723,
+      "sha256": "b815c7d77ac6e4106a8e79fc58ce711189351f8abce5db0b1f371719a8acdb1b"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-12.stderr.txt",
+      "bytes": 713,
+      "sha256": "29a6c3744882a634ace851e3f09c715f7250ae69b032cdce891165718420e505"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-13.stderr.txt",
+      "bytes": 723,
+      "sha256": "a6e7d2b910861784e54d89ed7422aca3f1e939b2555fe69f3d1c792c593361bb"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-14.stderr.txt",
+      "bytes": 713,
+      "sha256": "9319512cf0422388a47f078c26816073903f14f1b24e22ec329b4d3bd204e581"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-15.stderr.txt",
+      "bytes": 723,
+      "sha256": "d3c850cefb688171895f72c5a297db3e72c03b6d5cee9fa7fef98a34b296aa14"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-16.stderr.txt",
+      "bytes": 713,
+      "sha256": "719433f7b9d365f75e67ea2ba4661f938cca9db9d488842e6d0d57fce9194ab2"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-17.stderr.txt",
+      "bytes": 723,
+      "sha256": "d4cd56dca5f821519694449b14550568c27d5fbefe7f173be93e4173c9bd5904"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-18.stderr.txt",
+      "bytes": 715,
+      "sha256": "32e84d7cdc16e98fe891efb85ff4643b1195f85662a70147f145372ab8226ca5"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-19.stderr.txt",
+      "bytes": 725,
+      "sha256": "d8c01bb939404ee3a8304bdfe34dbd1867269138bceff80abb4ae5e6d1f528ec"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-20.stderr.txt",
+      "bytes": 715,
+      "sha256": "bc614f785c3754a7a183a73d963686eb59a5c2d962ffda156947619dfecb645e"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-21.stderr.txt",
+      "bytes": 725,
+      "sha256": "c298de0b319b7864395fc6dea277d4dcc222c4405b21ffaa6f98c1fb21c8eb64"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-22.stderr.txt",
+      "bytes": 715,
+      "sha256": "c6a0aaea3390acb6cd0f557d295edb968b4d565aa1060b13a4cf6868aa2c7e8c"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-23.stderr.txt",
+      "bytes": 725,
+      "sha256": "9ab448c293aaa5517c08e5b42cd4fca12e66cb3413ff9c641ca37439310b4061"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-24.stderr.txt",
+      "bytes": 715,
+      "sha256": "70bccafebef46027ea1b8c99a539d20a1f17b3f5c6b95f6d5b5561b0efd2862d"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/command-25.stderr.txt",
+      "bytes": 725,
+      "sha256": "224733a125682ca3eab66f5a52ab8c7ba0c5cee45ea7de613b643d87ad76a71a"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/commands.jsonl",
+      "bytes": 20436,
+      "sha256": "3f7ee7a4277175c89337896ec08cd7211ed38ab0eb456512328f186d5764dbeb"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/headless-parity.json",
+      "bytes": 1579,
+      "sha256": "79297864862f18b5993963231071e5334a053b0dd8ea88012c3a757f02ce292a"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/initial-launch-result.json",
+      "bytes": 15660,
+      "sha256": "3ba1f17b56b5500b298c2cba5316abfeb54c85bcec73726cab49eae4b7ea2ecf"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/initialization.png",
+      "bytes": 91771,
+      "sha256": "68b70030db16c056aef3f209e08b3c67fd55fffd865a358ead6d38e59fee1643"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/initialization.png.json",
+      "bytes": 9151,
+      "sha256": "e2373e3304a7a8aad6962d56675c46308d5b49e7485b075700ddd60535375db8"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/input.json",
+      "bytes": 1136,
+      "sha256": "daccf5a2a825f4ac5edb8c15f22e7d9d46693cdf522b5ef22a3f2952469e58d3"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/launch-result.json",
+      "bytes": 18254,
+      "sha256": "1aa96874ed8c636771fdbf3593a67779c9bd037d65b373926169d5fb20c2b5b8"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/result-polls.jsonl",
+      "bytes": 3781,
+      "sha256": "1b45e47a04c2ff7a4a23ec913d032342fafa297c8df22322db7063b3b2c1f2eb"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-0.png",
+      "bytes": 51145,
+      "sha256": "47d36472c5b55b8cf9865330da1be92c4c04c7d3f3adb9dcb9f95a256ba1a18d"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-0.png.json",
+      "bytes": 8836,
+      "sha256": "930999c51219704561c71219bbd987449b80cc9759c0a7d35a22fb3542f101d4"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-150.png",
+      "bytes": 54187,
+      "sha256": "159373114c614147c117e39224315772ba09a17ea3481b3ab4b358845a0c37c3"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-150.png.json",
+      "bytes": 9272,
+      "sha256": "0ca46daa674a428e5e735e697d8a5d812c371b09ac3e1dd89ba4a88b9b161994"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-333.png",
+      "bytes": 45858,
+      "sha256": "10e9d1467c0bb16bfb2e9969917dbd7dc88947daaff7f7b7219f22532fe4a467"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-333.png.json",
+      "bytes": 8826,
+      "sha256": "7bd2cb0f360c7cba58f86584bce5ad3fed4f32267c48ab21c9bb0ff41e802431"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-35.png",
+      "bytes": 58888,
+      "sha256": "6e102ba840647bc93d86ff47ca85c24b206c2c8c7da5d43b136a48850bc5868e"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-35.png.json",
+      "bytes": 9292,
+      "sha256": "9475cc953841d2d47e1d44d31f65a1301451985159093c44d87d5a27212b0a1a"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-36.png",
+      "bytes": 58658,
+      "sha256": "191fc95bb995a0b4270d5559120c029d5db18427c322db0759c30b5eff664962"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-36.png.json",
+      "bytes": 9296,
+      "sha256": "de76eb6a7bf19c149418ae217fd443be82d02f769030c08af977b13731434bfa"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-38.png",
+      "bytes": 72577,
+      "sha256": "06b5ca364b01abdbc87ab99010438bd529706cf0b441c0c5da465bfb4feeeead"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-38.png.json",
+      "bytes": 9593,
+      "sha256": "51e8daa4756ee619c57f08f128da8601efd57d2781f57d78c747e8f9b8720ab3"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-393.png",
+      "bytes": 51899,
+      "sha256": "eaa7c574c4984c32723a33dc7f51fb58b07e2bb2d71446f104555951e79f5bd9"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-393.png.json",
+      "bytes": 9625,
+      "sha256": "271a984409fe4cdb1cccc35c434ffed7c4b8bc605ff1524d10e798ac2eaab1d7"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-40.png",
+      "bytes": 73814,
+      "sha256": "49f8c03769617c1a5ac0f75b5a2813261f25202a3914333d1e3fd93aead8ee4d"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-40.png.json",
+      "bytes": 9758,
+      "sha256": "48dbaee794005ff587f4be0632781071dfcd029d622d8524af187000b65e4ecc"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-600.png",
+      "bytes": 52281,
+      "sha256": "bed4d4ce4ed4537357865b2a2548ce379370f6289742c321ff758f066d5870d5"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/tick-600.png.json",
+      "bytes": 9647,
+      "sha256": "b4587f2f6434687c49312e8e3281f98c98e29d64d9c090f45812b65d82d97b61"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/physical-adventure-captures-20260920-b/verification-report.json",
+      "bytes": 13931,
+      "sha256": "0404ace9c12137c65cf647536de37ba6e07068700834c56923b8575e2251aafa"
+    }
+  ]
+}

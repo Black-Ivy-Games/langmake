@@ -1,0 +1,5 @@
+<rml><head><title>Langmake gameplay reference</title><link type="text/rcss" href="hud.rcss"/></head><body>
+<div class="panel"><h1 id="title">Reference game</h1><p id="objective">Explore</p><p id="inventory">Inventory</p><p id="health">Health</p><progress id="healthbar" value="10" max="10"/><p id="status">Ready</p></div>
+<div class="panel" id="dialogue-panel"><p id="speaker"></p><p id="dialogue-line"></p><button id="choice1">Continue</button><button id="choice2">Ask</button></div>
+<div id="controls"></div>
+</body></rml>

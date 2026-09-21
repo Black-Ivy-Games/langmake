@@ -1,0 +1,4 @@
+# Keep source and Unix/Mac scripts portable across Windows and macOS checkouts.
+* text=auto eol=lf
+*.cmd text eol=crlf
+*.bat text eol=crlf

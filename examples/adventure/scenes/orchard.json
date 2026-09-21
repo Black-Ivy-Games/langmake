@@ -1,0 +1,154 @@
+{
+  "entities": [
+    {
+      "id": "ground",
+      "position": [
+        0,
+        -0.5,
+        0
+      ],
+      "size": [
+        22,
+        1,
+        14
+      ],
+      "body": "static",
+      "role": "decoration",
+      "color": [
+        0.12,
+        0.22,
+        0.2,
+        1
+      ]
+    },
+    {
+      "id": "player",
+      "position": [
+        -5,
+        1,
+        0
+      ],
+      "size": [
+        0.7,
+        1.8,
+        0.7
+      ],
+      "body": "dynamic",
+      "role": "player",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "shape": "capsule",
+      "controller": "character",
+      "asset": "robot",
+      "animation": "idle",
+      "visual_scale": [
+        1.8,
+        1,
+        1.8
+      ]
+    },
+    {
+      "id": "ada",
+      "position": [
+        -3,
+        0.9,
+        1.5
+      ],
+      "size": [
+        0.7,
+        1.8,
+        0.7
+      ],
+      "body": "none",
+      "role": "decoration",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "asset": "robot",
+      "animation": "idle",
+      "visual_scale": [
+        1.8,
+        1,
+        1.8
+      ]
+    },
+    {
+      "id": "coil",
+      "position": [
+        0,
+        0.55,
+        0
+      ],
+      "size": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "body": "none",
+      "role": "decoration",
+      "color": [
+        1,
+        0.7,
+        0.22,
+        1
+      ],
+      "shape": "sphere"
+    },
+    {
+      "id": "sentinel",
+      "position": [
+        2.4,
+        0.9,
+        0
+      ],
+      "size": [
+        0.8,
+        1.8,
+        0.8
+      ],
+      "body": "static",
+      "role": "enemy",
+      "color": [
+        0.9,
+        0.4,
+        0.32,
+        1
+      ],
+      "asset": "robot",
+      "animation": "idle",
+      "visual_scale": [
+        1.7,
+        1,
+        1.7
+      ]
+    },
+    {
+      "id": "gate",
+      "position": [
+        6,
+        1,
+        0
+      ],
+      "size": [
+        1,
+        2,
+        1
+      ],
+      "body": "none",
+      "role": "decoration",
+      "color": [
+        0.32,
+        0.5,
+        0.78,
+        1
+      ]
+    }
+  ]
+}

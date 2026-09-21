@@ -1,0 +1,56 @@
+{
+  "hello": {
+    "speaker": "Keeper Ada",
+    "text": "The orchard stopped singing. Will you bring its signal back?",
+    "choices": [
+      {
+        "text": "1 / E: I will help.",
+        "flag": "accepted",
+        "value": true,
+        "next": "mission",
+        "reward_id": "ada_tuner",
+        "rewards": {
+          "tuner": 1
+        }
+      },
+      {
+        "text": "2: What happened?",
+        "next": "history"
+      }
+    ]
+  },
+  "history": {
+    "speaker": "Keeper Ada",
+    "text": "Our sentinel mistook the repair crew for a storm. It only needs a gentle shutdown.",
+    "choices": [
+      {
+        "text": "1 / E: I can do that.",
+        "flag": "accepted",
+        "value": true,
+        "next": "mission",
+        "reward_id": "ada_tuner",
+        "rewards": {
+          "tuner": 1
+        }
+      }
+    ]
+  },
+  "mission": {
+    "speaker": "Keeper Ada",
+    "text": "Take my signal tuner. Collect the amber coil ahead, quiet the sentinel with three strikes, then use the relay door.",
+    "choices": [
+      {
+        "text": "1 / E: Understood."
+      }
+    ]
+  },
+  "thanks": {
+    "speaker": "Keeper Ada",
+    "text": "There it is: the orchard song. What should we build here next?",
+    "choices": [
+      {
+        "text": "1 / E: Let me explore."
+      }
+    ]
+  }
+}

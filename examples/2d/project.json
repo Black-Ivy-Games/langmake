@@ -1,0 +1,976 @@
+{
+  "schema_version": 1,
+  "dimension": "2d",
+  "title": "Skyway — Sun Spark Courier",
+  "gravity": [
+    0,
+    -20,
+    0
+  ],
+  "camera": {
+    "position": [
+      1,
+      3.5,
+      30
+    ],
+    "target": [
+      1,
+      3.5,
+      0
+    ]
+  },
+  "script": "scripts/game.luau",
+  "entities": [
+    {
+      "id": "player",
+      "name": "Courier",
+      "shape": "box",
+      "body": "dynamic",
+      "role": "player",
+      "position": [
+        -12,
+        1.2,
+        0
+      ],
+      "size": [
+        0.8,
+        1.2,
+        0.8
+      ],
+      "color": [
+        0.94,
+        0.97,
+        1,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "launch_pad",
+      "name": "launch pad",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        -10.5,
+        -0.7,
+        0
+      ],
+      "size": [
+        7,
+        1.4,
+        1.2
+      ],
+      "color": [
+        0.17,
+        0.32,
+        0.43,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "island_one",
+      "name": "island one",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        -4,
+        0.1,
+        0
+      ],
+      "size": [
+        6,
+        2.2,
+        1.2
+      ],
+      "color": [
+        0.18,
+        0.4,
+        0.46,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "island_two",
+      "name": "island two",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        2.5,
+        0.65,
+        0
+      ],
+      "size": [
+        5,
+        3.7,
+        1.2
+      ],
+      "color": [
+        0.2,
+        0.46,
+        0.48,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "island_three",
+      "name": "island three",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        8,
+        1.1,
+        0
+      ],
+      "size": [
+        4,
+        4.6,
+        1.2
+      ],
+      "color": [
+        0.24,
+        0.51,
+        0.49,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "landing_pad",
+      "name": "landing pad",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        14,
+        -0.7,
+        0
+      ],
+      "size": [
+        6,
+        1.4,
+        1.2
+      ],
+      "color": [
+        0.17,
+        0.32,
+        0.43,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "launch_trim",
+      "name": "launch trim",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -10.5,
+        0.06,
+        0.02
+      ],
+      "size": [
+        7,
+        0.12,
+        1.24
+      ],
+      "color": [
+        0.37,
+        0.88,
+        0.76,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "island_one_trim",
+      "name": "island one trim",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -4,
+        1.26,
+        0.02
+      ],
+      "size": [
+        6,
+        0.12,
+        1.24
+      ],
+      "color": [
+        0.45,
+        0.92,
+        0.69,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "island_two_trim",
+      "name": "island two trim",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        2.5,
+        2.56,
+        0.02
+      ],
+      "size": [
+        5,
+        0.12,
+        1.24
+      ],
+      "color": [
+        0.53,
+        0.96,
+        0.66,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "island_three_trim",
+      "name": "island three trim",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        8,
+        3.46,
+        0.02
+      ],
+      "size": [
+        4,
+        0.12,
+        1.24
+      ],
+      "color": [
+        0.63,
+        0.97,
+        0.65,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "landing_trim",
+      "name": "landing trim",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        14,
+        0.06,
+        0.02
+      ],
+      "size": [
+        6,
+        0.12,
+        1.24
+      ],
+      "color": [
+        0.37,
+        0.88,
+        0.76,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "lava",
+      "name": "lava",
+      "shape": "box",
+      "body": "none",
+      "role": "hazard",
+      "position": [
+        1,
+        -3.4,
+        0
+      ],
+      "size": [
+        35,
+        0.45,
+        0.8
+      ],
+      "color": [
+        0.96,
+        0.27,
+        0.23,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "beacon",
+      "name": "Home beacon",
+      "shape": "box",
+      "body": "none",
+      "role": "goal",
+      "position": [
+        15,
+        1.45,
+        0
+      ],
+      "size": [
+        0.55,
+        2.6,
+        0.7
+      ],
+      "color": [
+        0.2,
+        0.7,
+        0.85,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "beacon_base",
+      "name": "beacon base",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        15,
+        0.25,
+        0
+      ],
+      "size": [
+        1.4,
+        0.5,
+        1.1
+      ],
+      "color": [
+        0.31,
+        0.56,
+        0.63,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "beacon_cap",
+      "name": "beacon cap",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        15,
+        2.8,
+        0
+      ],
+      "size": [
+        1,
+        0.3,
+        0.8
+      ],
+      "color": [
+        0.65,
+        1,
+        0.97,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "sun",
+      "name": "sun",
+      "shape": "sphere",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -10,
+        7.5,
+        -1
+      ],
+      "size": [
+        2.2,
+        2.2,
+        0.4
+      ],
+      "color": [
+        1,
+        0.77,
+        0.35,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "cloud_west",
+      "name": "cloud west",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -5,
+        7.1,
+        -1.3
+      ],
+      "size": [
+        3.4,
+        0.32,
+        0.4
+      ],
+      "color": [
+        0.27,
+        0.38,
+        0.54,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "cloud_east",
+      "name": "cloud east",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        9,
+        7.4,
+        -1.3
+      ],
+      "size": [
+        5.2,
+        0.32,
+        0.4
+      ],
+      "color": [
+        0.27,
+        0.38,
+        0.54,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "orb_1",
+      "name": "Sun spark 1",
+      "shape": "sphere",
+      "body": "none",
+      "role": "collectible",
+      "position": [
+        -9,
+        1.6,
+        0
+      ],
+      "size": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "color": [
+        1,
+        0.8,
+        0.29,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "orb_2",
+      "name": "Sun spark 2",
+      "shape": "sphere",
+      "body": "none",
+      "role": "collectible",
+      "position": [
+        -4,
+        2.7,
+        0
+      ],
+      "size": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "color": [
+        1,
+        0.8,
+        0.29,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "orb_3",
+      "name": "Sun spark 3",
+      "shape": "sphere",
+      "body": "none",
+      "role": "collectible",
+      "position": [
+        2.5,
+        4,
+        0
+      ],
+      "size": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "color": [
+        1,
+        0.8,
+        0.29,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "orb_4",
+      "name": "Sun spark 4",
+      "shape": "sphere",
+      "body": "none",
+      "role": "collectible",
+      "position": [
+        8,
+        4.9,
+        0
+      ],
+      "size": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "color": [
+        1,
+        0.8,
+        0.29,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "orb_5",
+      "name": "Sun spark 5",
+      "shape": "sphere",
+      "body": "none",
+      "role": "collectible",
+      "position": [
+        12.5,
+        1.6,
+        0
+      ],
+      "size": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "color": [
+        1,
+        0.8,
+        0.29,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "underlight_0",
+      "name": "underlight 0",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -12,
+        -3.1,
+        -0.1
+      ],
+      "size": [
+        0.5,
+        0.08,
+        0.5
+      ],
+      "color": [
+        1,
+        0.48,
+        0.24,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "underlight_1",
+      "name": "underlight 1",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -10,
+        -3.1,
+        -0.1
+      ],
+      "size": [
+        0.5,
+        0.08,
+        0.5
+      ],
+      "color": [
+        1,
+        0.48,
+        0.24,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "underlight_2",
+      "name": "underlight 2",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -8,
+        -3.1,
+        -0.1
+      ],
+      "size": [
+        0.5,
+        0.08,
+        0.5
+      ],
+      "color": [
+        1,
+        0.48,
+        0.24,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "underlight_3",
+      "name": "underlight 3",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -6,
+        -3.1,
+        -0.1
+      ],
+      "size": [
+        0.5,
+        0.08,
+        0.5
+      ],
+      "color": [
+        1,
+        0.48,
+        0.24,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "underlight_4",
+      "name": "underlight 4",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -4,
+        -3.1,
+        -0.1
+      ],
+      "size": [
+        0.5,
+        0.08,
+        0.5
+      ],
+      "color": [
+        1,
+        0.48,
+        0.24,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "underlight_5",
+      "name": "underlight 5",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -2,
+        -3.1,
+        -0.1
+      ],
+      "size": [
+        0.5,
+        0.08,
+        0.5
+      ],
+      "color": [
+        1,
+        0.48,
+        0.24,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "underlight_6",
+      "name": "underlight 6",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        0,
+        -3.1,
+        -0.1
+      ],
+      "size": [
+        0.5,
+        0.08,
+        0.5
+      ],
+      "color": [
+        1,
+        0.48,
+        0.24,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "underlight_7",
+      "name": "underlight 7",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        2,
+        -3.1,
+        -0.1
+      ],
+      "size": [
+        0.5,
+        0.08,
+        0.5
+      ],
+      "color": [
+        1,
+        0.48,
+        0.24,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "underlight_8",
+      "name": "underlight 8",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        4,
+        -3.1,
+        -0.1
+      ],
+      "size": [
+        0.5,
+        0.08,
+        0.5
+      ],
+      "color": [
+        1,
+        0.48,
+        0.24,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "underlight_9",
+      "name": "underlight 9",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        6,
+        -3.1,
+        -0.1
+      ],
+      "size": [
+        0.5,
+        0.08,
+        0.5
+      ],
+      "color": [
+        1,
+        0.48,
+        0.24,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "underlight_10",
+      "name": "underlight 10",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        8,
+        -3.1,
+        -0.1
+      ],
+      "size": [
+        0.5,
+        0.08,
+        0.5
+      ],
+      "color": [
+        1,
+        0.48,
+        0.24,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "underlight_11",
+      "name": "underlight 11",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        10,
+        -3.1,
+        -0.1
+      ],
+      "size": [
+        0.5,
+        0.08,
+        0.5
+      ],
+      "color": [
+        1,
+        0.48,
+        0.24,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "underlight_12",
+      "name": "underlight 12",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        12,
+        -3.1,
+        -0.1
+      ],
+      "size": [
+        0.5,
+        0.08,
+        0.5
+      ],
+      "color": [
+        1,
+        0.48,
+        0.24,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "underlight_13",
+      "name": "underlight 13",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        14,
+        -3.1,
+        -0.1
+      ],
+      "size": [
+        0.5,
+        0.08,
+        0.5
+      ],
+      "color": [
+        1,
+        0.48,
+        0.24,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "underlight_14",
+      "name": "underlight 14",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        16,
+        -3.1,
+        -0.1
+      ],
+      "size": [
+        0.5,
+        0.08,
+        0.5
+      ],
+      "color": [
+        1,
+        0.48,
+        0.24,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    }
+  ]
+}
+

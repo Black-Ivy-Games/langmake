@@ -1,0 +1,263 @@
+{
+  "format_version": 1,
+  "version": "0.4.1",
+  "date": "2026-09-19",
+  "status": "technically verified; ready for human playtesting",
+  "phone": {
+    "model": "Samsung SM-A146U",
+    "os": "Android 15",
+    "api": 35,
+    "abi": "arm64-v8a",
+    "soc": "MediaTek MT6833",
+    "physical_pixels": [
+      1080,
+      2408
+    ],
+    "density_dpi": 450,
+    "os_page_bytes": 4096
+  },
+  "emulator": {
+    "api": 36,
+    "abi": "x86_64",
+    "renderer": "GLES 3 / Google SwiftShader"
+  },
+  "checks": {
+    "phone-probe2d-final": {
+      "ok": true,
+      "checks": 12,
+      "local_report": ".cache/android-qualification/phone-probe2d-final/report.json",
+      "report_sha256": "25b6c27cfb8a5d6568ecad1626dd6a91c4b80374af58e70c08e086093759fd24"
+    },
+    "phone-probe3d-final": {
+      "ok": true,
+      "checks": 12,
+      "local_report": ".cache/android-qualification/phone-probe3d-final/report.json",
+      "report_sha256": "1d0b8023e7e9e3dd0cd4a7728c9a6fda3e4d3358c93fafb4bc0f0f35eba94726"
+    },
+    "emulator-probe2d-final": {
+      "ok": true,
+      "checks": 12,
+      "local_report": ".cache/android-qualification/emulator-probe2d-final/report.json",
+      "report_sha256": "4e112b333a90c5d194db042d167aea56be941d212c355476e6b334637ad1d410"
+    },
+    "emulator-probe3d-final": {
+      "ok": true,
+      "checks": 12,
+      "local_report": ".cache/android-qualification/emulator-probe3d-final/report.json",
+      "report_sha256": "d0b07bff6eb64c98b8704936bfb3d9e5bc60ced167ce43498560ca96b79c6490"
+    },
+    "emulator-budget-final": {
+      "ok": true,
+      "checks": 2,
+      "local_report": ".cache/android-qualification/emulator-budget-final/report.json",
+      "report_sha256": "b19c9ccc6ec42620eb9af9057b7941cdccc8571dcd024d1914ea525a45025dfb"
+    },
+    "phone-probe2d-timeline-final": {
+      "ok": true,
+      "checks": 15,
+      "local_report": ".cache/android-qualification/phone-probe2d-timeline-final/report.json",
+      "report_sha256": "851d218d4257b3e301a85292a5269766b7c86b1b572b481e61029e55afb276a5"
+    },
+    "phone-probe3d-timeline-final": {
+      "ok": true,
+      "checks": 15,
+      "local_report": ".cache/android-qualification/phone-probe3d-timeline-final/report.json",
+      "report_sha256": "5bb2396f662676d246e1dba42aa7e10ae62d0801cf7a187bedd84e363a9286fc"
+    },
+    "phone-update-final": {
+      "ok": true,
+      "checks": 3,
+      "local_report": ".cache/android-qualification/phone-update-final/report.json",
+      "report_sha256": "0f3120257393c41fecbaf385d0da0d7c42c98cd92804a9f1b137e67ecefe3c90"
+    },
+    "phone-release-final": {
+      "ok": true,
+      "checks": 2,
+      "local_report": ".cache/android-qualification/phone-release-final/report.json",
+      "report_sha256": "e3bf2b9f74fe52f372a22c01630a59b3be467e716e0e9ef1b3dbe81b78890b12"
+    },
+    "portable-export": {
+      "ok": true,
+      "checks": 16,
+      "local_report": ".cache/android-qualification/portable-export/report.json",
+      "report_sha256": "8b784452285c841b0a03716e24022b7d950bef445ad9e3a7511f15ed63893080"
+    },
+    "phone-starters": {
+      "ok": true,
+      "cases": {
+        "2d": {
+          "ok": true,
+          "checks": 7
+        },
+        "3d": {
+          "ok": true,
+          "checks": 7
+        },
+        "rockets-2d": {
+          "ok": true,
+          "checks": 7
+        },
+        "rockets-3d": {
+          "ok": true,
+          "checks": 7
+        },
+        "adventure": {
+          "ok": true,
+          "checks": 10
+        },
+        "strategy": {
+          "ok": true,
+          "checks": 7
+        },
+        "shared-2d": {
+          "ok": true,
+          "checks": 7
+        },
+        "imported-model": {
+          "ok": true,
+          "checks": 8
+        }
+      },
+      "source_sha256": "8f96ee724731a7c196b945a1713c647081ee191bc03721a63a5a7e4de74a9e9c",
+      "packaged_sha256": "e4cf9df5e6d0e8c8da7e77bc05db8c49bafa832b6c5c271e4a478463a8a688cd"
+    }
+  },
+  "strategy_performance": {
+    "duration_seconds": 181.579,
+    "samples": 34,
+    "workers": 128,
+    "max_navigation_agents": 128,
+    "observations": {
+      "simulation_ms": {
+        "min": 4.359308,
+        "max": 17.423461,
+        "mean": 7.062212588235294,
+        "first": 4.359308,
+        "last": 6.737923
+      },
+      "frame_p95_ms": {
+        "min": 14.254769325256348,
+        "max": 15.366460800170898,
+        "mean": 14.642814636230469,
+        "first": 15.366460800170898,
+        "last": 14.580923080444336
+      },
+      "pss_kib": {
+        "min": 180825,
+        "max": 193411,
+        "mean": 187822.5,
+        "first": 187882,
+        "last": 183253
+      }
+    },
+    "note": "Sampled measurements, not a guarantee of every tick or sustained thermal performance"
+  },
+  "native_players": {
+    "format_version": 1,
+    "engine_version": "0.4.1",
+    "note": "Build inventory; device qualification is recorded separately in ANDROID-QUALIFICATION.md.",
+    "files": [
+      {
+        "path": "arm64-v8a/debug/libmain.so",
+        "bytes": 19363824,
+        "sha256": "e4cf9df5e6d0e8c8da7e77bc05db8c49bafa832b6c5c271e4a478463a8a688cd"
+      },
+      {
+        "path": "arm64-v8a/debug/player.json",
+        "bytes": 440,
+        "sha256": "56a1ab310a15c17ff5acf53851439e1a46628762ad49dcaa30ffa46f8b5b8c6e"
+      },
+      {
+        "path": "arm64-v8a/release/libmain.so",
+        "bytes": 19364272,
+        "sha256": "2c656c4ed0035bc8e8c7222fe0802cc774d81f59ccd0b24fc530290035163359"
+      },
+      {
+        "path": "arm64-v8a/release/player.json",
+        "bytes": 443,
+        "sha256": "b985f3681edd6cbc4c9d7619985e420a12d93e25934fb67ceb9d54f1bbf5cb83"
+      },
+      {
+        "path": "runtime/fonts/LatoLatin-Regular.ttf",
+        "bytes": 148540,
+        "sha256": "d785334ac4e7810f571def986bbad41161f68ac385db8813f798bf04d71478e1"
+      },
+      {
+        "path": "runtime/shaders/fs_cubes.bin",
+        "bytes": 199,
+        "sha256": "b2d1a77cca84ccf831cfcbdb346998f76c17abe8726e4e36a0e4d4e6e1ae6bef"
+      },
+      {
+        "path": "runtime/shaders/vs_cubes.bin",
+        "bytes": 286,
+        "sha256": "7a38cd866d3e6f637ec2a2f27268285d33de7777ff7898eef18a3caf1c36927c"
+      },
+      {
+        "path": "x86_64/debug/libmain.so",
+        "bytes": 20714040,
+        "sha256": "b0caffe6b9d452fbccda073c8d817d715cf97d5e8b27450fa91474f9da489d51"
+      },
+      {
+        "path": "x86_64/debug/player.json",
+        "bytes": 437,
+        "sha256": "19743aa9b8f6b396c7781beb4233be4deea97fdc83606c03c71cbbda9253112d"
+      },
+      {
+        "path": "x86_64/release/libmain.so",
+        "bytes": 20714664,
+        "sha256": "c14549407b252858d8389324a9fa9f777319161df4b876b32f70f5b342546134"
+      },
+      {
+        "path": "x86_64/release/player.json",
+        "bytes": 440,
+        "sha256": "8c5d8375b1794e141ab5c008a4b9e75aa4aae4c8f6f93fec3d22c7f9d6d8873e"
+      }
+    ]
+  },
+  "windows": {
+    "version": "0.4.1",
+    "tested_executable_sha256": "73d34460ead0bef14046ad1b6b6607d3ee0f0616a5fae329b5c716b7de67ed40",
+    "canonical_executable_sha256": "d6052c3162e9e937e334eafb8df1d0371a84817f9e22c15c2b8e864b88e50993",
+    "native_tests": 11,
+    "full_regressions_passed": true,
+    "regression_log_sha256": "b584ae119ab1b13a87af5e66ab7e935dc429dcd1e122552042caea503a2c3c5a",
+    "portable_checks": 14
+  },
+  "studio": {
+    "core_tests": 21,
+    "packaged_ui_passed": true,
+    "provider": "Explicit fake local service for UI verification; no live account-generation claim"
+  },
+  "portable_export": {
+    "verified_before_final_documentation_refresh": true,
+    "tested_archive_sha256": "d9b44eab8e551e2594b3792fe4543f82f75a071e08ecf5a026d2f34294ad4211",
+    "no_engine_sources_or_native_compiler": true,
+    "setup": {
+      "method": "Full file copies of previously verified workspace-local tools; no fresh downloads claimed.",
+      "copied": [
+        "jdk",
+        "gradle",
+        "sdk/platforms/android-36",
+        "sdk/build-tools/36.0.0",
+        "sdk/platform-tools",
+        "sdk/licenses"
+      ],
+      "licenses": "Previously explicitly accepted; receipt and SDK license files copied.",
+      "cache_reuse": "Copied immutable Maven artifact files only; mutable caches, locks and signing keys are not shared.",
+      "resumed_after": "Case-sensitive copied environment lookup fixed before first export."
+    }
+  },
+  "human_feedback": {
+    "controls_worked": true,
+    "music_audible": true,
+    "probe_music_quiet": true,
+    "creative_acceptance": false
+  },
+  "limits": [
+    "API26 is a build baseline; actual API35 phone and API36 emulator tested",
+    "No actual 16KiB-page device was available",
+    "No exhaustive Bluetooth/controller, multi-touch, call/audio-focus or thermal qualification",
+    "Game saves preserve declared state, not arbitrary Luau locals",
+    "Test release artifacts use development certificates; no store publishing"
+  ]
+}

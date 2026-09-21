@@ -1,0 +1,31 @@
+{
+  "events": [
+    {
+      "from": 0,
+      "to": 80,
+      "fire": true
+    },
+    {
+      "from": 80,
+      "to": 149,
+      "move_x": -1,
+      "fire": true
+    },
+    {
+      "from": 149,
+      "to": 229,
+      "fire": true
+    },
+    {
+      "from": 229,
+      "to": 366,
+      "move_x": 1,
+      "fire": true
+    },
+    {
+      "from": 366,
+      "to": 480,
+      "fire": true
+    }
+  ]
+}

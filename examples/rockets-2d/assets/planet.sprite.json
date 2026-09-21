@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "description": "Original small ocean planet with coral orbital ring.",
+  "width": 48,
+  "height": 48,
+  "palette": {
+    ".": "#00000000",
+    "O": "#14243FFF",
+    "D": "#405F80FF",
+    "S": "#86ABC2FF",
+    "W": "#E4F5F3FF",
+    "H": "#FFFFFFFF",
+    "R": "#F76467FF",
+    "r": "#B5385EFF",
+    "B": "#25BDD4FF",
+    "b": "#137693FF",
+    "Y": "#FFD279FF",
+    "F": "#FF8459FF",
+    "P": "#9675DDFF",
+    "G": "#ACED78FF",
+    "g": "#56B87AFF",
+    "E": "#18253BFF"
+  },
+  "frames": [
+    {
+      "id": "ocean",
+      "draw": [
+        {
+          "op": "line",
+          "x1": 3,
+          "y1": 35,
+          "x2": 44,
+          "y2": 13,
+          "thickness": 5,
+          "color": "r"
+        },
+        {
+          "op": "circle",
+          "cx": 24,
+          "cy": 24,
+          "radius": 18,
+          "color": "O"
+        },
+        {
+          "op": "circle",
+          "cx": 24,
+          "cy": 24,
+          "radius": 16,
+          "color": "b"
+        },
+        {
+          "op": "circle",
+          "cx": 21,
+          "cy": 21,
+          "radius": 13,
+          "color": "B"
+        },
+        {
+          "op": "circle",
+          "cx": 17,
+          "cy": 17,
+          "radius": 6,
+          "color": "g"
+        },
+        {
+          "op": "rect",
+          "x": 16,
+          "y": 20,
+          "width": 5,
+          "height": 9,
+          "color": "G"
+        },
+        {
+          "op": "circle",
+          "cx": 28,
+          "cy": 28,
+          "radius": 5,
+          "color": "g"
+        },
+        {
+          "op": "line",
+          "x1": 5,
+          "y1": 37,
+          "x2": 37,
+          "y2": 20,
+          "thickness": 3,
+          "color": "R"
+        },
+        {
+          "op": "line",
+          "x1": 8,
+          "y1": 35,
+          "x2": 34,
+          "y2": 21,
+          "thickness": 1,
+          "color": "Y"
+        },
+        {
+          "op": "circle",
+          "cx": 17,
+          "cy": 11,
+          "radius": 2,
+          "color": "W"
+        }
+      ]
+    }
+  ]
+}

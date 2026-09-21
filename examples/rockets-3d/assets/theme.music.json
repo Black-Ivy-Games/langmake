@@ -1,0 +1,490 @@
+{
+  "schema_version": 1,
+  "type": "music",
+  "title": "Starlane Overdrive \u2014 original Langmake chiptune",
+  "bpm": 144,
+  "ppq": 96,
+  "length": 1536,
+  "gain": 0.75,
+  "seed": 731,
+  "polyphony": 32,
+  "instruments": {
+    "bass": {
+      "wave": "saw",
+      "gain": 0.19,
+      "pan": 0,
+      "attack": 0.003,
+      "decay": 0.06,
+      "sustain": 0.4,
+      "release": 0.025
+    },
+    "drive": {
+      "wave": "pulse",
+      "pulse_width": 0.25,
+      "gain": 0.065,
+      "pan": -0.3,
+      "attack": 0.004,
+      "decay": 0.055,
+      "sustain": 0.35,
+      "release": 0.025
+    },
+    "lead": {
+      "wave": "triangle",
+      "gain": 0.21,
+      "pan": 0.25,
+      "attack": 0.005,
+      "decay": 0.07,
+      "sustain": 0.65,
+      "release": 0.04,
+      "vibrato_hz": 5,
+      "vibrato_cents": 8
+    },
+    "kick": {
+      "wave": "sine",
+      "gain": 0.35,
+      "attack": 0.001,
+      "decay": 0.09,
+      "sustain": 0,
+      "release": 0.015
+    },
+    "snare": {
+      "wave": "noise",
+      "gain": 0.18,
+      "pan": -0.12,
+      "attack": 0.001,
+      "decay": 0.075,
+      "sustain": 0,
+      "release": 0.015
+    },
+    "hat": {
+      "wave": "noise",
+      "gain": 0.065,
+      "pan": 0.3,
+      "attack": 0.001,
+      "decay": 0.023,
+      "sustain": 0,
+      "release": 0.01
+    }
+  },
+  "patterns": {
+    "bass": {
+      "length": 384,
+      "notes": [
+        {
+          "tick": 0,
+          "duration": 36,
+          "note": 40,
+          "instrument": "bass",
+          "velocity": 0.9
+        },
+        {
+          "tick": 48,
+          "duration": 36,
+          "note": 40,
+          "instrument": "bass",
+          "velocity": 0.65
+        },
+        {
+          "tick": 96,
+          "duration": 36,
+          "note": 40,
+          "instrument": "bass",
+          "velocity": 0.9
+        },
+        {
+          "tick": 144,
+          "duration": 36,
+          "note": 52,
+          "instrument": "bass",
+          "velocity": 0.65
+        },
+        {
+          "tick": 192,
+          "duration": 36,
+          "note": 40,
+          "instrument": "bass",
+          "velocity": 0.9
+        },
+        {
+          "tick": 240,
+          "duration": 36,
+          "note": 47,
+          "instrument": "bass",
+          "velocity": 0.65
+        },
+        {
+          "tick": 288,
+          "duration": 36,
+          "note": 52,
+          "instrument": "bass",
+          "velocity": 0.9
+        },
+        {
+          "tick": 336,
+          "duration": 36,
+          "note": 47,
+          "instrument": "bass",
+          "velocity": 0.65
+        }
+      ]
+    },
+    "drive": {
+      "length": 384,
+      "notes": [
+        {
+          "tick": 0,
+          "duration": 32,
+          "note": 52,
+          "instrument": "drive",
+          "velocity": 0.8
+        },
+        {
+          "tick": 0,
+          "duration": 32,
+          "note": 59,
+          "instrument": "drive",
+          "velocity": 0.8
+        },
+        {
+          "tick": 0,
+          "duration": 32,
+          "note": 64,
+          "instrument": "drive",
+          "velocity": 0.8
+        },
+        {
+          "tick": 96,
+          "duration": 32,
+          "note": 52,
+          "instrument": "drive",
+          "velocity": 0.8
+        },
+        {
+          "tick": 96,
+          "duration": 32,
+          "note": 59,
+          "instrument": "drive",
+          "velocity": 0.8
+        },
+        {
+          "tick": 96,
+          "duration": 32,
+          "note": 64,
+          "instrument": "drive",
+          "velocity": 0.8
+        },
+        {
+          "tick": 144,
+          "duration": 32,
+          "note": 52,
+          "instrument": "drive",
+          "velocity": 0.6
+        },
+        {
+          "tick": 144,
+          "duration": 32,
+          "note": 59,
+          "instrument": "drive",
+          "velocity": 0.6
+        },
+        {
+          "tick": 144,
+          "duration": 32,
+          "note": 64,
+          "instrument": "drive",
+          "velocity": 0.6
+        },
+        {
+          "tick": 192,
+          "duration": 32,
+          "note": 52,
+          "instrument": "drive",
+          "velocity": 0.8
+        },
+        {
+          "tick": 192,
+          "duration": 32,
+          "note": 59,
+          "instrument": "drive",
+          "velocity": 0.8
+        },
+        {
+          "tick": 192,
+          "duration": 32,
+          "note": 64,
+          "instrument": "drive",
+          "velocity": 0.8
+        },
+        {
+          "tick": 288,
+          "duration": 32,
+          "note": 52,
+          "instrument": "drive",
+          "velocity": 0.8
+        },
+        {
+          "tick": 288,
+          "duration": 32,
+          "note": 59,
+          "instrument": "drive",
+          "velocity": 0.8
+        },
+        {
+          "tick": 288,
+          "duration": 32,
+          "note": 64,
+          "instrument": "drive",
+          "velocity": 0.8
+        },
+        {
+          "tick": 336,
+          "duration": 32,
+          "note": 52,
+          "instrument": "drive",
+          "velocity": 0.6
+        },
+        {
+          "tick": 336,
+          "duration": 32,
+          "note": 59,
+          "instrument": "drive",
+          "velocity": 0.6
+        },
+        {
+          "tick": 336,
+          "duration": 32,
+          "note": 64,
+          "instrument": "drive",
+          "velocity": 0.6
+        }
+      ]
+    },
+    "lead": {
+      "length": 384,
+      "notes": [
+        {
+          "tick": 0,
+          "duration": 36,
+          "note": 76,
+          "instrument": "lead",
+          "velocity": 0.8
+        },
+        {
+          "tick": 48,
+          "duration": 36,
+          "note": 79,
+          "instrument": "lead",
+          "velocity": 0.8
+        },
+        {
+          "tick": 96,
+          "duration": 60,
+          "note": 81,
+          "instrument": "lead",
+          "velocity": 0.8
+        },
+        {
+          "tick": 168,
+          "duration": 18,
+          "note": 79,
+          "instrument": "lead",
+          "velocity": 0.8
+        },
+        {
+          "tick": 192,
+          "duration": 36,
+          "note": 76,
+          "instrument": "lead",
+          "velocity": 0.8
+        },
+        {
+          "tick": 240,
+          "duration": 36,
+          "note": 74,
+          "instrument": "lead",
+          "velocity": 0.8
+        },
+        {
+          "tick": 288,
+          "duration": 36,
+          "note": 71,
+          "instrument": "lead",
+          "velocity": 0.8
+        },
+        {
+          "tick": 336,
+          "duration": 36,
+          "note": 74,
+          "instrument": "lead",
+          "velocity": 0.8
+        }
+      ]
+    },
+    "drums": {
+      "length": 384,
+      "notes": [
+        {
+          "tick": 0,
+          "duration": 24,
+          "note": 52,
+          "instrument": "kick",
+          "velocity": 1,
+          "slide_to": 27
+        },
+        {
+          "tick": 192,
+          "duration": 24,
+          "note": 52,
+          "instrument": "kick",
+          "velocity": 1,
+          "slide_to": 27
+        },
+        {
+          "tick": 288,
+          "duration": 24,
+          "note": 52,
+          "instrument": "kick",
+          "velocity": 1,
+          "slide_to": 27
+        },
+        {
+          "tick": 96,
+          "duration": 24,
+          "note": 60,
+          "instrument": "snare",
+          "velocity": 1
+        },
+        {
+          "tick": 288,
+          "duration": 24,
+          "note": 60,
+          "instrument": "snare",
+          "velocity": 1
+        },
+        {
+          "tick": 0,
+          "duration": 6,
+          "note": 80,
+          "instrument": "hat",
+          "velocity": 0.8
+        },
+        {
+          "tick": 48,
+          "duration": 6,
+          "note": 80,
+          "instrument": "hat",
+          "velocity": 0.55
+        },
+        {
+          "tick": 96,
+          "duration": 6,
+          "note": 80,
+          "instrument": "hat",
+          "velocity": 0.8
+        },
+        {
+          "tick": 144,
+          "duration": 6,
+          "note": 80,
+          "instrument": "hat",
+          "velocity": 0.55
+        },
+        {
+          "tick": 192,
+          "duration": 6,
+          "note": 80,
+          "instrument": "hat",
+          "velocity": 0.8
+        },
+        {
+          "tick": 240,
+          "duration": 6,
+          "note": 80,
+          "instrument": "hat",
+          "velocity": 0.55
+        },
+        {
+          "tick": 288,
+          "duration": 6,
+          "note": 80,
+          "instrument": "hat",
+          "velocity": 0.8
+        },
+        {
+          "tick": 336,
+          "duration": 6,
+          "note": 80,
+          "instrument": "hat",
+          "velocity": 0.55
+        }
+      ]
+    }
+  },
+  "arrangement": [
+    {
+      "pattern": "bass",
+      "tick": 0,
+      "transpose": 0
+    },
+    {
+      "pattern": "drive",
+      "tick": 0,
+      "transpose": 0
+    },
+    {
+      "pattern": "lead",
+      "tick": 0,
+      "transpose": 0
+    },
+    {
+      "pattern": "bass",
+      "tick": 384,
+      "transpose": -4
+    },
+    {
+      "pattern": "drive",
+      "tick": 384,
+      "transpose": -4
+    },
+    {
+      "pattern": "lead",
+      "tick": 384,
+      "transpose": -4
+    },
+    {
+      "pattern": "bass",
+      "tick": 768,
+      "transpose": 3
+    },
+    {
+      "pattern": "drive",
+      "tick": 768,
+      "transpose": 3
+    },
+    {
+      "pattern": "lead",
+      "tick": 768,
+      "transpose": 3
+    },
+    {
+      "pattern": "bass",
+      "tick": 1152,
+      "transpose": -2
+    },
+    {
+      "pattern": "drive",
+      "tick": 1152,
+      "transpose": -2
+    },
+    {
+      "pattern": "lead",
+      "tick": 1152,
+      "transpose": -2
+    },
+    {
+      "pattern": "drums",
+      "tick": 0,
+      "repeat": 4
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "description": "Original collectible beacon crystal.",
+  "parts": [
+    {
+      "id": "upper",
+      "color": "#FFD986",
+      "geometry": {
+        "op": "cone",
+        "radius": 0.35,
+        "height": 0.65,
+        "segments": 4,
+        "translate": [
+          0,
+          0.325,
+          0
+        ]
+      }
+    },
+    {
+      "id": "lower",
+      "color": "#FF966B",
+      "geometry": {
+        "op": "cone",
+        "radius": 0.35,
+        "height": 0.45,
+        "segments": 4,
+        "rotate": [
+          180,
+          0,
+          0
+        ],
+        "translate": [
+          0,
+          -0.225,
+          0
+        ]
+      }
+    },
+    {
+      "id": "core",
+      "color": "#FFF3BF",
+      "geometry": {
+        "op": "sphere",
+        "radius": 0.13,
+        "segments": 12
+      }
+    }
+  ]
+}

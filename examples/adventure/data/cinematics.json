@@ -1,0 +1,72 @@
+{
+  "restored": {
+    "shots": [
+      {
+        "ticks": 60,
+        "position": [
+          5,
+          5,
+          8
+        ],
+        "target": [
+          2,
+          2,
+          0
+        ],
+        "actors": [
+          {
+            "id": "signal_orb",
+            "from": [
+              2,
+              2,
+              0
+            ],
+            "to": [
+              2,
+              3,
+              0
+            ]
+          }
+        ]
+      },
+      {
+        "ticks": 90,
+        "position": [
+          -3,
+          3,
+          5
+        ],
+        "target": [
+          2,
+          3,
+          0
+        ],
+        "actors": [
+          {
+            "id": "signal_orb",
+            "from": [
+              2,
+              3,
+              0
+            ],
+            "to": [
+              2,
+              4,
+              0
+            ],
+            "from_rotation": [
+              0,
+              0,
+              0
+            ],
+            "to_rotation": [
+              0,
+              180,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

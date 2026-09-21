@@ -1,0 +1,99 @@
+{
+  "schema_version": 2,
+  "title": "Signal Orchard",
+  "dimension": "3d",
+  "gravity": [
+    0,
+    -18,
+    0
+  ],
+  "camera": {
+    "position": [
+      0,
+      12,
+      18
+    ],
+    "target": [
+      0,
+      0,
+      0
+    ]
+  },
+  "script": "scripts/game.luau",
+  "entities": [],
+  "modules": {
+    "inventory": "modules/inventory.luau",
+    "quests": "modules/quests.luau",
+    "dialogue": "modules/dialogue.luau",
+    "fsm": "modules/fsm.luau",
+    "combat": "modules/combat.luau",
+    "cinematics": "modules/cinematics.luau",
+    "orders": "modules/orders.luau"
+  },
+  "assets": {
+    "robot": {
+      "type": "model",
+      "path": "assets/robot.model.json"
+    },
+    "theme": {
+      "type": "music",
+      "path": "assets/theme.music.json"
+    }
+  },
+  "music": "theme",
+  "definitions": {
+    "items": "data/items.json",
+    "quests": "data/quests.json",
+    "dialogue": "data/dialogue.json",
+    "cinematics": "data/cinematics.json"
+  },
+  "ui": {
+    "documents": {
+      "hud": "ui/hud.rml"
+    },
+    "styles": {
+      "hud": "ui/hud.rcss"
+    }
+  },
+  "input": {
+    "actions": {
+      "interact": {
+        "keys": [
+          "E"
+        ],
+        "gamepad": "south"
+      },
+      "attack": {
+        "keys": [
+          "Space"
+        ],
+        "gamepad": "west"
+      },
+      "choice1": {
+        "keys": [
+          "1"
+        ]
+      },
+      "choice2": {
+        "keys": [
+          "2"
+        ]
+      },
+      "save": {
+        "keys": [
+          "F6"
+        ]
+      },
+      "load": {
+        "keys": [
+          "F9"
+        ]
+      }
+    }
+  },
+  "entry_scene": "orchard",
+  "scenes": {
+    "orchard": "scenes/orchard.json",
+    "relay": "scenes/relay.json"
+  }
+}

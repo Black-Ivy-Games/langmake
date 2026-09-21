@@ -1,0 +1,36 @@
+{
+  "schema_version": 2,
+  "project_id": "glow-garden-starter",
+  "title": "Glow Garden",
+  "dimension": "2d",
+  "gravity": [0, 0, 0],
+  "script": "scripts/game.luau",
+  "camera": {"position": [0, 0, 20], "target": [0, 0, 0]},
+  "game_camera": {"mode": "orthographic", "position": [0, 0, 20], "target": [0, 0, 0], "half_height": 5.4},
+  "application": {"id": "org.langmake.example.glowgarden", "label": "Glow Garden", "version": "1.0", "build": 1, "icon": "assets/icon.png", "orientation": "landscape"},
+  "save_version": 1,
+  "save_compatibility": {"id": "glow-garden-state-v1", "allow_presentation_changes": true},
+  "state": {"collected": 0, "delivered": false, "reward_count": 0, "held_ticks": 0, "release_count": 0, "paused": false, "message": "Hold LIGHT near each seed, then visit the garden dock."},
+  "definitions": {"balance": "data/balance.json"},
+  "assets": {"gardener": {"type": "sprite", "path": "assets/gardener.sprite.json"}, "app_icon": {"type": "sprite", "path": "assets/icon.sprite.json"}, "theme": {"type": "music", "path": "assets/theme.music.json"}},
+  "music": "theme",
+  "audio": {"buses": {"music": {"gain": 0.65}, "sfx": {"gain": 0.8}, "ui": {"gain": 0.7}}},
+  "input": {"actions": {"lamp": {"keys": ["Space"], "gamepad": "west"}, "pause": {"keys": ["P"], "gamepad": "start"}, "save": {"keys": ["F6"]}, "load": {"keys": ["F9"]}}, "touch": {"enabled": false}},
+  "ui": {"documents": {"hud": "ui/hud.rml"}, "styles": {"layout": "ui/desktop.rcss", "shared": "ui/shared.rcss"}, "expected_characters": "0123456789 /:+-"},
+  "default_profile": "desktop",
+  "profiles": {
+    "desktop": {},
+    "phone": {"ui": {"documents": {"hud": "ui/phone.rml"}, "styles": {"layout": "ui/phone.rcss", "shared": "ui/shared.rcss"}, "expected_characters": "0123456789 /:+-"}, "input": {"actions": {"lamp": {"keys": ["Space"], "gamepad": "west"}, "pause": {"keys": ["P"], "gamepad": "start"}, "save": {"keys": ["F6"]}, "load": {"keys": ["F9"]}}, "touch": {"enabled": true, "stick": {"enabled": true, "x_action": "move_x", "y_action": "move_z"}, "buttons": []}}},
+    "tablet": {"ui": {"documents": {"hud": "ui/tablet.rml"}, "styles": {"layout": "ui/tablet.rcss", "shared": "ui/shared.rcss"}, "expected_characters": "0123456789 /:+-"}, "input": {"actions": {"lamp": {"keys": ["Space"], "gamepad": "west"}, "pause": {"keys": ["P"], "gamepad": "start"}, "save": {"keys": ["F6"]}, "load": {"keys": ["F9"]}}, "touch": {"enabled": true, "stick": {"enabled": true, "x_action": "move_x", "y_action": "move_z"}, "buttons": []}}}
+  },
+  "scenarios": {"delivery": "scenarios/delivery.json", "release": "scenarios/release.json"},
+  "entities": [
+    {"id": "garden", "body": "none", "role": "decoration", "position": [0, 0, -1], "size": [15, 6, 0.1], "color": [0.07, 0.16, 0.19, 1]},
+    {"id": "path", "body": "none", "role": "decoration", "position": [0, 0, -0.5], "size": [13, 1.4, 0.1], "color": [0.13, 0.28, 0.29, 1]},
+    {"id": "player", "body": "dynamic", "role": "player", "position": [-5, 0, 0], "size": [0.85, 0.85, 1], "asset": "gardener"},
+    {"id": "seed1", "body": "none", "role": "decoration", "position": [-3, 0, 0], "size": [0.35, 0.35, 0.2], "color": [1, 0.78, 0.25, 1]},
+    {"id": "seed2", "body": "none", "role": "decoration", "position": [0, 0, 0], "size": [0.35, 0.35, 0.2], "color": [1, 0.78, 0.25, 1]},
+    {"id": "seed3", "body": "none", "role": "decoration", "position": [3, 0, 0], "size": [0.35, 0.35, 0.2], "color": [1, 0.78, 0.25, 1]},
+    {"id": "dock", "body": "none", "role": "decoration", "position": [5, 0, -0.2], "size": [1.2, 1.8, 0.2], "color": [0.23, 0.43, 0.58, 1]}
+  ]
+}

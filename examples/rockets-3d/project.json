@@ -1,0 +1,785 @@
+{
+  "schema_version": 1,
+  "dimension": "3d",
+  "title": "Star Patrol / Text-authored 3D",
+  "gravity": [
+    0,
+    0,
+    0
+  ],
+  "camera": {
+    "position": [
+      4,
+      5,
+      31
+    ],
+    "target": [
+      0,
+      0,
+      0
+    ]
+  },
+  "script": "scripts/game.luau",
+  "assets": {
+    "rocket": {
+      "type": "mesh",
+      "path": "assets/rocket.mesh.json"
+    },
+    "alien": {
+      "type": "mesh",
+      "path": "assets/alien.mesh.json"
+    },
+    "star": {
+      "type": "mesh",
+      "path": "assets/star.mesh.json"
+    },
+    "planet": {
+      "type": "mesh",
+      "path": "assets/planet.mesh.json"
+    },
+    "theme": {
+      "type": "music",
+      "path": "assets/theme.music.json"
+    },
+    "laser": {
+      "type": "music",
+      "path": "assets/laser.sfx.json"
+    }
+  },
+  "music": "theme",
+  "entities": [
+    {
+      "id": "rocket",
+      "name": "Rocket",
+      "body": "dynamic",
+      "role": "player",
+      "position": [
+        0,
+        -6,
+        0
+      ],
+      "size": [
+        1.8,
+        3,
+        1.8
+      ],
+      "asset": "rocket"
+    },
+    {
+      "id": "alien_1",
+      "name": "Alien 1",
+      "body": "none",
+      "role": "collectible",
+      "position": [
+        -8,
+        4.4,
+        0
+      ],
+      "size": [
+        2.2,
+        2.2,
+        1.6
+      ],
+      "asset": "alien"
+    },
+    {
+      "id": "alien_2",
+      "name": "Alien 2",
+      "body": "none",
+      "role": "collectible",
+      "position": [
+        -4,
+        4.4,
+        0
+      ],
+      "size": [
+        2.2,
+        2.2,
+        1.6
+      ],
+      "asset": "alien"
+    },
+    {
+      "id": "alien_3",
+      "name": "Alien 3",
+      "body": "none",
+      "role": "collectible",
+      "position": [
+        0,
+        4.4,
+        0
+      ],
+      "size": [
+        2.2,
+        2.2,
+        1.6
+      ],
+      "asset": "alien"
+    },
+    {
+      "id": "alien_4",
+      "name": "Alien 4",
+      "body": "none",
+      "role": "collectible",
+      "position": [
+        4,
+        4.4,
+        0
+      ],
+      "size": [
+        2.2,
+        2.2,
+        1.6
+      ],
+      "asset": "alien"
+    },
+    {
+      "id": "alien_5",
+      "name": "Alien 5",
+      "body": "none",
+      "role": "collectible",
+      "position": [
+        8,
+        4.4,
+        0
+      ],
+      "size": [
+        2.2,
+        2.2,
+        1.6
+      ],
+      "asset": "alien"
+    },
+    {
+      "id": "laser_1",
+      "name": "Laser 1",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        0,
+        -20,
+        0
+      ],
+      "size": [
+        0.16,
+        0.9,
+        0.16
+      ],
+      "visible": false,
+      "color": [
+        0.2,
+        0.95,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "laser_2",
+      "name": "Laser 2",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        0,
+        -20,
+        0
+      ],
+      "size": [
+        0.16,
+        0.9,
+        0.16
+      ],
+      "visible": false,
+      "color": [
+        0.2,
+        0.95,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "laser_3",
+      "name": "Laser 3",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        0,
+        -20,
+        0
+      ],
+      "size": [
+        0.16,
+        0.9,
+        0.16
+      ],
+      "visible": false,
+      "color": [
+        0.2,
+        0.95,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "laser_4",
+      "name": "Laser 4",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        0,
+        -20,
+        0
+      ],
+      "size": [
+        0.16,
+        0.9,
+        0.16
+      ],
+      "visible": false,
+      "color": [
+        0.2,
+        0.95,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "laser_5",
+      "name": "Laser 5",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        0,
+        -20,
+        0
+      ],
+      "size": [
+        0.16,
+        0.9,
+        0.16
+      ],
+      "visible": false,
+      "color": [
+        0.2,
+        0.95,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "laser_6",
+      "name": "Laser 6",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        0,
+        -20,
+        0
+      ],
+      "size": [
+        0.16,
+        0.9,
+        0.16
+      ],
+      "visible": false,
+      "color": [
+        0.2,
+        0.95,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "distant_planet",
+      "name": "Distant Planet",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -11,
+        1,
+        -5
+      ],
+      "size": [
+        5,
+        5,
+        5
+      ],
+      "asset": "planet"
+    },
+    {
+      "id": "star_00",
+      "name": "Star 00",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -7.9,
+        -5.2,
+        -4
+      ],
+      "size": [
+        0.11,
+        0.11,
+        0.11
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_01",
+      "name": "Star 01",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        5.800000000000001,
+        3.0999999999999996,
+        -4
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.18
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_02",
+      "name": "Star 02",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -6.5,
+        -5.6,
+        -4
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_03",
+      "name": "Star 03",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        7.199999999999999,
+        2.6999999999999993,
+        -4
+      ],
+      "size": [
+        0.11,
+        0.11,
+        0.11
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_04",
+      "name": "Star 04",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -5.1,
+        -6.0,
+        -4
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.18
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_05",
+      "name": "Star 05",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        8.600000000000001,
+        2.3000000000000007,
+        -4
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_06",
+      "name": "Star 06",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -3.6999999999999993,
+        -6.4,
+        -4
+      ],
+      "size": [
+        0.11,
+        0.11,
+        0.11
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_07",
+      "name": "Star 07",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        10.0,
+        1.9000000000000004,
+        -4
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.18
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_08",
+      "name": "Star 08",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -2.3000000000000007,
+        -6.8,
+        -4
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_09",
+      "name": "Star 09",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        11.399999999999999,
+        1.5,
+        -4
+      ],
+      "size": [
+        0.11,
+        0.11,
+        0.11
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_10",
+      "name": "Star 10",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -0.9000000000000004,
+        -7.2,
+        -4
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.18
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_11",
+      "name": "Star 11",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        12.8,
+        1.0999999999999996,
+        -4
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_12",
+      "name": "Star 12",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        0.5,
+        -7.6,
+        -4
+      ],
+      "size": [
+        0.11,
+        0.11,
+        0.11
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_13",
+      "name": "Star 13",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -11.8,
+        0.6999999999999993,
+        -4
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.18
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_14",
+      "name": "Star 14",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        1.9000000000000004,
+        -8.0,
+        -4
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_15",
+      "name": "Star 15",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -10.4,
+        0.3000000000000007,
+        -4
+      ],
+      "size": [
+        0.11,
+        0.11,
+        0.11
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_16",
+      "name": "Star 16",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        3.3000000000000007,
+        -8.4,
+        -4
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.18
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_17",
+      "name": "Star 17",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -9.0,
+        -0.09999999999999964,
+        -4
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_18",
+      "name": "Star 18",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        4.699999999999999,
+        8.2,
+        -4
+      ],
+      "size": [
+        0.11,
+        0.11,
+        0.11
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_19",
+      "name": "Star 19",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -7.6,
+        -0.5,
+        -4
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.18
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_20",
+      "name": "Star 20",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        6.100000000000001,
+        7.800000000000001,
+        -4
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_21",
+      "name": "Star 21",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -6.2,
+        -0.9000000000000004,
+        -4
+      ],
+      "size": [
+        0.11,
+        0.11,
+        0.11
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_22",
+      "name": "Star 22",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        7.5,
+        7.4,
+        -4
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.18
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_23",
+      "name": "Star 23",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -4.800000000000001,
+        -1.2999999999999998,
+        -4
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_24",
+      "name": "Star 24",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        8.899999999999999,
+        7.0,
+        -4
+      ],
+      "size": [
+        0.11,
+        0.11,
+        0.11
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_25",
+      "name": "Star 25",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -3.4000000000000004,
+        -1.7000000000000002,
+        -4
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.18
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_26",
+      "name": "Star 26",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        10.3,
+        6.6,
+        -4
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "asset": "star"
+    },
+    {
+      "id": "star_27",
+      "name": "Star 27",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -2.0,
+        -2.0999999999999996,
+        -4
+      ],
+      "size": [
+        0.11,
+        0.11,
+        0.11
+      ],
+      "asset": "star"
+    }
+  ]
+}

@@ -1,0 +1,2245 @@
+{
+  "format_version": 1,
+  "engine_version": "0.4.1",
+  "kind": "ios-native-qualification-progress",
+  "updated_utc": "2026-09-20T08:19:46.579248+00:00",
+  "ios_qualified": false,
+  "human_playtested": false,
+  "host": {
+    "cpu": "Apple silicon",
+    "memory_gib": null,
+    "macos": "26.6.2",
+    "xcode": "27.0 (27A266a)",
+    "ios_sdk": "27.0",
+    "cmake": "3.31.12"
+  },
+  "simulator": {
+    "model": "iPhone 16",
+    "os": "27.0",
+    "architecture": "arm64",
+    "workspace_isolated": true
+  },
+  "physical_device": {
+    "model": "iPhone 17 Pro Max",
+    "os": "26.6.2",
+    "developer_mode": "enabled",
+    "installation_verified": false
+  },
+  "checks": {
+    "rockets-2d-audio-permission-verification": {
+      "ok": true,
+      "report": {
+        "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/verification-report.json",
+        "bytes": 5759,
+        "sha256": "db658356d8a4fd842bfbe60aa55c53115030287c337b3fbba3099617205e1308"
+      },
+      "capture_ticks": [
+        0,
+        79,
+        80,
+        81,
+        149,
+        150,
+        480
+      ],
+      "parity": {
+        "ok": true,
+        "comparison": "All headless snapshot fields, including entities, animation, camera and audio event history",
+        "absolute_tolerance": 0.0001,
+        "relative_tolerance": 1e-06,
+        "checks": [
+          {
+            "tick": 0,
+            "ok": true,
+            "mismatches": [],
+            "mismatch_count": 0,
+            "maximum_numeric_difference": 0.0
+          },
+          {
+            "tick": 149,
+            "ok": true,
+            "mismatches": [],
+            "mismatch_count": 0,
+            "maximum_numeric_difference": 0.0
+          },
+          {
+            "tick": 150,
+            "ok": true,
+            "mismatches": [],
+            "mismatch_count": 0,
+            "maximum_numeric_difference": 0.0
+          },
+          {
+            "tick": 480,
+            "ok": true,
+            "mismatches": [],
+            "mismatch_count": 0,
+            "maximum_numeric_difference": 0.0
+          },
+          {
+            "tick": 79,
+            "ok": true,
+            "mismatches": [],
+            "mismatch_count": 0,
+            "maximum_numeric_difference": 0.0
+          },
+          {
+            "tick": 80,
+            "ok": true,
+            "mismatches": [],
+            "mismatch_count": 0,
+            "maximum_numeric_difference": 0.0
+          },
+          {
+            "tick": 81,
+            "ok": true,
+            "mismatches": [],
+            "mismatch_count": 0,
+            "maximum_numeric_difference": 0.0
+          }
+        ]
+      },
+      "renderer": "Metal",
+      "audio_mixer": {
+        "clipped_frames": 0,
+        "device_interrupted": false,
+        "device_suspended": false,
+        "dropped_commands": 0,
+        "peak": 0.4303891658782959,
+        "rms": 0.06682776271396726,
+        "sample_frames": 498432
+      },
+      "profile": {
+        "draw_calls": 31,
+        "frame_max_ms": 366.6669006347656,
+        "frame_p50_ms": 16.666582107543945,
+        "frame_p95_ms": 17.294832229614258,
+        "frame_samples": 475,
+        "gpu_frame": 482,
+        "gpu_ms": 1.142084,
+        "render_cpu_ms": 0.692,
+        "runtime": {
+          "character_controllers": 0,
+          "entities": 41,
+          "entity_capacity": 4096,
+          "modules_loaded": 0,
+          "navigation": null,
+          "navigation_agents": 0,
+          "navigation_ms": 0.019917,
+          "physics_bodies": 1,
+          "physics_ms": 0.049458,
+          "runtime_slots": 41,
+          "script_memory_bytes": 442456,
+          "script_ms": 0.067042,
+          "simulation_ms": 0.195292
+        },
+        "textures": 13,
+        "transient_index_bytes": 360,
+        "transient_vertex_bytes": 2880
+      },
+      "final": {
+        "scene": "main",
+        "tick": 480,
+        "won": true
+      }
+    },
+    "adventure-verification": {
+      "ok": true,
+      "report": {
+        "path": ".cache/mac-bootstrap/evidence/adventure-verification/verification-report.json",
+        "bytes": 6338,
+        "sha256": "0d28a4f385e7d6a121a58553f96595c388d846038ff3b389fce5527dafbaf8d0"
+      },
+      "capture_ticks": [
+        0,
+        35,
+        36,
+        38,
+        40,
+        150,
+        333,
+        393,
+        600
+      ],
+      "parity": {
+        "ok": true,
+        "comparison": "All headless snapshot fields, including entities, animation, camera and audio event history",
+        "absolute_tolerance": 0.0001,
+        "relative_tolerance": 1e-06,
+        "checks": [
+          {
+            "tick": 0,
+            "ok": true,
+            "mismatches": [],
+            "mismatch_count": 0,
+            "maximum_numeric_difference": 0.0
+          },
+          {
+            "tick": 150,
+            "ok": true,
+            "mismatches": [],
+            "mismatch_count": 0,
+            "maximum_numeric_difference": 4.76837158203125e-07
+          },
+          {
+            "tick": 333,
+            "ok": true,
+            "mismatches": [],
+            "mismatch_count": 0,
+            "maximum_numeric_difference": 0.0
+          },
+          {
+            "tick": 35,
+            "ok": true,
+            "mismatches": [],
+            "mismatch_count": 0,
+            "maximum_numeric_difference": 0.0
+          },
+          {
+            "tick": 36,
+            "ok": true,
+            "mismatches": [],
+            "mismatch_count": 0,
+            "maximum_numeric_difference": 0.0
+          },
+          {
+            "tick": 38,
+            "ok": true,
+            "mismatches": [],
+            "mismatch_count": 0,
+            "maximum_numeric_difference": 0.0
+          },
+          {
+            "tick": 393,
+            "ok": true,
+            "mismatches": [],
+            "mismatch_count": 0,
+            "maximum_numeric_difference": 2.9802322387695312e-08
+          },
+          {
+            "tick": 40,
+            "ok": true,
+            "mismatches": [],
+            "mismatch_count": 0,
+            "maximum_numeric_difference": 0.0
+          },
+          {
+            "tick": 600,
+            "ok": true,
+            "mismatches": [],
+            "mismatch_count": 0,
+            "maximum_numeric_difference": 0.0
+          }
+        ]
+      },
+      "renderer": "Metal",
+      "audio_mixer": {
+        "clipped_frames": 0,
+        "device_backend": "Core Audio",
+        "device_initialization_status": "ready",
+        "device_interrupted": false,
+        "device_is_null": false,
+        "device_last_error": "",
+        "device_last_operation": "start",
+        "device_last_result": 0,
+        "device_ready": true,
+        "device_requested": true,
+        "device_suspended": false,
+        "dropped_commands": 0,
+        "output_available": true,
+        "peak": 0.05059176683425903,
+        "rms": 0.014150801211624231,
+        "sample_frames": 290560
+      },
+      "profile": {
+        "draw_calls": 19,
+        "frame_max_ms": 582.790283203125,
+        "frame_p50_ms": 16.664583206176758,
+        "frame_p95_ms": 17.28499984741211,
+        "frame_samples": 595,
+        "gpu_frame": 602,
+        "gpu_ms": 1.784875,
+        "render_cpu_ms": 1.016,
+        "runtime": {
+          "character_controllers": 1,
+          "entities": 5,
+          "entity_capacity": 4096,
+          "modules_loaded": 6,
+          "navigation": null,
+          "navigation_agents": 0,
+          "navigation_ms": 0.008834,
+          "physics_bodies": 3,
+          "physics_ms": 0.307583,
+          "runtime_slots": 5,
+          "script_memory_bytes": 806204,
+          "script_ms": 1.703458,
+          "simulation_ms": 2.336875
+        },
+        "textures": 6,
+        "transient_index_bytes": 7296,
+        "transient_vertex_bytes": 32400
+      },
+      "final": {
+        "scene": "relay",
+        "tick": 600,
+        "won": true
+      }
+    },
+    "rockets-2d-lifecycle": {
+      "ok": true,
+      "report": {
+        "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/verification-report.json",
+        "bytes": 2295,
+        "sha256": "c622587ea4bd5e6e37bb0f06f1797baf48f276a8fba72ac85b2d968737b047a9"
+      },
+      "checks": [
+        {
+          "check": "initial-fresh-launch",
+          "session": "1789891044162011",
+          "previous_session": null,
+          "pid": 68282,
+          "ok": true
+        },
+        {
+          "check": "same-session-restore",
+          "ok": true,
+          "differences": [],
+          "session": "1789891044162011",
+          "scene": "main",
+          "tick": 480
+        },
+        {
+          "check": "fresh-process-launch",
+          "session": "1789891058555705",
+          "previous_session": "1789891044162011",
+          "pid": 69133,
+          "ok": true
+        },
+        {
+          "check": "fresh-process-restore",
+          "ok": true,
+          "differences": [],
+          "session": "1789891058555705",
+          "scene": "main",
+          "tick": 480
+        },
+        {
+          "check": "reinstalled-fresh-launch",
+          "session": "1789891063014157",
+          "previous_session": "1789891058555705",
+          "pid": 69294,
+          "ok": true
+        },
+        {
+          "check": "reinstalled-restore",
+          "ok": true,
+          "differences": [],
+          "session": "1789891063014157",
+          "scene": "main",
+          "tick": 480
+        },
+        {
+          "check": "corrupt-save-rejection-preserves-state",
+          "ok": true,
+          "session": "1789891063014157",
+          "diagnostic": "[json.exception.parse_error.101] parse error at line 1, column 19: syntax error while parsing value - unexpected end of input; expected '[', '{', or a literal",
+          "differences": []
+        }
+      ],
+      "native_control_requests": 24,
+      "audio_device_suspend_resume_verified": null
+    },
+    "adventure-lifecycle": {
+      "ok": true,
+      "report": {
+        "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/verification-report.json",
+        "bytes": 3883,
+        "sha256": "3565bb9238e1cbf44bde202bcd264d6b571c54f57702f4817b31fd85afe4f777"
+      },
+      "checks": [
+        {
+          "check": "initial-fresh-launch",
+          "session": "1789891134771573",
+          "previous_session": null,
+          "pid": 69957,
+          "ok": true
+        },
+        {
+          "check": "same-session-restore",
+          "ok": true,
+          "differences": [],
+          "session": "1789891134771573",
+          "scene": "relay",
+          "tick": 600
+        },
+        {
+          "check": "fresh-process-launch",
+          "session": "1789891161455883",
+          "previous_session": "1789891134771573",
+          "pid": 71013,
+          "ok": true
+        },
+        {
+          "check": "fresh-process-restore",
+          "ok": true,
+          "differences": [],
+          "session": "1789891161455883",
+          "scene": "relay",
+          "tick": 600
+        },
+        {
+          "check": "reinstalled-fresh-launch",
+          "session": "1789891165926204",
+          "previous_session": "1789891161455883",
+          "pid": 71172,
+          "ok": true
+        },
+        {
+          "check": "reinstalled-restore",
+          "ok": true,
+          "differences": [],
+          "session": "1789891165926204",
+          "scene": "relay",
+          "tick": 600
+        },
+        {
+          "check": "corrupt-save-rejection-preserves-state",
+          "ok": true,
+          "session": "1789891165926204",
+          "diagnostic": "[json.exception.parse_error.101] parse error at line 1, column 19: syntax error while parsing value - unexpected end of input; expected '[', '{', or a literal",
+          "differences": []
+        }
+      ],
+      "native_control_requests": 43,
+      "audio_device_suspend_resume_verified": null
+    },
+    "adventure-background-native": {
+      "ok": true,
+      "report": {
+        "path": ".cache/mac-bootstrap/evidence/adventure-background-native/verification-report.json",
+        "bytes": 4402,
+        "sha256": "33a388b85dc00f848372fdd60b4d400c56675acd670b87bb95ade1a641b9e4de"
+      },
+      "checks": [
+        {
+          "check": "initial-fresh-launch",
+          "session": "1789891486501248",
+          "previous_session": null,
+          "pid": 75658,
+          "ok": true
+        },
+        {
+          "check": "first-background",
+          "ok": true,
+          "session": "1789891486501248",
+          "background": true,
+          "surface_ready": false,
+          "recovery": "saved",
+          "device_suspended": true,
+          "audio": {
+            "clipped_frames": 0,
+            "device_backend": "Core Audio",
+            "device_initialization_status": "ready",
+            "device_interrupted": false,
+            "device_is_null": false,
+            "device_last_error": "",
+            "device_last_operation": "suspend",
+            "device_last_result": 0,
+            "device_ready": true,
+            "device_requested": true,
+            "device_suspended": true,
+            "dropped_commands": 0,
+            "output_available": true,
+            "peak": 0.0,
+            "rms": 0.0,
+            "sample_frames": 768
+          },
+          "automatic_save_sha256": "19d2e9b3c3b116cee2e1e2075dc2157204a07e921ffa55163b88a0a8429cb091"
+        },
+        {
+          "check": "same-session-foreground",
+          "ok": true,
+          "session": "1789891486501248",
+          "surface_ready": true,
+          "background": false,
+          "device_suspended": false,
+          "audio": {
+            "clipped_frames": 0,
+            "device_backend": "Core Audio",
+            "device_initialization_status": "ready",
+            "device_interrupted": false,
+            "device_is_null": false,
+            "device_last_error": "",
+            "device_last_operation": "resume",
+            "device_last_result": 0,
+            "device_ready": true,
+            "device_requested": true,
+            "device_suspended": false,
+            "dropped_commands": 0,
+            "output_available": true,
+            "peak": 0.0,
+            "rms": 0.0,
+            "sample_frames": 768
+          }
+        },
+        {
+          "check": "second-background",
+          "ok": true,
+          "session": "1789891486501248",
+          "background": true,
+          "surface_ready": false,
+          "recovery": "saved",
+          "device_suspended": true,
+          "audio": {
+            "clipped_frames": 0,
+            "device_backend": "Core Audio",
+            "device_initialization_status": "ready",
+            "device_interrupted": false,
+            "device_is_null": false,
+            "device_last_error": "",
+            "device_last_operation": "suspend",
+            "device_last_result": 0,
+            "device_ready": true,
+            "device_requested": true,
+            "device_suspended": true,
+            "dropped_commands": 0,
+            "output_available": true,
+            "peak": 0.0,
+            "rms": 0.0,
+            "sample_frames": 768
+          },
+          "automatic_save_sha256": "19d2e9b3c3b116cee2e1e2075dc2157204a07e921ffa55163b88a0a8429cb091"
+        },
+        {
+          "check": "automatic-startup-restoration",
+          "ok": true,
+          "session": "1789891513892077",
+          "previous_session": "1789891486501248",
+          "recovery": "restored",
+          "scene": "relay",
+          "saved_tick": 600,
+          "observed_tick": 628,
+          "advanced_before_pause": 28,
+          "comparison": "declared progression, entity identities and stored scenes"
+        }
+      ],
+      "native_control_requests": null,
+      "audio_device_suspend_resume_verified": true
+    }
+  },
+  "tool_contract_tests": {
+    "windows": 49,
+    "mac": 49
+  },
+  "shared_audio_regression": {
+    "created_utc": "2026-09-20T07:54:42.000329+00:00",
+    "files": {
+      "src/audio.cpp": "330b7ad00017dd604bb7115cff7a5e0e91003ea61ac7ac4feb095dc690b9d53a",
+      "include/langmake/audio.hpp": "7afd7b8396347626e743fe73431019143e373e0cc3dfeafc23a08eb9149d7745",
+      "tests/audio_lifecycle_tests.cpp": "63a12833a172a5a26e8546fed01b339f50823a2cbc60f37fb23941e5ce05e9a6",
+      "scripts/ios/README.md": "8fb4508d7d149561c870eb702d84178f90c6ead3652dbc368d9da6614ee5a9b8"
+    },
+    "checks": [
+      {
+        "command": "cmake --build build --target audio_lifecycle_tests audio_mixer_tests --parallel 4",
+        "exit": 0
+      },
+      {
+        "command": "ctest --test-dir build -R '^audio_(lifecycle|mixer)$' --output-on-failure",
+        "exit": 0,
+        "passed": 2,
+        "device_backend": "WASAPI",
+        "log": "ctest.log"
+      },
+      {
+        "test": "forced null backend",
+        "compile_definitions": [
+          "MA_ENABLE_ONLY_SPECIFIC_BACKENDS",
+          "MA_ENABLE_NULL",
+          "LM_EXPECT_NULL_AUDIO"
+        ],
+        "compile_exit": 0,
+        "exit": 0,
+        "log": "null-test.log",
+        "executable": "audio_null_tests.exe"
+      },
+      {
+        "command": "cmake --build build --target langmake --parallel 4",
+        "exit": 0
+      },
+      {
+        "command": "ctest --test-dir build --output-on-failure",
+        "exit": 0,
+        "passed": 12,
+        "log": "ctest-full.log"
+      },
+      {
+        "command": "cmake --build .cache/android/native/arm64-v8a/debug --target langmake --parallel 4",
+        "exit": 0,
+        "elapsed_seconds": 27.02,
+        "log": "android-arm64-build.log",
+        "coverage": "ARM64 native compile/link only; no packaging or device execution",
+        "ndk": "28.2.13676358"
+      },
+      {
+        "command": "cmake --build build --target langmake --parallel 4",
+        "exit": 0,
+        "log": "windows-final-build.log",
+        "scope": "Final Windows binary includes capability-description edit; runtime tests already passed before metadata-only edit."
+      }
+    ],
+    "qualification": "Windows audio behavior and explicit null fallback verified; Apple and Android runtime execution not performed for this subtask.",
+    "android_native": {
+      "path": ".cache/android/native/arm64-v8a/debug/libmain.so",
+      "bytes": 232776856,
+      "sha256": "d941f8375e923971470925ae3eb228df70ad9234285f317bf7a9b4c8c3f50389"
+    },
+    "updated_utc": "2026-09-20T07:57:36.002525+00:00",
+    "windows_runtime": {
+      "path": "build/langmake.exe",
+      "bytes": 33650233,
+      "sha256": "ba0143a9e8faa202cb4e3b42302d7b2b0b47fef2dc182ea6ed30ccaa6b66700d"
+    }
+  },
+  "adventure_simulator_build": {
+    "ok": true,
+    "app": "<MAC_WORKSPACE>/dist/ios/adventure-simulator/LangmakePlayer.app",
+    "bundle_id": "org.langmake.iospreview.gameadventure",
+    "destination": "simulator",
+    "arch": "arm64",
+    "configuration": "debug",
+    "development": true,
+    "signed": false,
+    "orientation": "landscape",
+    "storage_id": "dc1ca5e7e2f4b6079f71f3b5",
+    "source_revision": "fnv1a64-6312bf1e46d84c31",
+    "packaged_revision": "fnv1a64-6312bf1e46d84c31",
+    "content_id": "780f17a3c41fe10a6ab419253e9c08edad4828162fd7afb75919b08d874dc18b",
+    "build_directory": "<MAC_WORKSPACE>/.cache/ios/builds/cb0117528eef463eb1d863cf3d5940b0",
+    "shaderc_sha256": "3b852996dfaafe8180175a18b0743fd8565394eb3184356034ea3b9cb1cacce7",
+    "toolchain": {
+      "ok": true,
+      "can_stage": true,
+      "can_build": true,
+      "checks": [
+        {
+          "name": "macOS",
+          "ok": true,
+          "actual": "macOS-26.6.2-arm64-arm-64bit"
+        },
+        {
+          "name": "xcodebuild",
+          "ok": true,
+          "path": "/usr/bin/xcodebuild"
+        },
+        {
+          "name": "xcrun",
+          "ok": true,
+          "path": "/usr/bin/xcrun"
+        },
+        {
+          "name": "cmake",
+          "ok": true,
+          "path": "<MAC_WORKSPACE>/.deps/tools/cmake-3.31.12-macos-universal/CMake.app/Contents/bin/cmake"
+        },
+        {
+          "name": "git",
+          "ok": true,
+          "path": "/usr/bin/git"
+        },
+        {
+          "name": "Xcode",
+          "ok": true,
+          "actual": "Xcode 27.0\nBuild version 27A266a",
+          "error": ""
+        },
+        {
+          "name": "Xcode first-launch setup",
+          "ok": true,
+          "actual": "",
+          "error": ""
+        },
+        {
+          "name": "iPhoneOS SDK",
+          "ok": true,
+          "actual": "27.0",
+          "error": ""
+        },
+        {
+          "name": "iPhoneSimulator SDK",
+          "ok": true,
+          "actual": "27.0",
+          "error": ""
+        },
+        {
+          "name": "devicectl",
+          "ok": true,
+          "actual": "/Applications/Xcode.app/Contents/Developer/usr/bin/devicectl",
+          "error": ""
+        },
+        {
+          "name": "simctl",
+          "ok": true,
+          "actual": "/Applications/Xcode.app/Contents/Developer/usr/bin/simctl",
+          "error": ""
+        }
+      ],
+      "minimum_ios": "17.0",
+      "signing": "Device builds require your configured Apple signing team and provisioning. This tool never logs in or accepts Xcode terms.",
+      "simulator_device_set": "<MAC_WORKSPACE>/.cache/ios/simulators"
+    },
+    "executable_sha256": "5ae8cc7195c1597730c8e787e9f1d72dac74a38bf9bdd7c0846e359fbf3c8b80",
+    "executable_bytes": 41039728,
+    "dependency_lock_sha256": "63a1eb24a271bc7336c3b5ab0b64bacaed7e0a472c03cb241e7ae9bb6e5d34a2",
+    "device_qualified": false,
+    "report": "<MAC_WORKSPACE>/dist/ios/adventure-simulator/build-report.json"
+  },
+  "integration_fixes": [
+    "Use LangmakePlayer executable beside the langmake/ app content directory.",
+    "Check Xcode first-launch exit status before build; target running macOS for host shaderc.",
+    "Expose actual audio backend, status and errors; null output is not available audio.",
+    "Normalize legacy and Xcode 27 device records; reject simulated targets on physical-device operations.",
+    "Use a scheme and verified hardware UDID for explicit first-phone provisioning, with opt-in registration."
+  ],
+  "limitations": [
+    "Simulator timing includes capture/shader warmup and is not physical-phone performance.",
+    "Audio callback and Core Audio observations do not establish human audible sound.",
+    "Physical signing, installation, touch, lifecycle and human testing are still in progress.",
+    "Release-argument rejection is host-tested; an actual release-mode Apple build remains unverified.",
+    "Only the reported models, OS versions and scenarios have execution evidence."
+  ],
+  "source_files": [
+    {
+      "path": "platform/ios/bundle.cmake",
+      "bytes": 2628,
+      "sha256": "3ee5c04191439997b89cf4ce9d69e4311ab45eacd697b5aa2fb813b3eb20986a"
+    },
+    {
+      "path": "src/audio.cpp",
+      "bytes": 5524,
+      "sha256": "330b7ad00017dd604bb7115cff7a5e0e91003ea61ac7ac4feb095dc690b9d53a"
+    },
+    {
+      "path": "include/langmake/audio.hpp",
+      "bytes": 1702,
+      "sha256": "7afd7b8396347626e743fe73431019143e373e0cc3dfeafc23a08eb9149d7745"
+    },
+    {
+      "path": "src/project.cpp",
+      "bytes": 76267,
+      "sha256": "18407d95f965ae6ac88000bf6c0b8fc8334254f887d03f6e1bf1714daaeb5b4d"
+    },
+    {
+      "path": "scripts/ios/ios.py",
+      "bytes": 52343,
+      "sha256": "e2aeaa79503f39f1b2a11e58acddf79367af384130ddff69dbcc52b47f44f993"
+    },
+    {
+      "path": "scripts/ios/test_ios.py",
+      "bytes": 36246,
+      "sha256": "a59d0c41c3d8d2168057fee30203e37ec84d7e0e086ed195798484b01f9a2ce4"
+    },
+    {
+      "path": "tests/audio_lifecycle_tests.cpp",
+      "bytes": 4130,
+      "sha256": "63a12833a172a5a26e8546fed01b339f50823a2cbc60f37fb23941e5ce05e9a6"
+    },
+    {
+      "path": "dependencies.lock.json",
+      "bytes": 29735,
+      "sha256": "63a1eb24a271bc7336c3b5ab0b64bacaed7e0a472c03cb241e7ae9bb6e5d34a2"
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/automatic-restoration-startup.json",
+      "bytes": 14489,
+      "sha256": "823af2c75268887be42e59106f9a85b00a0047539494db0b0d64678c8281e3cc"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/automatic-restored-receipt.json",
+      "bytes": 9054,
+      "sha256": "b565750a8f30778923cb1a454d09050267ec9685b187db628f4742eb3efb2107"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/automatic-restored-request.json",
+      "bytes": 243,
+      "sha256": "4b1744f4bc39d2d2acdea082bc712292964a4f8ba2a484ae060f22bfeda80a75"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/automatic-restored-save.json",
+      "bytes": 10446,
+      "sha256": "94278734382b3b8896edb6cfe85aec220ed2503f30e302aa452ba0c1d63960b5"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/baseline-receipt.json",
+      "bytes": 9125,
+      "sha256": "2e5fe80b489d670b365c80ff9e455ab1f2aa47e10dd5e85576701482f3f57890"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/baseline-request.json",
+      "bytes": 238,
+      "sha256": "fdb4d46a6fe4f7f98b989b468133eff4669f32ebcd780962350d7f02bfb40f82"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/baseline-save.json",
+      "bytes": 10368,
+      "sha256": "19d2e9b3c3b116cee2e1e2075dc2157204a07e921ffa55163b88a0a8429cb091"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/before-background-receipt.json",
+      "bytes": 9130,
+      "sha256": "6cbe2496b3d9caf06ec4197f08176b6cbf458357fdbf300987fd0847d4a243b4"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/before-background-request.json",
+      "bytes": 205,
+      "sha256": "f3ddef3ad30b5fb58596c2a6f0e3e516094cafd1756dc31f1bb5e5a3ed0de3ab"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/first-background-automatic-save.json",
+      "bytes": 10368,
+      "sha256": "19d2e9b3c3b116cee2e1e2075dc2157204a07e921ffa55163b88a0a8429cb091"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/first-background.json",
+      "bytes": 9081,
+      "sha256": "b8a6ae317f02d54a2a744e34723d4672e46658beabc9e0eba5e079cd576d821a"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/initial-fresh-launch-pause-receipt.json",
+      "bytes": 8726,
+      "sha256": "ae8132eaec7586f7ef1df5e4a1250535672dfc616491e6bc18078a2722e05e2a"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/initial-fresh-launch-pause-request.json",
+      "bytes": 201,
+      "sha256": "9d78bd7231730807388d157dedc569f972418679dc35e609da0742a31d5382dc"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/initial-reset-receipt.json",
+      "bytes": 8148,
+      "sha256": "0e77dd5f841f2db90a77ad025f07101e8d6137fb7d1445905427a7d4972b97ca"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/initial-reset-request.json",
+      "bytes": 201,
+      "sha256": "cd3eca9e1c31098fa9aa12c62d1a29c4ecbe4c3e9d9900aff9a028c0faee1c7e"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/preparation-timeline.json",
+      "bytes": 1056,
+      "sha256": "fece7fe47c5dcd4b124d056d6fe851d47c0c235d8dd588217d236237b16fe340"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-00-receipt.json",
+      "bytes": 8733,
+      "sha256": "320d0679a90ef568d5f85d9acc71b0746aaec4614416409a6189ab19f4c240a7"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-00-request.json",
+      "bytes": 249,
+      "sha256": "540f6a993424e40f4238dcd776dd13624677b5e792004533303c3b584740626b"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-01-receipt.json",
+      "bytes": 8735,
+      "sha256": "0ec63a8cff587fac07a031f1cb9111aa1f61fa8db083aaa84d7669abd1558e5e"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-01-request.json",
+      "bytes": 229,
+      "sha256": "ce3285a3c24ec01ad65c0beaba2ba4dc781ac7c0eee7f87fa7f7683494d38b29"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-02-receipt.json",
+      "bytes": 8881,
+      "sha256": "46ca171b593170e778488e59d841e169cf83a87392a7db889308245005b7f042"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-02-request.json",
+      "bytes": 275,
+      "sha256": "63e788f8e86e4c88848452004d4ed1aaaeb51325117df74dac82ec0c5beabc9b"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-03-receipt.json",
+      "bytes": 9036,
+      "sha256": "ef20222d48bc9cc6e3b294be6dd9df235d028a73b5a4e67983f61ed169a13a94"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-03-request.json",
+      "bytes": 229,
+      "sha256": "67478bee68885806993966fd98955be1ed14bfcae3953891987852872a27fd1f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-04-receipt.json",
+      "bytes": 9156,
+      "sha256": "2ad74e9fff5921ad10853c83aa6bb092d4d5b75b500261a215c836e880fe0ec0"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-04-request.json",
+      "bytes": 274,
+      "sha256": "5d3df0f04e2ffe10cc410f180fb32505a6181be70cf652f8061ac52f6775505b"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-05-receipt.json",
+      "bytes": 9197,
+      "sha256": "56182bf9bc7702f9cb33f5ae37b07773a59985b1c95549be449f1fb489bee838"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-05-request.json",
+      "bytes": 229,
+      "sha256": "22796a322bbe1091f978287ef5cb09745ae45bcfbc50230eafcedf032a8e958b"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-06-receipt.json",
+      "bytes": 9031,
+      "sha256": "3316bb3596ce9314773b4d242446c576f958cf91a437c3f569afe5eebd1203e6"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-06-request.json",
+      "bytes": 275,
+      "sha256": "188bb69a8e228ca7c60dd717e328c4eb9b3bffdfe34d3b8ea769fe274d9b91f3"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-07-receipt.json",
+      "bytes": 8992,
+      "sha256": "460944e8ddf48b428ae5ce8af77d9db7238363f2b85eb4d5b8dcf1ee990c03f5"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-07-request.json",
+      "bytes": 230,
+      "sha256": "350b699ee266042716d782420b6a265fce833414552b5b2ad6beda93a6ca63e2"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-08-receipt.json",
+      "bytes": 8722,
+      "sha256": "f7123006694b1f9a865f77fc8d256d46429269f1090b7bc22e1198104e08f83f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-08-request.json",
+      "bytes": 251,
+      "sha256": "44e41a1f2c8097e5ee02c153d7403e287f12c550bd4d5246889555bc99a72c57"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-09-receipt.json",
+      "bytes": 8702,
+      "sha256": "8db8b49dbf103ff00a394b4479f6f8e7b8c90fe380e634bf73e5267e84200d36"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-09-request.json",
+      "bytes": 230,
+      "sha256": "9763243123084000f6d3fc019b411b9305408e78d685a131f41b6f1df9f75268"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-10-receipt.json",
+      "bytes": 8751,
+      "sha256": "6465dd457e926fae2d58565355dee641c011f009411eb2e6fd4f0fff0e675508"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-10-request.json",
+      "bytes": 274,
+      "sha256": "57b65305596947d3683b46a9400e3d9302a1d48aa6efe6d47242a93823b8297a"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-11-receipt.json",
+      "bytes": 8756,
+      "sha256": "2f4c95519d975a49ab45e0deab819365e54f280745f83477957942c9762cd400"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-11-request.json",
+      "bytes": 231,
+      "sha256": "c594d14f38c9b45bb2ba54a8b01046d2dfbd518e01d1923000c59ff507ebf1da"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-12-receipt.json",
+      "bytes": 8754,
+      "sha256": "96e3809e689d1893fd5b37bfd3ff6aab135e93ab728991bf29f092a242ed3b33"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-12-request.json",
+      "bytes": 274,
+      "sha256": "faf7f7f9ceada8e8bd8f7a4214329d257110595d8be4b425b05bfdb3e7c44d64"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-13-receipt.json",
+      "bytes": 8751,
+      "sha256": "a7e2e4b8e73346007c359df4390ac7790b69c78cc382e6f742d45bab5017420c"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-13-request.json",
+      "bytes": 231,
+      "sha256": "9d06bd04ac66288c37f5c1c388a34e877491c938abe73c9af45c28ffe2150d95"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-14-receipt.json",
+      "bytes": 8755,
+      "sha256": "a1007e55cd04d2d47e32c1bfe22b5e0bf07a7af47a3d0cfbecd1ef86eeb4e58f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-14-request.json",
+      "bytes": 274,
+      "sha256": "cc834c4d1b067ceed709223c8c0c13edbd8fcaabffaf495274fd1d9e15c80acb"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-15-receipt.json",
+      "bytes": 8354,
+      "sha256": "cefa34191b3ccefea4813db0a4c49473de70985258e20b341b0d9b4b77f7af91"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-15-request.json",
+      "bytes": 231,
+      "sha256": "e38f34512fe45965811535e06e82895ae9199493d2053d75f23acfc18b4ad429"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-16-receipt.json",
+      "bytes": 8345,
+      "sha256": "60d7b17a21b18fb41b482df7fc48fae3640bed16677129a01dca93bc161ae765"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-16-request.json",
+      "bytes": 250,
+      "sha256": "2939dc9618012a0033964ad326d0e0875731f20b75f7a81620982a6d3caba325"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-17-receipt.json",
+      "bytes": 8346,
+      "sha256": "35a2ec535c2641d91b7fe0033e2bcf46b3dc2d5ab55109d86b3d2f7f172bc047"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-17-request.json",
+      "bytes": 230,
+      "sha256": "92a6d1a8b43e8ac9ac3dfbad8d5b9bae1c2a916bb6c7521eee8aa5911653e10f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-18-receipt.json",
+      "bytes": 8158,
+      "sha256": "eb5e56bbfb021cf7e4ddc111b97a8d458386bd052c98847a7cbfff05b82b1438"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-18-request.json",
+      "bytes": 276,
+      "sha256": "9c4dc2830de3d4d1ad2d2ed1f6220055552b369bab20dfcd9c93e696066dbbda"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-19-receipt.json",
+      "bytes": 8658,
+      "sha256": "33a19b1fb9a750e83c5471d6d356eecf7373847117da4cab3d7b32dfa2395482"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-19-request.json",
+      "bytes": 230,
+      "sha256": "d9760ade5eac7a9fb108f97e06e75c64b39621193f18cd34cc0e0783991e1404"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-20-receipt.json",
+      "bytes": 8693,
+      "sha256": "905649843a207d419468220ee7a515defcadb5708b94266105d9da67f723631d"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-20-request.json",
+      "bytes": 250,
+      "sha256": "89d65309e9c8b828cdbc858f7d1537cdf75db9dfa52e26c02920426d46ef4ba8"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-21-receipt.json",
+      "bytes": 8689,
+      "sha256": "0646206950914892a8b7e3d79acd13e473fe919faa1f15d8550cfa0e9d416001"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-21-request.json",
+      "bytes": 230,
+      "sha256": "f3309a6f1532c35325d6915d065b40177ab963cb5c45d68b302a4fd2f3c174a5"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-22-receipt.json",
+      "bytes": 9088,
+      "sha256": "dda2a37468c16fa8a8cdb35af1f339989677ac7fa76092e5fe63f349a534e385"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-22-request.json",
+      "bytes": 276,
+      "sha256": "698a374649400be59bb74d9b95e41f4170120b580c4be16074cca3bc63f1f24f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-23-receipt.json",
+      "bytes": 9126,
+      "sha256": "a171e0f4e03502310aca6ed0348c2f909b37aa86b99b833015bf54f24889ce6c"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/prepare-23-request.json",
+      "bytes": 232,
+      "sha256": "39832c31687692fc15958d583c91a1153995d8bb27c561c73f4c8828161f0f75"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/restored-pause-receipt.json",
+      "bytes": 9055,
+      "sha256": "c2d84ef3415976391398d6e02b451620f7337dcb09854905e278d97022678822"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/restored-pause-request.json",
+      "bytes": 202,
+      "sha256": "a24d95b99d6ecc2c439d4e4ec1092fc7263c73329f8d08746fece6252472b876"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/same-session-foreground.json",
+      "bytes": 14690,
+      "sha256": "5c2f5c50d3001a745857220045b13dda568ec07865adc276ae1016c2a3fa5f15"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/same-session-resumed-receipt.json",
+      "bytes": 9127,
+      "sha256": "0e76f9588e00ae097cb53ae88998f6c72b8fc8fa49d8dff1456a1d376ecbc50a"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/same-session-resumed-request.json",
+      "bytes": 246,
+      "sha256": "4b31e4513cb3b16bb0c7b5d462378acab53ba982dd34b34e3d0e7cb5d6b962f6"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/same-session-resumed-save.json",
+      "bytes": 10368,
+      "sha256": "19d2e9b3c3b116cee2e1e2075dc2157204a07e921ffa55163b88a0a8429cb091"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/second-background-automatic-save.json",
+      "bytes": 10368,
+      "sha256": "19d2e9b3c3b116cee2e1e2075dc2157204a07e921ffa55163b88a0a8429cb091"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/second-background.json",
+      "bytes": 9079,
+      "sha256": "dc41f62f209a1e48bfa10a242b38ac64b4c6e2ba956c11c3b6dcd3c95f0f8d14"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/selected-background-app.json",
+      "bytes": 1028,
+      "sha256": "4761154cfa6a7618ae2e399d620578ce6cb67a017cee8c4ea2686eb8995cade1"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-background-native/verification-report.json",
+      "bytes": 4402,
+      "sha256": "33a388b85dc00f848372fdd60b4d400c56675acd670b87bb95ade1a641b9e4de"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-build-report.json",
+      "bytes": 2854,
+      "sha256": "8146ee6bf2c4f6995042279a0756549953fa78d7650712d38f1337a2446f69e6"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/after-corrupt-load-receipt.json",
+      "bytes": 8929,
+      "sha256": "f1639028d081a64219c534978e029e24f79b453d5c29da094f3be0533932f525"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/after-corrupt-load-request.json",
+      "bytes": 247,
+      "sha256": "6590abdb2beeece758ca6f0c82c14040fe995959a8d87094b38a193685b4e938"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/after-corrupt-load-save.json",
+      "bytes": 10368,
+      "sha256": "19d2e9b3c3b116cee2e1e2075dc2157204a07e921ffa55163b88a0a8429cb091"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/after-corrupt-snapshot-receipt.json",
+      "bytes": 8929,
+      "sha256": "b5f4081196eca2d6f2a107b0d85b30360437d7dd1b3a7299e43a98834191c368"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/after-corrupt-snapshot-request.json",
+      "bytes": 205,
+      "sha256": "f34855a0eb54bd9270e7770271be7f81dfd80c734bfd0fca2c5acdafcf57fbff"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/after-reinstall-original-save.json",
+      "bytes": 10368,
+      "sha256": "19d2e9b3c3b116cee2e1e2075dc2157204a07e921ffa55163b88a0a8429cb091"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/before-corrupt-load-receipt.json",
+      "bytes": 8928,
+      "sha256": "3107d7e2d80b36d7b5d42d7f2b296f9e42d4ccc2b64989dec6b62d8b7444a704"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/before-corrupt-load-request.json",
+      "bytes": 248,
+      "sha256": "b1e5feea76cb7971b94f1779a68a693e47c9aa9abb26f236cca19d60fbe96fcc"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/before-corrupt-load-save.json",
+      "bytes": 10368,
+      "sha256": "19d2e9b3c3b116cee2e1e2075dc2157204a07e921ffa55163b88a0a8429cb091"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/corrupt-load-receipt.json",
+      "bytes": 215,
+      "sha256": "93c6dd210ea92a8c75439a4769b30626ef7005b125aa02ac459a74380370f712"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/corrupt-load-request.json",
+      "bytes": 246,
+      "sha256": "77580f63210879fbf65000f6522b155e6284fb57e4434c4f41dde6e3f833c47c"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/fresh-process-launch-pause-receipt.json",
+      "bytes": 8731,
+      "sha256": "465efcf5affa53e49ae43dd274fde53c9060fca1763706ad7357ae493c571b84"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/fresh-process-launch-pause-request.json",
+      "bytes": 202,
+      "sha256": "65743e5c090266e3c2ed20a96a823c096e38bac7d83cabff80167c19327fb917"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/fresh-process-restore-load-receipt.json",
+      "bytes": 8616,
+      "sha256": "de4bb845cba8478383db740f280cfb7259105352d24cad4b202f263638b0af93"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/fresh-process-restore-load-request.json",
+      "bytes": 238,
+      "sha256": "ed3432fd0f75291a5c99e419353cb3c84f2b98ddc41ab48530ca0a9fcef317c1"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/fresh-process-restore-resave-receipt.json",
+      "bytes": 8926,
+      "sha256": "a03e564b57526794bf974f35cd43d39d1dad6079437f605755a1b5f80e16e312"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/fresh-process-restore-resave-request.json",
+      "bytes": 244,
+      "sha256": "448f03ee44128321a49b246ac89a8ad18ecf3186d4da5252a3be2e47f9ac6e8e"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/fresh-process-restore-resave-save.json",
+      "bytes": 10368,
+      "sha256": "19d2e9b3c3b116cee2e1e2075dc2157204a07e921ffa55163b88a0a8429cb091"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/golden-receipt.json",
+      "bytes": 9130,
+      "sha256": "14e7f5f513025043f2597f14d381f30e9b4e41559bb3def9fcd72c9babad83c6"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/golden-request.json",
+      "bytes": 238,
+      "sha256": "aeb36c625c696f44d293da1c35d4b828508b9a0cbe8e614f672d1183b6234fa2"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/golden-save.json",
+      "bytes": 10368,
+      "sha256": "19d2e9b3c3b116cee2e1e2075dc2157204a07e921ffa55163b88a0a8429cb091"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/initial-fresh-launch-pause-receipt.json",
+      "bytes": 8732,
+      "sha256": "73699e64cec53fde32a140eba8c79cb8b48d707a8c413128f947e0bfee0d4901"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/initial-fresh-launch-pause-request.json",
+      "bytes": 201,
+      "sha256": "fe94970137e7899f5978fa391477005e1bddf15f6c43f8f96a1251a24938c6a2"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/initial-reset-receipt.json",
+      "bytes": 8150,
+      "sha256": "16c14b9285ecb0a3205926cdeabdbfbaf07010178edd92f55053aa0e9a31863f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/initial-reset-request.json",
+      "bytes": 201,
+      "sha256": "ab57b87339ecb1c8f2b3dd8217ced46cf55f9e96d6a7e7cab69e8431e864eba7"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/initial-snapshot-receipt.json",
+      "bytes": 8490,
+      "sha256": "f26dd65487809e91b9c3111db5900bee7976a6f483be93f188799abaf89a446d"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/initial-snapshot-request.json",
+      "bytes": 204,
+      "sha256": "9b8a9e75789c0ee9a9ad1120a34cb480639014ec150f90a234bf0aba7b4325d3"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/intentional-corrupt-save.json",
+      "bytes": 18,
+      "sha256": "5303742963d7576c47325ae541230b3d3ce7746ce18e2e9689f1fdf7bf05a898"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/mutate-after-save-receipt.json",
+      "bytes": 9131,
+      "sha256": "81e71ab1f3a777a5d94eab2dec1578ea4a86f5769392b780017b4cb6d7afca39"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/mutate-after-save-request.json",
+      "bytes": 251,
+      "sha256": "186fb7d33d4bfb1b7cefef1ef4fea7949080d7c74e01cc61d04dcbfea7180e18"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/mutated-receipt.json",
+      "bytes": 9130,
+      "sha256": "e5f07909115eb6dad04aca108a2a60883365d899c91a6b0a172357df129a8307"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/mutated-request.json",
+      "bytes": 246,
+      "sha256": "c0e3a971878efa2de1ec70fd1fae242b6a3bf297d7c0605209d80e00f81aecb1"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/mutated-save.json",
+      "bytes": 10373,
+      "sha256": "9465e9313ac18c43921f22b3a60d56a7ee80cdf8c0edd57fb2e58a4f35667a30"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/preparation-timeline.json",
+      "bytes": 1056,
+      "sha256": "fece7fe47c5dcd4b124d056d6fe851d47c0c235d8dd588217d236237b16fe340"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-00-receipt.json",
+      "bytes": 8738,
+      "sha256": "6c871b4c742d07f1a3f3790bef6706331fd8b50a51fec2709223429acde303e3"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-00-request.json",
+      "bytes": 249,
+      "sha256": "b346ef03cbe7b02f5052b07180b24287c84d48071c5442ee965059319f2a9f30"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-01-receipt.json",
+      "bytes": 8737,
+      "sha256": "465b68befa5e7bbd11f9cd95f5e56976f27ad029307285a9d60110b19e17a30d"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-01-request.json",
+      "bytes": 229,
+      "sha256": "345039e141190b57aaffb7ae8c22d0f6724db80828a93a7d124dab3216b2b21f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-02-receipt.json",
+      "bytes": 8884,
+      "sha256": "a6f2a10ed2cee835e987b61356aae8ca756b618ce11a12929dd6324604880c07"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-02-request.json",
+      "bytes": 275,
+      "sha256": "3e2e487a6236af3bb595b556e8a9ca6886ab166c042a2abca6e64eac5fc52611"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-03-receipt.json",
+      "bytes": 9033,
+      "sha256": "3d88186de4632179539921a8695f375e661773c4cafe9b719165e6f5603ba340"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-03-request.json",
+      "bytes": 229,
+      "sha256": "06c686f8af3058dda1ef007fc7f172bff66bd9359a11ae674f3767952c6ae206"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-04-receipt.json",
+      "bytes": 9155,
+      "sha256": "9f468b90303909d6ec78a4f1c46d5292aba4f672e3875503e86173d76332e542"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-04-request.json",
+      "bytes": 274,
+      "sha256": "ac7205b6db1cadaebf80aa151a15866a0c1d090418c76ac8d2d42ebd3f311439"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-05-receipt.json",
+      "bytes": 9198,
+      "sha256": "4da0eb55994aeacecce13b003d610605540fb34a33ea919a479084f9d7ecbcd9"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-05-request.json",
+      "bytes": 229,
+      "sha256": "2bc276ca266c3d9dee13cdcf4c06a4e09ad92b7824234cf8e69796c195512af9"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-06-receipt.json",
+      "bytes": 9034,
+      "sha256": "eaae3f003274a4bc2dac6deab90f2fa054463cae5014cf795a77521a8d8d51ca"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-06-request.json",
+      "bytes": 276,
+      "sha256": "26a1248163d71325a2efd0cad7a86ca0fac4cd4feeca27550e62e546137299d0"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-07-receipt.json",
+      "bytes": 8996,
+      "sha256": "b3b2612ff2d22dbeb715944050ad1d0f39d515045ce33277bc85466034d222e4"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-07-request.json",
+      "bytes": 230,
+      "sha256": "efa11618d1f6604d4e11eb6d30c428fe6e955f2d196e09b40f189d0c3e318796"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-08-receipt.json",
+      "bytes": 8722,
+      "sha256": "1bb5f1e43993f901170708301699e068470a45861259509f3d74a0d1e03f4201"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-08-request.json",
+      "bytes": 251,
+      "sha256": "d08c296a48aa19f9da4d48318f52f5df222642e9a045d4393016fd66c22fa384"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-09-receipt.json",
+      "bytes": 8706,
+      "sha256": "a2b51f8e5529502de061738622380778027de9f20b1cded77528cd66ab1b002e"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-09-request.json",
+      "bytes": 230,
+      "sha256": "8c8fe41839220df76ab477af924108958072a37ae953d7165ae7f231fe686108"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-10-receipt.json",
+      "bytes": 8750,
+      "sha256": "6c0982e63f7d490c90a3b6b812ee531460643c1c74baaae68c16cdbf5b2dee35"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-10-request.json",
+      "bytes": 274,
+      "sha256": "f1307deea42ddcfca3a14bac37d1aedf75f00c85e6bf655d21437d72cdc76e70"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-11-receipt.json",
+      "bytes": 8753,
+      "sha256": "55c31c44a214881c9abec17a4c25d91f9ea99cd5e40e9da29e3773f8dd931f02"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-11-request.json",
+      "bytes": 231,
+      "sha256": "5fd7d37081f9ef5ad866049dd97d556cdf48c64f99ca48d2481ab6743a42b56a"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-12-receipt.json",
+      "bytes": 8755,
+      "sha256": "4cb82f2ece9e433e95aee602aaf1a7a1187f6568dc39a634e70b796fae1a8109"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-12-request.json",
+      "bytes": 274,
+      "sha256": "d1c6bc97cd5be888a22498fa77f5d47d665b67c3ca25bdcf7ba25c2307ef50e2"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-13-receipt.json",
+      "bytes": 8757,
+      "sha256": "dbfc69571bf7ec51ae3a09c095fcfd042c21ff455237df11a71fd940a5558a50"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-13-request.json",
+      "bytes": 231,
+      "sha256": "0e43751157b91bc45e9bc7fa80b83cf07032942da13643f1d9821c6b1917da6a"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-14-receipt.json",
+      "bytes": 8756,
+      "sha256": "ff6627ae495940a61f58d0da5bf30df69c06824bca526debcd07330c50da3b9a"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-14-request.json",
+      "bytes": 274,
+      "sha256": "24e63ef93eb1793362eaa853705428a905141ebb60eb2673a39b0573dfa7a2a4"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-15-receipt.json",
+      "bytes": 8351,
+      "sha256": "ded933627b065e860e30306fc4fb2b3002ccfdebd19e2d77a0a7ef9e43a8d6c2"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-15-request.json",
+      "bytes": 231,
+      "sha256": "ef5d61b4b92a4a4831229d3403d210145144dd515b3f8d1a2dc99158871db3a8"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-16-receipt.json",
+      "bytes": 8346,
+      "sha256": "edc2fb1a907a168fed4595cde077efe85bacd9479cfe73e2421475b24ce1f6fc"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-16-request.json",
+      "bytes": 250,
+      "sha256": "dc72839190774bb732e529b87d87c320ddecf51b2b5f22fbc5f24f63ae98219a"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-17-receipt.json",
+      "bytes": 8341,
+      "sha256": "c8d171e1512dcb43631d44af62e77a1ba833115ff7d2105cdd70a58cc88e2955"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-17-request.json",
+      "bytes": 230,
+      "sha256": "69cc323ba1986c11a4fe604f8951e40249526175c5a8922efc8cf82a58c0d77c"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-18-receipt.json",
+      "bytes": 8158,
+      "sha256": "20b6874ccccc414ee8f3fdeb8b1154fe1a76a9962b7c689e5ab93892abc682f9"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-18-request.json",
+      "bytes": 276,
+      "sha256": "3c2327ed76aafca7f2d111c8eb2564e14676acb08d770107ca4fd99f76c9afbe"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-19-receipt.json",
+      "bytes": 8662,
+      "sha256": "da5bead4e558efe14616bb6eef766e51f12ff412b5567d18111d7ccf617759d6"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-19-request.json",
+      "bytes": 230,
+      "sha256": "ce1084ec80719924918f025aa61735dcf9996351daeefdee32abbf5ec230e4e5"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-20-receipt.json",
+      "bytes": 8693,
+      "sha256": "39a6b43c6cf04dc2ab9f2795daeb3c63da48d71cae37f304cbf4898b67c4b26d"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-20-request.json",
+      "bytes": 250,
+      "sha256": "fbae6d43cb4fe5c3adbb8c509d94fb727010941fcd3217f5a2d13bbfff42b997"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-21-receipt.json",
+      "bytes": 8693,
+      "sha256": "16b8008205f0eec0d56c42d463e8af7a0bf7005387aca5d0d9309e3864c9fbba"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-21-request.json",
+      "bytes": 230,
+      "sha256": "9ec2b863c1fa5130dae53559eccc76d77260e7ac3762d229d5abcc3bbcdd6b0f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-22-receipt.json",
+      "bytes": 9087,
+      "sha256": "62db5f95217ae9f719bc7474fa7efe891d38de8d568214805472cf74525f3894"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-22-request.json",
+      "bytes": 276,
+      "sha256": "c10a5b27aa47a82a4ec34ec4786284f5d51c3907ac186e1259d2ea914161f10a"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-23-receipt.json",
+      "bytes": 9130,
+      "sha256": "caed5643e3f08607d8a51fdd2c839221caafca21d04175f734da84b07accf74b"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepare-23-request.json",
+      "bytes": 232,
+      "sha256": "58cdfe4abd33197863b41ecf0bc79a08eeb0d84e1aa248d0d511e9141bb38bc2"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepared-snapshot-receipt.json",
+      "bytes": 9134,
+      "sha256": "df56f65559e4ebc6529639f39fcb12c8c7ab4ef9d8b0c66d0c345ce015526e83"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/prepared-snapshot-request.json",
+      "bytes": 205,
+      "sha256": "4d6f9f2a617af02c27419c8dd6c375c36dcf8b3cbdc700d73180cd845c6abf9b"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/reinstalled-fresh-launch-pause-receipt.json",
+      "bytes": 8728,
+      "sha256": "471587b9e48fa575671c8061af0c915d83f2f3a06617af685c6e0b66edefc891"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/reinstalled-fresh-launch-pause-request.json",
+      "bytes": 202,
+      "sha256": "d46d5181e964e50a0f4853dd9298b5bb61be50593c174068fcf56e6ea8c77e6e"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/reinstalled-restore-load-receipt.json",
+      "bytes": 8615,
+      "sha256": "bbb6356c2edb1653c399dcbf5d8cbe3885fba35fc1cbbc08ed637b108bab0a56"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/reinstalled-restore-load-request.json",
+      "bytes": 238,
+      "sha256": "6da68200b8f82fe79f676597dea5d485b458b069896a9dbb967ff25b58ebe6fd"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/reinstalled-restore-resave-receipt.json",
+      "bytes": 8927,
+      "sha256": "5d0aa6b29352970f46e56bee8085ac68f69941ba41a495817a7d63b97436e08a"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/reinstalled-restore-resave-request.json",
+      "bytes": 244,
+      "sha256": "111a4e5d13c5d9e7ebfc8010763f5d6747679ac5000f4596c559badb2b95bc3c"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/reinstalled-restore-resave-save.json",
+      "bytes": 10368,
+      "sha256": "19d2e9b3c3b116cee2e1e2075dc2157204a07e921ffa55163b88a0a8429cb091"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/same-session-restore-load-receipt.json",
+      "bytes": 8632,
+      "sha256": "8d84db816aa43aada26c3e4d6ab7a8b125adacbd56a347364e57f5d287337e6e"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/same-session-restore-load-request.json",
+      "bytes": 238,
+      "sha256": "2703429bdaf3206011ec1d7e536f347667c83b0f192736916d38c3c8f024a540"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/same-session-restore-resave-receipt.json",
+      "bytes": 8938,
+      "sha256": "ca5ebab7bf4f4fbf0223637cb55992031c5fe3fb9fe36b80144b16359c5e536f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/same-session-restore-resave-request.json",
+      "bytes": 244,
+      "sha256": "5672dab657da718a8f343bded3dbb2f38c9e2b745479cb95498cb3441b28a18c"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/same-session-restore-resave-save.json",
+      "bytes": 10368,
+      "sha256": "19d2e9b3c3b116cee2e1e2075dc2157204a07e921ffa55163b88a0a8429cb091"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-lifecycle/verification-report.json",
+      "bytes": 3883,
+      "sha256": "3565bb9238e1cbf44bde202bcd264d6b571c54f57702f4817b31fd85afe4f777"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/headless-parity.json",
+      "bytes": 1579,
+      "sha256": "79297864862f18b5993963231071e5334a053b0dd8ea88012c3a757f02ce292a"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/initial-launch-result.json",
+      "bytes": 8517,
+      "sha256": "1dd42bcf1559f715d310720de25d3f423fc8d5fbff58042f5e02c4a0df2df1d5"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/input.json",
+      "bytes": 1136,
+      "sha256": "daccf5a2a825f4ac5edb8c15f22e7d9d46693cdf522b5ef22a3f2952469e58d3"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/launch-result.json",
+      "bytes": 11608,
+      "sha256": "2e73694441b8cef578aa07804ec9b7aa4d7aefacfd3de04a9f8f2fa31f363c14"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-0.png",
+      "bytes": 46744,
+      "sha256": "9b63a51798096eeb6387129f4933febcbed6e0e6caab5976d48de296a300f0c6"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-0.png.json",
+      "bytes": 8979,
+      "sha256": "d4f1232972cd465456891e195cb712be1ff7cadd2c30f7f15a1438bfc5108c15"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-150.png",
+      "bytes": 49440,
+      "sha256": "d7b38a37a596b58d9ac2d3f337e29e67a51e95559efd6532986913490630face"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-150.png.json",
+      "bytes": 9409,
+      "sha256": "b5972d318156c89a4711c5de917dcbd1d6cf855fc96a0591ce000d70def53fba"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-333.png",
+      "bytes": 42137,
+      "sha256": "1f8649e8b176ac70c51f376813c97537df8f47c4d9ef160961ccc559c9f8d6d2"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-333.png.json",
+      "bytes": 8966,
+      "sha256": "1bb4852eb9cf03b1e0c60790b1c8fdc22918eecbb7da598f05efdbf65bdc852c"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-35.png",
+      "bytes": 53438,
+      "sha256": "2db58a8e2a168804e34b7f3db4df8d5f90c6a15780d9af099397938b4c20dd16"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-35.png.json",
+      "bytes": 9436,
+      "sha256": "3021dfe2165aa6f1e93eb927533bbcc6abb0f71016528010539cca2bea07dd7d"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-36.png",
+      "bytes": 53243,
+      "sha256": "3bc5cf21e69d6c214735893e6ac80f5c44cb50ad9a75fb630f60cbfba7bb5d6f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-36.png.json",
+      "bytes": 9433,
+      "sha256": "8af623919977c107186aa0733154a835a4594998cd375187fb4ddb7c9fe7b2a1"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-38.png",
+      "bytes": 66889,
+      "sha256": "64f14c333d60dcae288a80ff75a5b71af39bdc8f9a373da521a5cabc1f531367"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-38.png.json",
+      "bytes": 9733,
+      "sha256": "f023f49b7b31f25c3d24e89115f5199daf634bf737f05a5bc555ec5534cf4d56"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-393.png",
+      "bytes": 47320,
+      "sha256": "b706477a2ad5af4e04122b87a3f67f5a80e4a79965974d7079bb314843efac06"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-393.png.json",
+      "bytes": 9794,
+      "sha256": "445fac1e012af98c02b9c1989ae87c730b5ffc53241dbec7f7fbcc94156cd1ac"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-40.png",
+      "bytes": 68347,
+      "sha256": "fd3e591c32d99d5ba6457515339a89b16244869477f7313ea95e6c734372b632"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-40.png.json",
+      "bytes": 9894,
+      "sha256": "bc2acd112add76a84c0c7ec9372db61697e15a5a60151085692b19dd96a8f05b"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-600.png",
+      "bytes": 47719,
+      "sha256": "c31fd0f20a737a6abb12c0eac15e4a88730ada3687e9b0088f6ebceaa4c44e00"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/tick-600.png.json",
+      "bytes": 9823,
+      "sha256": "def8321f6cdbaf938964766c66ae9f2a5e129bae234471e80d3cb90ec41734c6"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/adventure-verification/verification-report.json",
+      "bytes": 6338,
+      "sha256": "0d28a4f385e7d6a121a58553f96595c388d846038ff3b389fce5527dafbaf8d0"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/device-list-normalization.json",
+      "bytes": 603,
+      "sha256": "d0539b71facd0357690baaa60ad0888f3ab27eb04d37007f66aac4c81865bf6d"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/doctor.json",
+      "bytes": 1505,
+      "sha256": "0e23adc29ccf5fe65de96d5dc30b0b5e5612b182a22773d1f5444044e4cd5650"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/first-build.json",
+      "bytes": 82,
+      "sha256": "3f8af8ec00a93863fbbf1733a5be0516caea679990770d5bcca8e1d0e69a64d5"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/player-controls-result.json",
+      "bytes": 20537,
+      "sha256": "8b5e271f556f4cc808544557f65228d0977c8f23f96897b15dd70936c217f0bc"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/player-controls.png",
+      "bytes": 22531,
+      "sha256": "f7fe2b0e0f4e909bc519f0b90f1d758ce30f5f41c5fcdc1494920a408ca9591d"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/player-controls.png.json",
+      "bytes": 20828,
+      "sha256": "8221b8bc15cd57594f1d8771d706ddf833ef83eafe52860354a293a2b96bf8e8"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/headless-parity.json",
+      "bytes": 1248,
+      "sha256": "ec79184ad9b502428dbc6503c16e617abc701907d6b7212be320102909e1890b"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/initial-launch-result.json",
+      "bytes": 20269,
+      "sha256": "2b7fb805d3486b53c01b91091385aad0d3a4e2f4c12143bf45b2dc59606c0a64"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/input.json",
+      "bytes": 427,
+      "sha256": "cf948fc0c80b7a44008897f695ff8256844a8af2ee267e973de6ab1c136326d3"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/launch-result.json",
+      "bytes": 25169,
+      "sha256": "ec6afc4c07d5a3e7bdee37e18505b75f3175497cd78e6738cef153c8c1807d51"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/tick-0.png",
+      "bytes": 5341,
+      "sha256": "78fb2323c7e49b85791bceba834d4da30240958672ac16c4e4d066c5ac7a6232"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/tick-0.png.json",
+      "bytes": 20047,
+      "sha256": "3a58d13e933765871c7d51924f9f8baf86eb2f2ca1238955e54e5bc36b284fb8"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/tick-149.png",
+      "bytes": 12676,
+      "sha256": "92898b25fdaf2154782e8f2b34aab1b52098404d57687634eb4ee1cbc2328bc8"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/tick-149.png.json",
+      "bytes": 22085,
+      "sha256": "d02dee5ac26cbe5925ad97e4678ac1fa4631fffb3bf966bc08f466d06746853b"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/tick-150.png",
+      "bytes": 12603,
+      "sha256": "6ff66020db2627c6fb39efa19fb241623ba83b03b4421bc72384d3997341547c"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/tick-150.png.json",
+      "bytes": 22081,
+      "sha256": "93e41cad865f765ff566bffde0f5c64a3b356ad87d22cd0da79b4a2cd3d99ec3"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/tick-480.png",
+      "bytes": 4342,
+      "sha256": "f74b20eaed3ad7f035842b758aa449738cc53740eeb1559ceba16d844453f80c"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/tick-480.png.json",
+      "bytes": 23737,
+      "sha256": "731085c747db14adaea414e83909ab84f2cae543982e30a94b0b7131da0f2ce4"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/tick-79.png",
+      "bytes": 14155,
+      "sha256": "79493f55a954cf43812c07709de1d423bf1843b934aca9650ebb15c0a9a04cb9"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/tick-79.png.json",
+      "bytes": 21513,
+      "sha256": "b2f339d6acc2096d2968f4f002d94219ad9cd7b5e24976128c4565a3a358cc7b"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/tick-80.png",
+      "bytes": 14241,
+      "sha256": "aa58006b0082dc4e1ee826662f9137021e8f5dcac282652e304688cb26b3694a"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/tick-80.png.json",
+      "bytes": 21518,
+      "sha256": "3ec0f27dd3e45c3b73ccd701d832c18a80d5836535af35cae3aa3d58c0205258"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/tick-81.png",
+      "bytes": 14265,
+      "sha256": "b995918180fbbb22e8f975a62d2c2f955ae5cd81b9416f622b35b52d449103f1"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/tick-81.png.json",
+      "bytes": 21538,
+      "sha256": "a0061a247fc8d3e2dd0fd6a2c473f62f35a1292882c7bb7001e3cfc3b9f525ed"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-audio-permission-verification/verification-report.json",
+      "bytes": 5759,
+      "sha256": "db658356d8a4fd842bfbe60aa55c53115030287c337b3fbba3099617205e1308"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/after-corrupt-load-receipt.json",
+      "bytes": 20485,
+      "sha256": "a4a8ded6c97794eb5fe5afe7ebbe8490a832194f12e5230ba13503d775b2d9f6"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/after-corrupt-load-request.json",
+      "bytes": 247,
+      "sha256": "b73f6979621d876d759850d90c57f0e9158d2f39dc00f796dd5fed1d93c8567f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/after-corrupt-load-save.json",
+      "bytes": 27913,
+      "sha256": "009742bd02995387fff8907ee6e1f0610dd6a3c06adf358346a0dd24e957011f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/after-corrupt-snapshot-receipt.json",
+      "bytes": 20490,
+      "sha256": "8216b7e0b6128ee7980852e91a74c28380f0e68b62732b69440de484fa48f365"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/after-corrupt-snapshot-request.json",
+      "bytes": 205,
+      "sha256": "2c85009318ad7cc26fb3861e22ac53368faaf594f0e8914946165999334d7d02"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/after-reinstall-original-save.json",
+      "bytes": 27913,
+      "sha256": "009742bd02995387fff8907ee6e1f0610dd6a3c06adf358346a0dd24e957011f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/before-corrupt-load-receipt.json",
+      "bytes": 20486,
+      "sha256": "fae5b3a494f348aceca5dea0e46b8a3814d774c5758effb4f6099cadbdfe58ff"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/before-corrupt-load-request.json",
+      "bytes": 248,
+      "sha256": "0ca500aeeb632f8047e3b47dabbb9fbaa5eea2fc450113715b9f604dee520609"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/before-corrupt-load-save.json",
+      "bytes": 27913,
+      "sha256": "009742bd02995387fff8907ee6e1f0610dd6a3c06adf358346a0dd24e957011f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/corrupt-load-receipt.json",
+      "bytes": 215,
+      "sha256": "aba02b0b71c91872877c5b1b61864ff1e3d4c840dd7efa64a9616bfb99dc85d5"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/corrupt-load-request.json",
+      "bytes": 246,
+      "sha256": "ea7d1dfb73d5515aab6ddb8603f3e41e1945d818d7fe68eada46644bcb7b1b2e"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/fresh-process-launch-pause-receipt.json",
+      "bytes": 20425,
+      "sha256": "4cbe35fb9bf6e359e51cebfb8b2ead2f80c94bc30daa684b727e218440703deb"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/fresh-process-launch-pause-request.json",
+      "bytes": 202,
+      "sha256": "25ccc373ef165433a03e478034b55aaccbab39546e2f6a7c285ecd539b76c1b8"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/fresh-process-restore-load-receipt.json",
+      "bytes": 20438,
+      "sha256": "74bc98074f45e930d0a9ac74a52231059374f32c7b16255913b4382e137bb546"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/fresh-process-restore-load-request.json",
+      "bytes": 238,
+      "sha256": "ac31732019cafbc8342ce880f5064f294aa1d08edc2762fe29ba5d7dfd1a1fc4"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/fresh-process-restore-resave-receipt.json",
+      "bytes": 20482,
+      "sha256": "1802bb380f872ff211a63f6a7a2d4ffaf784d85747ce848acf8b4eb61845342e"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/fresh-process-restore-resave-request.json",
+      "bytes": 244,
+      "sha256": "c1927dd388788c37d611bc5207281e3849caa16807806f9522152b519937f076"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/fresh-process-restore-resave-save.json",
+      "bytes": 27913,
+      "sha256": "009742bd02995387fff8907ee6e1f0610dd6a3c06adf358346a0dd24e957011f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/golden-receipt.json",
+      "bytes": 23278,
+      "sha256": "69cb172e78465a3a1104c4072f0a675af657ea9129ad074b26ceda773296704f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/golden-request.json",
+      "bytes": 238,
+      "sha256": "f0e822c3d5303cd2f814488d61c994f4615265361ad74524554509670c026e87"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/golden-save.json",
+      "bytes": 27913,
+      "sha256": "009742bd02995387fff8907ee6e1f0610dd6a3c06adf358346a0dd24e957011f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/initial-fresh-launch-pause-receipt.json",
+      "bytes": 20462,
+      "sha256": "325a2361a8b0b88e9969a83b527cc137b66e076358fa517d2aad7670933cdc1c"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/initial-fresh-launch-pause-request.json",
+      "bytes": 201,
+      "sha256": "b8149b9673319d206c7dbf391723b29f5801bd2138f1a564a96279bea4838c15"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/initial-reset-receipt.json",
+      "bytes": 19643,
+      "sha256": "eb6a144a7ebb8be4562c1a745edbe7e0315530ff9cc2cf22fa622ccf01bba94f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/initial-reset-request.json",
+      "bytes": 201,
+      "sha256": "42305e985a0b5a3179f696d3e7efb239e147350476bbadaeede3886d93d98e38"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/initial-snapshot-receipt.json",
+      "bytes": 19659,
+      "sha256": "26e568eabfe00fc2e16811dc51038dde62dffdf0f9868e54d568695008582ba9"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/initial-snapshot-request.json",
+      "bytes": 204,
+      "sha256": "adc455ec7892a9a0bcfd5ecbcf4e33ad703d9077628070a0ca80d4bf10066e6e"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/intentional-corrupt-save.json",
+      "bytes": 18,
+      "sha256": "5303742963d7576c47325ae541230b3d3ce7746ce18e2e9689f1fdf7bf05a898"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/mutate-after-save-receipt.json",
+      "bytes": 23273,
+      "sha256": "3540be8b425796446c65be87e26a1e679bb64a2a5e084cfaad8af838d9367191"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/mutate-after-save-request.json",
+      "bytes": 251,
+      "sha256": "029ee0175d7448bdf0dd623823b4b2b9545c174e07bc6f866cb4214ab8c610d0"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/mutated-receipt.json",
+      "bytes": 23274,
+      "sha256": "dc44db95e101d35bf593475d732f11d17c779b0c321624a2f054d7dd1ddc07e4"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/mutated-request.json",
+      "bytes": 246,
+      "sha256": "294789ae5294a3a91ad94a632aa3302de8638725c9194a4f9dd848c1b4586c10"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/mutated-save.json",
+      "bytes": 27916,
+      "sha256": "63640a38179bbc1eb4c28832d3ed9ce46780c83dbefcb30a10e851c9af7d4d68"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/preparation-timeline.json",
+      "bytes": 396,
+      "sha256": "b30254d0183ceced42428dbb3a09a8da856ffe0b83ce8824c8fa47243417b283"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/prepare-00-receipt.json",
+      "bytes": 21065,
+      "sha256": "397ab2f583145a4eb91440b05c37c8776b158616565a26e0447979ad7d90eff6"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/prepare-00-request.json",
+      "bytes": 250,
+      "sha256": "646e3f945bab574f6617d9bef541988cdd2c64aaab7fc3f1c09f0a86efb3685e"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/prepare-01-receipt.json",
+      "bytes": 21622,
+      "sha256": "2cdfc47c73d20b43d1fac37d914b352aeda19946b493f0e8a98e7fe98c5c25dd"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/prepare-01-request.json",
+      "bytes": 268,
+      "sha256": "3709a030d2dd4ba4ff06a9a9209c3a98b7846143c2c7acf793843f9ca84d9829"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/prepare-02-receipt.json",
+      "bytes": 22170,
+      "sha256": "1e8a88b7afb61c85bae8fe670251ad548c12a9b7a9a47bb4092376c189b5a044"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/prepare-02-request.json",
+      "bytes": 250,
+      "sha256": "afc1397813e8394bd39832793d125376c2366e9078366d7ba584e76a52e01283"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/prepare-03-receipt.json",
+      "bytes": 23189,
+      "sha256": "7418cc1ed5c080049adfc353a0c886d3969f4c4cb5d20eb3d38cb880e09cc1b5"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/prepare-03-request.json",
+      "bytes": 268,
+      "sha256": "b9f2355b2ab232487de9cf9112360aa70ab20c261b0dfb75baee3909b49beb0f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/prepare-04-receipt.json",
+      "bytes": 23278,
+      "sha256": "38fe9548e455b80bf6920f2216f9da40b6fee00acca3c4b2aca7d07fe52f0431"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/prepare-04-request.json",
+      "bytes": 251,
+      "sha256": "31790ee558046c008767fa14b6aaecd2d2011e168922c7a563bdee6a4615badb"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/prepared-snapshot-receipt.json",
+      "bytes": 23282,
+      "sha256": "e8a3c80906e72c1c34a51dd69d918ed5f5e30ea28cf007a69e2a53ea2782f361"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/prepared-snapshot-request.json",
+      "bytes": 204,
+      "sha256": "27caa59e625f9b903b709bc7d8eaa53feb1dbaa7022b6e96618b322577770956"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/reinstalled-fresh-launch-pause-receipt.json",
+      "bytes": 20464,
+      "sha256": "9ac9a255532eb6635993e809996d2d46b4f1243ff9f041751b27af91d0296b0f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/reinstalled-fresh-launch-pause-request.json",
+      "bytes": 202,
+      "sha256": "28295b7bd204547f352d26ad53e4732e5b93fd96dd6c481af69be81ae49e7f74"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/reinstalled-restore-load-receipt.json",
+      "bytes": 20441,
+      "sha256": "23980fea3edccab89baa75ce6246d6f2c4872b489a574d6fa49243cbbef5f73d"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/reinstalled-restore-load-request.json",
+      "bytes": 238,
+      "sha256": "612d6589cd6e2edd233cd7823336664551881f2999e054f34f3570f1a6727282"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/reinstalled-restore-resave-receipt.json",
+      "bytes": 20484,
+      "sha256": "3a3ba1403f72fba3a9e212d5ed9deab296f7a43fbd139f349e24ef5078c02372"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/reinstalled-restore-resave-request.json",
+      "bytes": 244,
+      "sha256": "3937f60d1f9e6df7901a3c1d193e69448584fd9ab301e989ef59aa60e7a4da59"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/reinstalled-restore-resave-save.json",
+      "bytes": 27913,
+      "sha256": "009742bd02995387fff8907ee6e1f0610dd6a3c06adf358346a0dd24e957011f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/same-session-restore-load-receipt.json",
+      "bytes": 20452,
+      "sha256": "029a03b3fdd5e120155fddf8c5cd14aec46bd05268791af9b1eccfc4b9440a52"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/same-session-restore-load-request.json",
+      "bytes": 238,
+      "sha256": "d2787f6c1dfb83dd512a99bfaadc6c0dd32ddf1b4e8b03b62370f8a54512d63e"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/same-session-restore-resave-receipt.json",
+      "bytes": 20493,
+      "sha256": "f1ccf9567ee652a995b60d13438f1e8ba9f81d7c95d78c43bbf96ee90a25ac40"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/same-session-restore-resave-request.json",
+      "bytes": 244,
+      "sha256": "d904f3080b35a1671ba714ecaca0aef3d0cb3baccc856dbf3f9951593d0e0f0c"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/same-session-restore-resave-save.json",
+      "bytes": 27913,
+      "sha256": "009742bd02995387fff8907ee6e1f0610dd6a3c06adf358346a0dd24e957011f"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-lifecycle/verification-report.json",
+      "bytes": 2295,
+      "sha256": "c622587ea4bd5e6e37bb0f06f1797baf48f276a8fba72ac85b2d968737b047a9"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/headless-parity.json",
+      "bytes": 1248,
+      "sha256": "ec79184ad9b502428dbc6503c16e617abc701907d6b7212be320102909e1890b"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/initial-launch-result.json",
+      "bytes": 20232,
+      "sha256": "1abf77012035429ea3ac6b765815d12a4f2551368d57cadddb19310b3cafc67d"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/input.json",
+      "bytes": 427,
+      "sha256": "cf948fc0c80b7a44008897f695ff8256844a8af2ee267e973de6ab1c136326d3"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/launch-result.json",
+      "bytes": 25131,
+      "sha256": "65230120dd396ae357133adbb96ca073d3640df287df46d2abff4bcbbcbc083d"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/tick-0.png",
+      "bytes": 5341,
+      "sha256": "78fb2323c7e49b85791bceba834d4da30240958672ac16c4e4d066c5ac7a6232"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/tick-0.png.json",
+      "bytes": 20011,
+      "sha256": "6e79795d90994ace97e216268cf3b28ab897bb732c8a41477d1bd11c46774751"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/tick-149.png",
+      "bytes": 12676,
+      "sha256": "92898b25fdaf2154782e8f2b34aab1b52098404d57687634eb4ee1cbc2328bc8"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/tick-149.png.json",
+      "bytes": 22051,
+      "sha256": "abd307fafcdaaa21033a724edddefeef7c8ccab362cca3e7afaef2b57281b52b"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/tick-150.png",
+      "bytes": 12603,
+      "sha256": "6ff66020db2627c6fb39efa19fb241623ba83b03b4421bc72384d3997341547c"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/tick-150.png.json",
+      "bytes": 22050,
+      "sha256": "5c9104154e662126f03b83601b1313497a33758e351ad85bf56aaa8b927ad475"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/tick-480.png",
+      "bytes": 4342,
+      "sha256": "f74b20eaed3ad7f035842b758aa449738cc53740eeb1559ceba16d844453f80c"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/tick-480.png.json",
+      "bytes": 23701,
+      "sha256": "08c19fea6f1f6e48eb4837b1302cce552ebddb4a518c67b43f3e714e967bd3cb"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/tick-79.png",
+      "bytes": 14155,
+      "sha256": "79493f55a954cf43812c07709de1d423bf1843b934aca9650ebb15c0a9a04cb9"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/tick-79.png.json",
+      "bytes": 21485,
+      "sha256": "ab03ed884af2aa72632aa18e7888cbb5204617960ee4438549ad936c8836199c"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/tick-80.png",
+      "bytes": 14241,
+      "sha256": "aa58006b0082dc4e1ee826662f9137021e8f5dcac282652e304688cb26b3694a"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/tick-80.png.json",
+      "bytes": 21480,
+      "sha256": "33ca4691f8dadf6c2cbb25b3be2c19f9081cbc1bc5e32ea62b391e9c71b13898"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/tick-81.png",
+      "bytes": 14265,
+      "sha256": "b995918180fbbb22e8f975a62d2c2f955ae5cd81b9416f622b35b52d449103f1"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/tick-81.png.json",
+      "bytes": 21507,
+      "sha256": "02e0939f9a5c4bcce8921057de0dc03b33defd72f5ab871573219db4cb0a32d6"
+    },
+    {
+      "path": ".cache/mac-bootstrap/evidence/rockets-2d-no-audio-verification/verification-report.json",
+      "bytes": 5630,
+      "sha256": "27a3af0e4a4050d0487ea92a92c9e673c52d425ae242dccbddfdbcce3c16c6f4"
+    }
+  ]
+}

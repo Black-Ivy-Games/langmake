@@ -1,0 +1,8 @@
+
+body { font-size: 14dp; }
+#hud { width: 65%; padding: 7dp; }
+h1 { font-size: 18dp; }
+#objective { font-size: 13dp; }
+#status { font-size: 12dp; }
+#lamp-button { right: 22dp; bottom: 22dp; width: 100dp; height: 70dp; }
+#controls { display: none; }

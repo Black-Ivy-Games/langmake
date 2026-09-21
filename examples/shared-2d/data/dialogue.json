@@ -1,0 +1,16 @@
+{
+  "hello": {
+    "speaker": "Post keeper",
+    "text": "Will you carry a star to the lantern?",
+    "choices": [
+      {
+        "text": "1 / E: Yes.",
+        "flag": "accepted",
+        "value": true
+      },
+      {
+        "text": "2: Not yet."
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+body { display: block; width: 100%; height: 100%; margin: 0dp; font-family: Langmake; font-size: 16dp; color: #e8faf3; }
+#hud { position: absolute; left: 12dp; top: 10dp; width: 60%; padding: 10dp; background-color: #102b32e8; }
+h1 { display: block; margin: 0dp 0dp 4dp; font-size: 22dp; color: #a8e7ca; }
+p { display: block; margin: 3dp 0dp; }
+#objective { font-size: 15dp; }
+#status { font-size: 13dp; color: #ffe1a4; }
+progress { display: block; width: 170dp; height: 10dp; margin: 4dp 0dp; background-color: #294d54; }
+progress fill { background-color: #ffd775; }
+button { display: block; height: 40dp; width: 80dp; background-color: #285d68; color: #ffffff; border: 2dp #79b9b3; text-align: center; }
+button:active { background-color: #ffd775; color: #163d4a; }
+#pause-button { position: absolute; top: 12dp; right: 12dp; }
+#save-button { position: absolute; top: 62dp; right: 12dp; }
+#load-button { position: absolute; top: 112dp; right: 12dp; }
+#lamp-button { position: absolute; right: 24dp; bottom: 28dp; width: 112dp; height: 76dp; font-size: 22dp; border: 3dp #ffcf65; }
+#pause-panel { position: absolute; left: 25%; top: 40%; width: 50%; padding: 14dp; background-color: #102b32f0; text-align: center; }
+#controls { position: absolute; left: 12dp; bottom: 12dp; font-size: 14dp; }

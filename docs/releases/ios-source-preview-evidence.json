@@ -1,0 +1,121 @@
+{
+  "format_version": 1,
+  "engine_version": "0.4.1",
+  "kind": "ios-source-preview",
+  "created_utc": "2026-09-19T17:10:17.545169+00:00",
+  "host": {
+    "os": "Windows-10-10.0.26200-SP0",
+    "cpu": "AMD Ryzen 7 5800X (8 cores, 16 logical processors)"
+  },
+  "scope": "User requested completion of work possible without a Mac; Apple qualification will follow when a Mac is available.",
+  "ios_qualified": false,
+  "windows_cli": {
+    "path": "build/langmake.exe",
+    "bytes": 33651813,
+    "sha256": "310b627edd5cbd5656650989d49f66cddf7a25efed75dc51de4d21ca90dcfb92"
+  },
+  "checks": {
+    "native_ctest": {
+      "passed": 12,
+      "failed": 0
+    },
+    "full_windows_graphics_and_live_regressions": "passed, including callback lifecycle and 652-entity contention/at-most-once receipt scenarios",
+    "cook": {
+      "templates": 7,
+      "targets": [
+        "windows",
+        "android",
+        "ios"
+      ],
+      "cases": 21,
+      "passed": true
+    },
+    "ios_stage": {
+      "templates": 7,
+      "native_cook_and_integrity_passed": true
+    },
+    "ios_python_contract_tests": 32,
+    "studio_core_and_ios_tests": 36,
+    "studio_real_electron_ui": "passed",
+    "studio_broker_python_native_staging": "passed twice with stable identity",
+    "metal_shader_translation": "both model shaders translated using pinned Windows shaderc; this is not Apple compilation",
+    "android_arm64_native_rebuild": "passed; no new phone run in this iOS task"
+  },
+  "not_run": [
+    "Mac host/native Apple compilation",
+    "iOS simulator build or launch",
+    "iPhone signing, installation or execution",
+    "Metal runtime rendering",
+    "iOS touch, audio, lifecycle, save/update and performance qualification",
+    "Human iPhone playtesting"
+  ],
+  "evidence": [
+    {
+      "path": ".cache/ios-implementation-20260919/windows-build.log",
+      "bytes": 12558,
+      "sha256": "cedfd3f4b61811bedcdc8ac96baa3aaa8fbebc93a13df2e1b0a091e4b8a85371"
+    },
+    {
+      "path": ".cache/ios-implementation-20260919/windows-tests.log",
+      "bytes": 11257,
+      "sha256": "5b55af72e7405ff40c6680e131ea6e27960da0ce0da4ea9ffa5b852c51277c84"
+    },
+    {
+      "path": ".cache/ios-implementation-20260919/ctest-final.log",
+      "bytes": 1311,
+      "sha256": "b25baaf82b30004b2b03c23f3a2a95513928e6816aacd6a6ceb43c290dd1d1fb"
+    },
+    {
+      "path": ".cache/ios-implementation-20260919/ios-tool-tests-final.log",
+      "bytes": 2505,
+      "sha256": "3490f3395fa1472e86a288faab37e1ab40c594a06896ee468fd8c43ecbc36ab1"
+    },
+    {
+      "path": ".cache/ios-implementation-20260919/android-arm64-build.log",
+      "bytes": 11357,
+      "sha256": "41e66719f742b5b7434f25086022856ab66ac446b0582a5fd8bd3f481701156e"
+    },
+    {
+      "path": ".cache/ios-implementation-20260919/starter-stages.json",
+      "bytes": 115008,
+      "sha256": "93ae2f77422558ef43eb0d3375b078fb3f3c17aaf750e8abc08ccabcd773c94c"
+    },
+    {
+      "path": ".cache/ios-native-evidence/shader-report.json",
+      "bytes": 737,
+      "sha256": "c88b7e9998b68619bbdff42a4d2e661979ae4b3b8fdb374cd0dc88554d6da75b"
+    },
+    {
+      "path": "studio/.cache/ios-studio-integration-report.json",
+      "bytes": 2638,
+      "sha256": "f4cfa747892a635e6aa49ff44a84777fd6513ca0af2d601c6433494097fb0e63"
+    }
+  ],
+  "historical_release_preserved": [
+    {
+      "path": "dist/Langmake-0.4.1/langmake.exe",
+      "bytes": 33601305,
+      "sha256": "73d34460ead0bef14046ad1b6b6607d3ee0f0616a5fae329b5c716b7de67ed40"
+    },
+    {
+      "path": "dist/Langmake-0.4.1-release.json",
+      "bytes": 3211,
+      "sha256": "2390dfcf22fd640da6ebd568214aa7c7d5df3a829689720e19971971142b1eba"
+    },
+    {
+      "path": "docs/releases/0.4.1-evidence.json",
+      "bytes": 9091,
+      "sha256": "481d7c240c0d547ca89075c49c2d93f5bea36c472ceba2e946f83401e7802368"
+    },
+    {
+      "path": "dist/Langmake-0.4.1-windows-x64.zip",
+      "bytes": 43293404,
+      "sha256": "4e9364280e6090b1d557e40389a6306924590ec44628f43ea8b38d1de32d9735"
+    },
+    {
+      "path": "dist/Langmake-Studio-0.4.1-windows-x64.zip",
+      "bytes": 201540060,
+      "sha256": "c543c890cc7381d9a32afb993ddd5c41e1453b0d92d1a3c25648bbab717d0537"
+    }
+  ]
+}

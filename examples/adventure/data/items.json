@@ -1,0 +1,11 @@
+{
+  "coil": {
+    "name": "Relay coil",
+    "limit": 9
+  },
+  "tuner": {
+    "name": "Signal tuner",
+    "limit": 1,
+    "slot": "hand"
+  }
+}

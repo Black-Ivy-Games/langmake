@@ -1,0 +1,179 @@
+Khronos graphics header notices retained from the pinned bgfx source.
+Source paths and upstream copyright/license blocks follow.
+
+Files:
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/EGL/egl.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/EGL/eglext.h
+
+/*
+** Copyright 2013-2020 The Khronos Group Inc.
+** SPDX-License-Identifier: Apache-2.0
+**
+** This header is generated from the Khronos EGL XML API Registry.
+** The current version of the Registry, generator scripts
+** used to make the header, and the header can be found at
+**   http://www.khronos.org/registry/egl
+**
+** Khronos $Git commit SHA1: bd4838f57c $ on $Git commit date: 2024-09-09 22:54:26 -0600 $
+*/
+
+Files:
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/EGL/eglplatform.h
+
+/*
+** Copyright 2007-2020 The Khronos Group Inc.
+** SPDX-License-Identifier: Apache-2.0
+*/
+
+Files:
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/gl/glcorearb.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/gl/glext.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/GLES2/gl2ext.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/GLES3/gl3.h
+
+/*
+** Copyright 2013-2025 The Khronos Group Inc.
+** SPDX-License-Identifier: MIT
+**
+** This header is generated from the Khronos OpenGL / OpenGL ES XML
+** API Registry. The current version of the Registry, generator scripts
+** used to make the header, and the header can be found at
+**   https://github.com/KhronosGroup/OpenGL-Registry
+*/
+
+Files:
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/GLES3/gl31.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/GLES3/gl32.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/glx/glxext.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/wgl/wgl.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/wgl/wglext.h
+
+/*
+** Copyright 2013-2020 The Khronos Group Inc.
+** SPDX-License-Identifier: MIT
+**
+** This header is generated from the Khronos OpenGL / OpenGL ES XML
+** API Registry. The current version of the Registry, generator scripts
+** used to make the header, and the header can be found at
+**   https://github.com/KhronosGroup/OpenGL-Registry
+*/
+
+Files:
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/GLES3/gl3platform.h
+
+/*
+** Copyright 2017-2020 The Khronos Group Inc.
+** SPDX-License-Identifier: Apache-2.0
+*/
+
+Files:
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/KHR/khrplatform.h
+
+/*
+** Copyright (c) 2008-2018 The Khronos Group Inc.
+**
+** Permission is hereby granted, free of charge, to any person obtaining a
+** copy of this software and/or associated documentation files (the
+** "Materials"), to deal in the Materials without restriction, including
+** without limitation the rights to use, copy, modify, merge, publish,
+** distribute, sublicense, and/or sell copies of the Materials, and to
+** permit persons to whom the Materials are furnished to do so, subject to
+** the following conditions:
+**
+** The above copyright notice and this permission notice shall be included
+** in all copies or substantial portions of the Materials.
+**
+** THE MATERIALS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+** EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+** MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+** IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+** CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+** TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+** MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
+*/
+
+Files:
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_icd.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_layer.h
+
+/*
+ * Copyright 2015-2023 The Khronos Group Inc.
+ * Copyright 2015-2023 Valve Corporation
+ * Copyright 2015-2023 LunarG, Inc.
+ * SPDX-License-Identifier: Apache-2.0 OR MIT
+ */
+
+Files:
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_platform.h
+
+/*
+** Copyright 2014-2026 The Khronos Group Inc.
+** SPDX-License-Identifier: Apache-2.0 OR MIT
+*/
+
+Files:
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_sdk_platform.h
+
+/*
+ * Copyright (c) 2015-2023 LunarG, Inc.
+ * Copyright (c) 2015-2023 The Khronos Group Inc.
+ * Copyright (c) 2015-2023 Valve Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+Files:
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_av1std.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_av1std_decode.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_av1std_encode.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_h264std.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_h264std_decode.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_h264std_encode.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_h265std.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_h265std_decode.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_h265std_encode.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_vp9std.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codec_vp9std_decode.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vk_video/vulkan_video_codecs_common.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_android.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_beta.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_core.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_directfb.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_fuchsia.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_ggp.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_ios.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_macos.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_metal.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_ohos.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_screen.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_ubm.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_vi.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_wayland.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_win32.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_xcb.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_xlib.h
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan_xlib_xrandr.h
+
+/*
+** Copyright 2015-2026 The Khronos Group Inc.
+**
+** SPDX-License-Identifier: Apache-2.0 OR MIT
+*/
+
+Files:
+.deps/source/bgfx.cmake/bgfx/3rdparty/khronos/vulkan-local/vulkan.h
+
+/*
+** Copyright 2015-2026 The Khronos Group Inc.
+** SPDX-License-Identifier: Apache-2.0 OR MIT
+*/

@@ -1,0 +1,441 @@
+{
+  "schema_version": 1,
+  "description": "Original moonling: faceted lime body, expressive dark eyes, six native CSG tentacles. Static model; scene/gameplay may rotate it, no skeletal animation is implied.",
+  "parts": [
+    {
+      "id": "body",
+      "color": "#90D973",
+      "geometry": {
+        "op": "sphere",
+        "radius": 0.7,
+        "segments": 28,
+        "scale": [
+          1.15,
+          0.95,
+          0.8
+        ],
+        "translate": [
+          0,
+          0.1,
+          0
+        ]
+      }
+    },
+    {
+      "id": "belly",
+      "color": "#C7EF91",
+      "geometry": {
+        "op": "sphere",
+        "radius": 0.48,
+        "segments": 24,
+        "scale": [
+          1,
+          0.65,
+          0.25
+        ],
+        "translate": [
+          0,
+          -0.1,
+          0.46
+        ]
+      }
+    },
+    {
+      "id": "mouth",
+      "color": "#203049",
+      "geometry": {
+        "op": "sphere",
+        "radius": 0.08,
+        "segments": 12,
+        "scale": [
+          1,
+          0.4,
+          0.3
+        ],
+        "translate": [
+          0,
+          -0.16,
+          0.575
+        ]
+      }
+    },
+    {
+      "id": "left_eye",
+      "color": "#203049",
+      "geometry": {
+        "op": "sphere",
+        "radius": 0.23,
+        "segments": 20,
+        "scale": [
+          0.85,
+          1.05,
+          0.4
+        ],
+        "translate": [
+          -0.29,
+          0.26,
+          0.53
+        ]
+      }
+    },
+    {
+      "id": "left_glint",
+      "color": "#F1FCFF",
+      "geometry": {
+        "op": "sphere",
+        "radius": 0.07,
+        "segments": 12,
+        "scale": [
+          0.8,
+          1,
+          0.35
+        ],
+        "translate": [
+          -0.32499999999999996,
+          0.33,
+          0.617
+        ]
+      }
+    },
+    {
+      "id": "left_antenna",
+      "color": "#567A65",
+      "geometry": {
+        "op": "cylinder",
+        "radius": 0.035,
+        "height": 0.4,
+        "segments": 8,
+        "rotate": [
+          0,
+          0,
+          -20
+        ],
+        "translate": [
+          -0.3915,
+          0.85,
+          0
+        ]
+      }
+    },
+    {
+      "id": "left_antenna_tip",
+      "color": "#A588F0",
+      "geometry": {
+        "op": "sphere",
+        "radius": 0.09,
+        "segments": 12,
+        "translate": [
+          -0.44949999999999996,
+          1.06,
+          0
+        ]
+      }
+    },
+    {
+      "id": "right_eye",
+      "color": "#203049",
+      "geometry": {
+        "op": "sphere",
+        "radius": 0.23,
+        "segments": 20,
+        "scale": [
+          0.85,
+          1.05,
+          0.4
+        ],
+        "translate": [
+          0.29,
+          0.26,
+          0.53
+        ]
+      }
+    },
+    {
+      "id": "right_glint",
+      "color": "#F1FCFF",
+      "geometry": {
+        "op": "sphere",
+        "radius": 0.07,
+        "segments": 12,
+        "scale": [
+          0.8,
+          1,
+          0.35
+        ],
+        "translate": [
+          0.255,
+          0.33,
+          0.617
+        ]
+      }
+    },
+    {
+      "id": "right_antenna",
+      "color": "#567A65",
+      "geometry": {
+        "op": "cylinder",
+        "radius": 0.035,
+        "height": 0.4,
+        "segments": 8,
+        "rotate": [
+          0,
+          0,
+          20
+        ],
+        "translate": [
+          0.3915,
+          0.85,
+          0
+        ]
+      }
+    },
+    {
+      "id": "right_antenna_tip",
+      "color": "#A588F0",
+      "geometry": {
+        "op": "sphere",
+        "radius": 0.09,
+        "segments": 12,
+        "translate": [
+          0.44949999999999996,
+          1.06,
+          0
+        ]
+      }
+    },
+    {
+      "id": "tentacle_0",
+      "color": "#65AD74",
+      "geometry": {
+        "op": "union",
+        "children": [
+          {
+            "op": "sphere",
+            "radius": 0.19,
+            "segments": 16,
+            "scale": [
+              1,
+              1.7,
+              1
+            ],
+            "translate": [
+              0.5,
+              -0.5,
+              0.0
+            ]
+          },
+          {
+            "op": "sphere",
+            "radius": 0.16,
+            "segments": 16,
+            "scale": [
+              1.25,
+              0.65,
+              1
+            ],
+            "translate": [
+              0.625,
+              -0.77,
+              0.0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "tentacle_1",
+      "color": "#65AD74",
+      "geometry": {
+        "op": "union",
+        "children": [
+          {
+            "op": "sphere",
+            "radius": 0.19,
+            "segments": 16,
+            "scale": [
+              1,
+              1.7,
+              1
+            ],
+            "translate": [
+              0.25000000000000006,
+              -0.5,
+              0.32908965343808666
+            ]
+          },
+          {
+            "op": "sphere",
+            "radius": 0.16,
+            "segments": 16,
+            "scale": [
+              1.25,
+              0.65,
+              1
+            ],
+            "translate": [
+              0.31250000000000006,
+              -0.77,
+              0.41136206679760834
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "tentacle_2",
+      "color": "#65AD74",
+      "geometry": {
+        "op": "union",
+        "children": [
+          {
+            "op": "sphere",
+            "radius": 0.19,
+            "segments": 16,
+            "scale": [
+              1,
+              1.7,
+              1
+            ],
+            "translate": [
+              -0.2499999999999999,
+              -0.5,
+              0.3290896534380867
+            ]
+          },
+          {
+            "op": "sphere",
+            "radius": 0.16,
+            "segments": 16,
+            "scale": [
+              1.25,
+              0.65,
+              1
+            ],
+            "translate": [
+              -0.3124999999999999,
+              -0.77,
+              0.4113620667976084
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "tentacle_3",
+      "color": "#65AD74",
+      "geometry": {
+        "op": "union",
+        "children": [
+          {
+            "op": "sphere",
+            "radius": 0.19,
+            "segments": 16,
+            "scale": [
+              1,
+              1.7,
+              1
+            ],
+            "translate": [
+              -0.5,
+              -0.5,
+              4.6536578367599424e-17
+            ]
+          },
+          {
+            "op": "sphere",
+            "radius": 0.16,
+            "segments": 16,
+            "scale": [
+              1.25,
+              0.65,
+              1
+            ],
+            "translate": [
+              -0.625,
+              -0.77,
+              5.817072295949928e-17
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "tentacle_4",
+      "color": "#65AD74",
+      "geometry": {
+        "op": "union",
+        "children": [
+          {
+            "op": "sphere",
+            "radius": 0.19,
+            "segments": 16,
+            "scale": [
+              1,
+              1.7,
+              1
+            ],
+            "translate": [
+              -0.2500000000000002,
+              -0.5,
+              -0.3290896534380866
+            ]
+          },
+          {
+            "op": "sphere",
+            "radius": 0.16,
+            "segments": 16,
+            "scale": [
+              1.25,
+              0.65,
+              1
+            ],
+            "translate": [
+              -0.3125000000000003,
+              -0.77,
+              -0.41136206679760823
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "tentacle_5",
+      "color": "#65AD74",
+      "geometry": {
+        "op": "union",
+        "children": [
+          {
+            "op": "sphere",
+            "radius": 0.19,
+            "segments": 16,
+            "scale": [
+              1,
+              1.7,
+              1
+            ],
+            "translate": [
+              0.25000000000000006,
+              -0.5,
+              -0.32908965343808666
+            ]
+          },
+          {
+            "op": "sphere",
+            "radius": 0.16,
+            "segments": 16,
+            "scale": [
+              1.25,
+              0.65,
+              1
+            ],
+            "translate": [
+              0.31250000000000006,
+              -0.77,
+              -0.41136206679760834
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

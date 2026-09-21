@@ -1,0 +1,34 @@
+/build/
+/.deps/
+/.cache/
+/dist/
+/evidence/
+**/.langmake/
+*.log
+
+# Personal game projects belong in their own repositories; bundled examples stay tracked.
+/games/
+
+# Local dependencies, generated caches and editor/OS metadata.
+**/node_modules/
+**/__pycache__/
+*.py[cod]
+**/.gradle/
+.DS_Store
+Thumbs.db
+.vs/
+
+# Local credentials and signing material are never engine source.
+.env
+.env.*
+!.env.example
+!.env.template
+**/.ssh/
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.mobileprovision
+local.properties

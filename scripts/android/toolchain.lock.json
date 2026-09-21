@@ -1,0 +1,107 @@
+{
+  "schema": 1,
+  "platform": "windows-x64",
+  "agp": "8.10.1",
+  "compile_sdk": 36,
+  "target_sdk": 36,
+  "min_sdk": 26,
+  "ndk": "28.2.13676358",
+  "build_tools": "36.0.0",
+  "gradle": {
+    "version": "8.11.1",
+    "url": "https://services.gradle.org/distributions/gradle-8.11.1-bin.zip",
+    "hash_algorithm": "sha256",
+    "hash": "f397b287023acdba1e9f6fc5ea72d22dd63669d59ed4a289a29b1a76eee151c6",
+    "archive_root": "gradle-8.11.1"
+  },
+  "jdk": {
+    "version": "17.0.18+8",
+    "url": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.18%2B8/OpenJDK17U-jdk_x64_windows_hotspot_17.0.18_8.zip",
+    "hash_algorithm": "sha256",
+    "hash": "c24e6215fa75f861d2a900ceec67c620cd2eb6dfb81541087d5981293b16f0e5",
+    "size": 190661454,
+    "archive_root": "jdk-17.0.18+8"
+  },
+  "sdk_packages": [
+    {
+      "id": "platforms;android-36",
+      "url": "https://dl.google.com/android/repository/platform-36_r02.zip",
+      "hash_algorithm": "sha1",
+      "hash": "2c1a80dd4d9f7d0e6dd336ec603d9b5c55a6f576",
+      "size": 65878410,
+      "destination": "platforms/android-36",
+      "archive_root": "android-36",
+      "revision": "2.0.0"
+    },
+    {
+      "id": "ndk;28.2.13676358",
+      "url": "https://dl.google.com/android/repository/android-ndk-r28c-windows.zip",
+      "hash_algorithm": "sha1",
+      "hash": "086bba43ff2f5eb0e387b15c8278bb4e0d89ba1d",
+      "size": 748118221,
+      "destination": "ndk/28.2.13676358",
+      "archive_root": "android-ndk-r28c",
+      "revision": "28.2.13676358"
+    },
+    {
+      "id": "build-tools;36.0.0",
+      "url": "https://dl.google.com/android/repository/build-tools_r36_windows.zip",
+      "hash_algorithm": "sha1",
+      "hash": "f16ccffd34de8790dede813a6c7d8e2c11a27b50",
+      "size": 58699878,
+      "destination": "build-tools/36.0.0",
+      "archive_root": "android-16",
+      "revision": "36.0.0"
+    },
+    {
+      "id": "cmdline-tools;19.0",
+      "url": "https://dl.google.com/android/repository/commandlinetools-win-13114758_latest.zip",
+      "hash_algorithm": "sha1",
+      "hash": "54a582f3bf73e04253602f2d1c80bd5868aac115",
+      "size": 143040480,
+      "destination": "cmdline-tools/19.0",
+      "archive_root": "cmdline-tools",
+      "revision": "19.0.0"
+    },
+    {
+      "id": "platform-tools",
+      "url": "https://dl.google.com/android/repository/platform-tools_r37.0.1-win.zip",
+      "hash_algorithm": "sha1",
+      "hash": "e03e78b1d80b396f1c3358e31251cb31740e1110",
+      "size": 8044989,
+      "destination": "platform-tools",
+      "archive_root": "platform-tools",
+      "revision": "37.0.1"
+    }
+  ],
+  "provenance": [
+    "https://dl.google.com/android/repository/repository2-3.xml",
+    "https://api.adoptium.net/v3/assets/version/17.0.18%2B8?architecture=x64&heap_size=normal&image_type=jdk&jvm_impl=hotspot&os=windows&vendor=eclipse",
+    "https://gradle.org/release-checksums/",
+    "https://developer.android.com/build/releases/agp-8-10-0-release-notes",
+    "https://dl.google.com/android/repository/sys-img/android/sys-img2-3.xml"
+  ],
+  "sdk_license_url": "https://developer.android.com/studio/terms",
+  "emulator_packages": [
+    {
+      "id": "emulator",
+      "url": "https://dl.google.com/android/repository/emulator-windows_x64-15917651.zip",
+      "hash_algorithm": "sha1",
+      "hash": "54fa750822ff462d57e04fc8e98e60f08df2bb61",
+      "size": 441926448,
+      "destination": "emulator",
+      "archive_root": "emulator",
+      "revision": "37.1.11"
+    },
+    {
+      "id": "system-images;android-36;default;x86_64",
+      "url": "https://dl.google.com/android/repository/sys-img/android/x86_64-36_r02.zip",
+      "hash_algorithm": "sha1",
+      "hash": "829c076e8ff448a336097ae25a355b495ba36e2c",
+      "size": 844217077,
+      "destination": "system-images/android-36/default/x86_64",
+      "archive_root": "x86_64",
+      "revision": "2.0.0"
+    }
+  ]
+}

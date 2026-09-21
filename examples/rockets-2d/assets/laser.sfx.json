@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "type": "music",
+  "title": "Pulse laser",
+  "bpm": 120,
+  "ppq": 96,
+  "length": 48,
+  "gain": 0.65,
+  "seed": 93,
+  "polyphony": 4,
+  "instruments": {
+    "laser": {
+      "wave": "pulse",
+      "pulse_width": 0.2,
+      "gain": 0.25,
+      "attack": 0.002,
+      "decay": 0.1,
+      "sustain": 0.1,
+      "release": 0.035
+    },
+    "click": {
+      "wave": "noise",
+      "gain": 0.12,
+      "attack": 0.001,
+      "decay": 0.03,
+      "sustain": 0,
+      "release": 0.01
+    }
+  },
+  "notes": [
+    {
+      "tick": 0,
+      "duration": 36,
+      "note": 96,
+      "instrument": "laser",
+      "velocity": 1,
+      "slide_to": 48
+    },
+    {
+      "tick": 0,
+      "duration": 8,
+      "note": 60,
+      "instrument": "click",
+      "velocity": 1
+    }
+  ]
+}

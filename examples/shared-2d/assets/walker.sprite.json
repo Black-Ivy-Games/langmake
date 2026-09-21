@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "width": 8,
+  "height": 8,
+  "palette": {
+    ".": "#00000000",
+    "G": "#A1D99C",
+    "D": "#244251"
+  },
+  "frames": [
+    {
+      "id": "stand",
+      "pixels": [
+        "..GGGG..",
+        ".GGGGGG.",
+        ".GDDDDG.",
+        "..GGGG..",
+        "..GGGG..",
+        ".GGGGGG.",
+        "..G..G..",
+        ".GG..GG."
+      ]
+    }
+  ]
+}

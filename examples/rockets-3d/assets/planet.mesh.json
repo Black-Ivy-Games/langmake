@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "description": "Original faceted ocean planet and CSG orbital ring.",
+  "parts": [
+    {
+      "id": "ocean",
+      "color": "#32AAC5",
+      "geometry": {
+        "op": "sphere",
+        "radius": 1,
+        "segments": 32
+      }
+    },
+    {
+      "id": "north_island",
+      "color": "#84D694",
+      "geometry": {
+        "op": "sphere",
+        "radius": 0.44,
+        "segments": 16,
+        "scale": [
+          1,
+          0.45,
+          1
+        ],
+        "rotate": [
+          25,
+          0,
+          15
+        ],
+        "translate": [
+          -0.32,
+          0.65,
+          0.5
+        ]
+      }
+    },
+    {
+      "id": "south_island",
+      "color": "#64C88E",
+      "geometry": {
+        "op": "sphere",
+        "radius": 0.32,
+        "segments": 16,
+        "scale": [
+          1,
+          0.45,
+          1
+        ],
+        "rotate": [
+          -25,
+          0,
+          -15
+        ],
+        "translate": [
+          0.45,
+          -0.55,
+          0.62
+        ]
+      }
+    },
+    {
+      "id": "orbital_ring",
+      "color": "#F59898",
+      "geometry": {
+        "op": "difference",
+        "children": [
+          {
+            "op": "cylinder",
+            "radius": 1.55,
+            "height": 0.06,
+            "segments": 48
+          },
+          {
+            "op": "cylinder",
+            "radius": 1.23,
+            "height": 0.1,
+            "segments": 48
+          }
+        ],
+        "rotate": [
+          0,
+          0,
+          20
+        ]
+      }
+    }
+  ]
+}

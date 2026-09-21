@@ -1,0 +1,1551 @@
+{
+  "schema_version": 1,
+  "dimension": "3d",
+  "title": "Lantern Court",
+  "gravity": [
+    0,
+    -18,
+    0
+  ],
+  "camera": {
+    "position": [
+      19,
+      20,
+      25
+    ],
+    "target": [
+      0,
+      1,
+      0
+    ]
+  },
+  "script": "scripts/game.luau",
+  "entities": [
+    {
+      "id": "player",
+      "name": "Lantern keeper",
+      "shape": "box",
+      "body": "dynamic",
+      "role": "player",
+      "position": [
+        -7,
+        1.2,
+        -7
+      ],
+      "size": [
+        0.8,
+        1.3,
+        0.8
+      ],
+      "color": [
+        0.92,
+        0.98,
+        1,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "courtyard_floor",
+      "name": "courtyard floor",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        0,
+        -0.5,
+        0
+      ],
+      "size": [
+        24,
+        1,
+        24
+      ],
+      "color": [
+        0.15,
+        0.22,
+        0.29,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "wall_north",
+      "name": "wall north",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        0,
+        0.6,
+        -12
+      ],
+      "size": [
+        24,
+        1.2,
+        0.6
+      ],
+      "color": [
+        0.28,
+        0.37,
+        0.42,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "wall_south",
+      "name": "wall south",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        0,
+        0.6,
+        12
+      ],
+      "size": [
+        24,
+        1.2,
+        0.6
+      ],
+      "color": [
+        0.28,
+        0.37,
+        0.42,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "wall_west",
+      "name": "wall west",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        -12,
+        0.6,
+        0
+      ],
+      "size": [
+        0.6,
+        1.2,
+        24
+      ],
+      "color": [
+        0.28,
+        0.37,
+        0.42,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "wall_east",
+      "name": "wall east",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        12,
+        0.6,
+        0
+      ],
+      "size": [
+        0.6,
+        1.2,
+        24
+      ],
+      "color": [
+        0.28,
+        0.37,
+        0.42,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "walkway_x",
+      "name": "walkway x",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        0,
+        0.012,
+        0
+      ],
+      "size": [
+        23.3,
+        0.02,
+        2.3
+      ],
+      "color": [
+        0.28,
+        0.4,
+        0.46,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "walkway_z",
+      "name": "walkway z",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        0,
+        0.022,
+        0
+      ],
+      "size": [
+        2.3,
+        0.02,
+        23.3
+      ],
+      "color": [
+        0.28,
+        0.4,
+        0.46,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "altar_base",
+      "name": "altar base",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        0,
+        0.2,
+        0
+      ],
+      "size": [
+        5,
+        0.4,
+        5
+      ],
+      "color": [
+        0.33,
+        0.42,
+        0.48,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "altar_step",
+      "name": "altar step",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        0,
+        0.5,
+        0
+      ],
+      "size": [
+        3.5,
+        0.2,
+        3.5
+      ],
+      "color": [
+        0.43,
+        0.54,
+        0.57,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "beacon",
+      "name": "Courtyard beacon",
+      "shape": "box",
+      "body": "none",
+      "role": "goal",
+      "position": [
+        0,
+        1.8,
+        0
+      ],
+      "size": [
+        0.45,
+        2.4,
+        0.45
+      ],
+      "color": [
+        0.22,
+        0.75,
+        0.88,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "beacon_top",
+      "name": "beacon top",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        0,
+        3.15,
+        0
+      ],
+      "size": [
+        0.9,
+        0.25,
+        0.9
+      ],
+      "color": [
+        0.54,
+        0.94,
+        1,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "west_garden",
+      "name": "west garden",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        -8,
+        0.2,
+        0
+      ],
+      "size": [
+        3,
+        0.4,
+        5
+      ],
+      "color": [
+        0.16,
+        0.37,
+        0.29,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "east_garden",
+      "name": "east garden",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        8,
+        0.2,
+        0
+      ],
+      "size": [
+        3,
+        0.4,
+        5
+      ],
+      "color": [
+        0.16,
+        0.37,
+        0.29,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "north_bench",
+      "name": "north bench",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        -4,
+        0.4,
+        -6
+      ],
+      "size": [
+        3,
+        0.8,
+        1
+      ],
+      "color": [
+        0.49,
+        0.34,
+        0.24,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "south_bench",
+      "name": "south bench",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        4,
+        0.4,
+        6
+      ],
+      "size": [
+        3,
+        0.8,
+        1
+      ],
+      "color": [
+        0.49,
+        0.34,
+        0.24,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "orb_west",
+      "name": "west lantern",
+      "shape": "sphere",
+      "body": "none",
+      "role": "collectible",
+      "position": [
+        -9,
+        1.4,
+        -8
+      ],
+      "size": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "color": [
+        1,
+        0.76,
+        0.25,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "orb_north",
+      "name": "north lantern",
+      "shape": "sphere",
+      "body": "none",
+      "role": "collectible",
+      "position": [
+        8,
+        1.4,
+        -9
+      ],
+      "size": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "color": [
+        1,
+        0.76,
+        0.25,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "orb_east",
+      "name": "east lantern",
+      "shape": "sphere",
+      "body": "none",
+      "role": "collectible",
+      "position": [
+        9,
+        1.4,
+        8
+      ],
+      "size": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "color": [
+        1,
+        0.76,
+        0.25,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "orb_south",
+      "name": "south lantern",
+      "shape": "sphere",
+      "body": "none",
+      "role": "collectible",
+      "position": [
+        -8,
+        1.4,
+        9
+      ],
+      "size": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "color": [
+        1,
+        0.76,
+        0.25,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "orb_altar",
+      "name": "altar lantern",
+      "shape": "sphere",
+      "body": "none",
+      "role": "collectible",
+      "position": [
+        0,
+        2.8,
+        0
+      ],
+      "size": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "color": [
+        1,
+        0.76,
+        0.25,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "column_0",
+      "name": "column 0",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        -5,
+        1.5,
+        -3
+      ],
+      "size": [
+        0.8,
+        3,
+        0.8
+      ],
+      "color": [
+        0.35,
+        0.45,
+        0.51,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "column_cap_0",
+      "name": "column cap 0",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -5,
+        3.1,
+        -3
+      ],
+      "size": [
+        1.2,
+        0.2,
+        1.2
+      ],
+      "color": [
+        0.5,
+        0.63,
+        0.66,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "column_lamp_0",
+      "name": "column lamp 0",
+      "shape": "sphere",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -5,
+        3.5,
+        -3
+      ],
+      "size": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "color": [
+        0.4,
+        0.95,
+        0.86,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "column_1",
+      "name": "column 1",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        -5,
+        1.5,
+        3
+      ],
+      "size": [
+        0.8,
+        3,
+        0.8
+      ],
+      "color": [
+        0.35,
+        0.45,
+        0.51,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "column_cap_1",
+      "name": "column cap 1",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -5,
+        3.1,
+        3
+      ],
+      "size": [
+        1.2,
+        0.2,
+        1.2
+      ],
+      "color": [
+        0.5,
+        0.63,
+        0.66,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "column_lamp_1",
+      "name": "column lamp 1",
+      "shape": "sphere",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -5,
+        3.5,
+        3
+      ],
+      "size": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "color": [
+        0.4,
+        0.95,
+        0.86,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "column_2",
+      "name": "column 2",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        5,
+        1.5,
+        -3
+      ],
+      "size": [
+        0.8,
+        3,
+        0.8
+      ],
+      "color": [
+        0.35,
+        0.45,
+        0.51,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "column_cap_2",
+      "name": "column cap 2",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        5,
+        3.1,
+        -3
+      ],
+      "size": [
+        1.2,
+        0.2,
+        1.2
+      ],
+      "color": [
+        0.5,
+        0.63,
+        0.66,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "column_lamp_2",
+      "name": "column lamp 2",
+      "shape": "sphere",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        5,
+        3.5,
+        -3
+      ],
+      "size": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "color": [
+        0.4,
+        0.95,
+        0.86,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "column_3",
+      "name": "column 3",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        5,
+        1.5,
+        3
+      ],
+      "size": [
+        0.8,
+        3,
+        0.8
+      ],
+      "color": [
+        0.35,
+        0.45,
+        0.51,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "column_cap_3",
+      "name": "column cap 3",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        5,
+        3.1,
+        3
+      ],
+      "size": [
+        1.2,
+        0.2,
+        1.2
+      ],
+      "color": [
+        0.5,
+        0.63,
+        0.66,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "column_lamp_3",
+      "name": "column lamp 3",
+      "shape": "sphere",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        5,
+        3.5,
+        3
+      ],
+      "size": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "color": [
+        0.4,
+        0.95,
+        0.86,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "corner_plinth_0",
+      "name": "corner plinth 0",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        -10,
+        0.4,
+        -10
+      ],
+      "size": [
+        1.4,
+        0.8,
+        1.4
+      ],
+      "color": [
+        0.3,
+        0.42,
+        0.47,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "corner_lantern_0",
+      "name": "corner lantern 0",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -10,
+        1.35,
+        -10
+      ],
+      "size": [
+        0.65,
+        1.1,
+        0.65
+      ],
+      "color": [
+        0.99,
+        0.65,
+        0.25,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "corner_plinth_1",
+      "name": "corner plinth 1",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        10,
+        0.4,
+        -10
+      ],
+      "size": [
+        1.4,
+        0.8,
+        1.4
+      ],
+      "color": [
+        0.3,
+        0.42,
+        0.47,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "corner_lantern_1",
+      "name": "corner lantern 1",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        10,
+        1.35,
+        -10
+      ],
+      "size": [
+        0.65,
+        1.1,
+        0.65
+      ],
+      "color": [
+        0.99,
+        0.65,
+        0.25,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "corner_plinth_2",
+      "name": "corner plinth 2",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        -10,
+        0.4,
+        10
+      ],
+      "size": [
+        1.4,
+        0.8,
+        1.4
+      ],
+      "color": [
+        0.3,
+        0.42,
+        0.47,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "corner_lantern_2",
+      "name": "corner lantern 2",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -10,
+        1.35,
+        10
+      ],
+      "size": [
+        0.65,
+        1.1,
+        0.65
+      ],
+      "color": [
+        0.99,
+        0.65,
+        0.25,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "corner_plinth_3",
+      "name": "corner plinth 3",
+      "shape": "box",
+      "body": "static",
+      "role": "decoration",
+      "position": [
+        10,
+        0.4,
+        10
+      ],
+      "size": [
+        1.4,
+        0.8,
+        1.4
+      ],
+      "color": [
+        0.3,
+        0.42,
+        0.47,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "corner_lantern_3",
+      "name": "corner lantern 3",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        10,
+        1.35,
+        10
+      ],
+      "size": [
+        0.65,
+        1.1,
+        0.65
+      ],
+      "color": [
+        0.99,
+        0.65,
+        0.25,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_x_0",
+      "name": "path light x 0",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -10,
+        0.07,
+        1.3
+      ],
+      "size": [
+        0.65,
+        0.1,
+        0.12
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_z_0",
+      "name": "path light z 0",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -1.3,
+        0.07,
+        -10
+      ],
+      "size": [
+        0.12,
+        0.1,
+        0.65
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_x_1",
+      "name": "path light x 1",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -8,
+        0.07,
+        1.3
+      ],
+      "size": [
+        0.65,
+        0.1,
+        0.12
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_z_1",
+      "name": "path light z 1",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -1.3,
+        0.07,
+        -8
+      ],
+      "size": [
+        0.12,
+        0.1,
+        0.65
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_x_2",
+      "name": "path light x 2",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -6,
+        0.07,
+        1.3
+      ],
+      "size": [
+        0.65,
+        0.1,
+        0.12
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_z_2",
+      "name": "path light z 2",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -1.3,
+        0.07,
+        -6
+      ],
+      "size": [
+        0.12,
+        0.1,
+        0.65
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_x_3",
+      "name": "path light x 3",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -4,
+        0.07,
+        1.3
+      ],
+      "size": [
+        0.65,
+        0.1,
+        0.12
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_z_3",
+      "name": "path light z 3",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -1.3,
+        0.07,
+        -4
+      ],
+      "size": [
+        0.12,
+        0.1,
+        0.65
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_x_4",
+      "name": "path light x 4",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -2,
+        0.07,
+        1.3
+      ],
+      "size": [
+        0.65,
+        0.1,
+        0.12
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_z_4",
+      "name": "path light z 4",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -1.3,
+        0.07,
+        -2
+      ],
+      "size": [
+        0.12,
+        0.1,
+        0.65
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_x_6",
+      "name": "path light x 6",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        2,
+        0.07,
+        1.3
+      ],
+      "size": [
+        0.65,
+        0.1,
+        0.12
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_z_6",
+      "name": "path light z 6",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -1.3,
+        0.07,
+        2
+      ],
+      "size": [
+        0.12,
+        0.1,
+        0.65
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_x_7",
+      "name": "path light x 7",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        4,
+        0.07,
+        1.3
+      ],
+      "size": [
+        0.65,
+        0.1,
+        0.12
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_z_7",
+      "name": "path light z 7",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -1.3,
+        0.07,
+        4
+      ],
+      "size": [
+        0.12,
+        0.1,
+        0.65
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_x_8",
+      "name": "path light x 8",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        6,
+        0.07,
+        1.3
+      ],
+      "size": [
+        0.65,
+        0.1,
+        0.12
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_z_8",
+      "name": "path light z 8",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -1.3,
+        0.07,
+        6
+      ],
+      "size": [
+        0.12,
+        0.1,
+        0.65
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_x_9",
+      "name": "path light x 9",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        8,
+        0.07,
+        1.3
+      ],
+      "size": [
+        0.65,
+        0.1,
+        0.12
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_z_9",
+      "name": "path light z 9",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -1.3,
+        0.07,
+        8
+      ],
+      "size": [
+        0.12,
+        0.1,
+        0.65
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_x_10",
+      "name": "path light x 10",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        10,
+        0.07,
+        1.3
+      ],
+      "size": [
+        0.65,
+        0.1,
+        0.12
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    },
+    {
+      "id": "path_light_z_10",
+      "name": "path light z 10",
+      "shape": "box",
+      "body": "none",
+      "role": "decoration",
+      "position": [
+        -1.3,
+        0.07,
+        10
+      ],
+      "size": [
+        0.12,
+        0.1,
+        0.65
+      ],
+      "color": [
+        0.58,
+        0.81,
+        0.72,
+        1
+      ],
+      "mass": 1,
+      "visible": true
+    }
+  ]
+}
+

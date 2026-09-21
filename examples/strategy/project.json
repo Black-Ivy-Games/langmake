@@ -1,0 +1,257 @@
+{
+  "schema_version": 2,
+  "title": "Mosslight Assembly",
+  "dimension": "3d",
+  "gravity": [
+    0,
+    -18,
+    0
+  ],
+  "camera": {
+    "position": [
+      0,
+      25,
+      24
+    ],
+    "target": [
+      0,
+      0,
+      0
+    ]
+  },
+  "script": "scripts/game.luau",
+  "entities": [
+    {
+      "id": "ground",
+      "position": [
+        0,
+        -0.5,
+        0
+      ],
+      "size": [
+        32,
+        1,
+        26
+      ],
+      "body": "static",
+      "role": "decoration",
+      "color": [
+        0.12,
+        0.2,
+        0.22,
+        1
+      ]
+    },
+    {
+      "id": "wall",
+      "position": [
+        0,
+        1,
+        0
+      ],
+      "size": [
+        2,
+        2,
+        11
+      ],
+      "body": "static",
+      "role": "decoration",
+      "color": [
+        0.35,
+        0.4,
+        0.48,
+        1
+      ]
+    },
+    {
+      "id": "player",
+      "position": [
+        -12,
+        1,
+        6
+      ],
+      "size": [
+        0.7,
+        1.8,
+        0.7
+      ],
+      "body": "dynamic",
+      "role": "player",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "shape": "capsule",
+      "controller": "character",
+      "asset": "robot",
+      "animation": "idle"
+    },
+    {
+      "id": "home",
+      "position": [
+        -7,
+        0.06,
+        -0.3
+      ],
+      "size": [
+        8,
+        0.1,
+        5
+      ],
+      "body": "none",
+      "role": "decoration",
+      "color": [
+        0.18,
+        0.4,
+        0.6,
+        1
+      ]
+    },
+    {
+      "id": "field",
+      "position": [
+        7.6,
+        0.06,
+        -0.3
+      ],
+      "size": [
+        8,
+        0.1,
+        5
+      ],
+      "body": "none",
+      "role": "decoration",
+      "color": [
+        0.65,
+        0.48,
+        0.18,
+        1
+      ]
+    }
+  ],
+  "modules": {
+    "inventory": "modules/inventory.luau",
+    "quests": "modules/quests.luau",
+    "dialogue": "modules/dialogue.luau",
+    "fsm": "modules/fsm.luau",
+    "combat": "modules/combat.luau",
+    "cinematics": "modules/cinematics.luau",
+    "orders": "modules/orders.luau"
+  },
+  "assets": {
+    "robot": {
+      "type": "model",
+      "path": "assets/robot.model.json"
+    },
+    "theme": {
+      "type": "music",
+      "path": "assets/theme.music.json"
+    }
+  },
+  "music": "theme",
+  "definitions": {
+    "items": "data/items.json",
+    "quests": "data/quests.json"
+  },
+  "ui": {
+    "documents": {
+      "hud": "ui/hud.rml"
+    },
+    "styles": {
+      "hud": "ui/hud.rcss"
+    }
+  },
+  "input": {
+    "actions": {
+      "interact": {
+        "keys": [
+          "E"
+        ],
+        "gamepad": "south"
+      },
+      "attack": {
+        "keys": [
+          "Space"
+        ],
+        "gamepad": "west"
+      },
+      "choice1": {
+        "keys": [
+          "1"
+        ]
+      },
+      "choice2": {
+        "keys": [
+          "2"
+        ]
+      },
+      "save": {
+        "keys": [
+          "F6"
+        ]
+      },
+      "load": {
+        "keys": [
+          "F9"
+        ]
+      },
+      "command": {
+        "keys": [
+          "C"
+        ]
+      },
+      "recall": {
+        "keys": [
+          "V"
+        ]
+      },
+      "spawn": {
+        "keys": [
+          "N"
+        ]
+      },
+      "dismiss": {
+        "keys": [
+          "H"
+        ]
+      },
+      "select_all": {
+        "keys": [
+          "1"
+        ]
+      },
+      "select_first": {
+        "keys": [
+          "2"
+        ]
+      },
+      "select_second": {
+        "keys": [
+          "3"
+        ]
+      },
+      "follow": {
+        "keys": [
+          "B"
+        ]
+      },
+      "regroup": {
+        "keys": [
+          "J"
+        ]
+      }
+    }
+  },
+  "prefabs": {
+    "worker": "prefabs/worker.json"
+  },
+  "navigation": {
+    "cell_size": 0.25,
+    "cell_height": 0.1,
+    "agent_radius": 0.15,
+    "agent_height": 0.8,
+    "max_step": 0.3
+  }
+}

@@ -1,0 +1,4 @@
+
+#hud { width: 58%; }
+#lamp-button { width: 128dp; height: 88dp; }
+#controls { display: none; }
