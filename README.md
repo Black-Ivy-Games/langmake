@@ -1,4 +1,4 @@
-# Langmake â€” an agent-first game engine
+# Langmake — an agent-first game engine
 
 Langmake is an independent C++20 runtime with Luau gameplay and JSON projects. External coding agents create games through files and commands. A native window lets the human developer play the result. The engine does not own conversation, inference, credentials or model selection; games run without an LLM account.
 
@@ -18,7 +18,7 @@ The [Android runtime and export tools](docs/18-android.md) build standalone game
 
 Langmake aims to dramatically reduce the time and effort a human needs to create the game they choose. **The human is the decision-making developer and primary gameplay playtester. AI agents are worker developers who turn that direction into working games.** The human owns the creative vision, priorities and acceptance of the result.
 
-The normal loop is: human direction â†’ agent implementation and technical checks â†’ human playtesting and feedback â†’ the next iteration. Agents should use Langmake's native validation, simulation, state inspection and captures to catch defects, then provide a playable milestone with clear controls and a few focused feedback prompts. Automated checks do not establish whether a game feels right, is enjoyable or fulfills the human's vision.
+The normal loop is: human direction → agent implementation and technical checks → human playtesting and feedback → the next iteration. Agents should use Langmake's native validation, simulation, state inspection and captures to catch defects, then provide a playable milestone with clear controls and a few focused feedback prompts. Automated checks do not establish whether a game feels right, is enjoyable or fulfills the human's vision.
 
 Computer-use gameplay is supplementary when requested or needed for a focused input/UI investigation; it is not the default replacement for the human playing. Agents should work autonomously within the authorized iteration, preserve an active human play session, and report technical verification separately from human feedback. **Before creating a game, read the [human-directed workflow in the agent guide](docs/08-agent-api.md#human-directed-development-and-playtesting).**
 
