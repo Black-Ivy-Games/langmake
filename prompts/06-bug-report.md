@@ -50,4 +50,6 @@ game, reopen, load and talk to that recipient again. Fix duplicate rewards
 while preserving earned stamps and the remaining delivery objectives.
 ```
 
+For script interruptions, retain the full structured diagnostic, actual runtime path and source revision. New source builds expose separate CPU/elapsed timing, bounded stack locations and optional binding measurements; see [script execution](../docs/39-script-execution-guide.md). Do not infer a busy loop from elapsed time alone or resume a partially failed world as a completed update. A custom frontend must handle the engine exception itself. Historical binaries may lack the new fields.
+
 Return to the [library](README.md). For a subjective change in feel, use [feedback and iteration](05-feedback-iteration.md).

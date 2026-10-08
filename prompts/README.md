@@ -84,6 +84,7 @@ September 18, 2026 repair review (0.3.0): reviewed the shared workflow, feedback
 | Agent workflow and commands | `docs/08-agent-api.md` | `AGENT-API.md` |
 | Project setup and repeatable verification | `docs/26-game-workflow.md`, `docs/25-workflow-implementation.md` | `GAME-WORKFLOW.md`, `WORKFLOW-PROTOCOL.md` |
 | Runtime systems and limits | `docs/13-runtime-guide.md` | `RUNTIME-GUIDE.md` |
+| Script clocks, failure diagnostics and embedded recovery | `docs/39-script-execution-guide.md` | `SCRIPT-EXECUTION.md` |
 | Native assets | `docs/10-text-assets.md` | `TEXT-ASSETS.md` |
 | Executed release evidence | `docs/releases/0.5.0-evidence.json`, `docs/20-android-qualification.md`, `docs/24-ios-qualification.md` | `api/release-evidence.json`, `ANDROID-QUALIFICATION.md`, `IOS-QUALIFICATION.md` |
 | Studio and provider handoff | `docs/17-studio.md` | `STUDIO.md` |
@@ -123,5 +124,7 @@ September 22, 2026 Studio usability review (0.5.0, studio2): reviewed the shared
 September 22, 2026 Poppleworks performance review (0.5.0 source): reviewed 00-workflow, 05-feedback-iteration, 06-bug-report, 07-assets, 09-android-game and 10-provider-handoff for opt-in Luau native compilation, bounded sprite atlases/batching, real-time catch-up pacing and full-save migration conversion. Existing examples remain applicable. Runtime guide documents fallback, limits and statistics. Require actual device performance and save restoration evidence; passing headless tests does not qualify responsiveness. Regenerate canonical documentation into new distributions; historical player qualification is unchanged.
 
 September 23, 2026 native material-grid review (0.5.0 source, classic-chemistry-v1): reviewed workflow, feedback, defect, assets and provider handoff prompts. Existing examples remain applicable. The new docs/38-material-grid-guide.md describes fixed material slots, grid/storage/surface budgets, lazy state provider limits, exact-save boundaries and Windows-only presentation qualification. Changed particle resolution requires separate fine-grid routes and legacy-save expansion checks; original-grid parity alone is insufficient. Regenerate canonical docs into the new Windows package. No mobile qualification is implied.
+
+October 8, 2026 script execution review (0.5.0 source, script execution feature/diagnostic revision 1): reviewed workflow, defect, provider-handoff and UI-layout briefs for the CPU clock, bounded diagnostics and failed-world recovery contract. Updated the defect guidance and source/portable discovery; the other examples remain applicable. Canonical guide: [script execution](../docs/39-script-execution-guide.md). Runtime evidence is recorded separately. No distributions were regenerated and no frontend integration or device qualification is implied.
 
 September 23, 2026 Poppleworks controls review: reviewed defect/feedback prompts for the optional bounded material Pull strength/hold arguments. Existing guidance applies; require pointer-release then Space UI regression and fluid suspension/release tests. Windows only; historical mobile builds unchanged.

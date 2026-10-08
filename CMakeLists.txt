@@ -286,7 +286,7 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/src/main.cpp" AND EXISTS "${CMAKE_SOURCE_DIR}/src
                 target_link_options(preview_session_tests PRIVATE -static -static-libgcc -static-libstdc++)
             endif()
         endif()
-        foreach(test project world assets music recorded_music model audio_mixer game_systems material_grid io ios_contract)
+        foreach(test project world script_execution assets music recorded_music model audio_mixer game_systems material_grid io ios_contract)
             if(EXISTS "${CMAKE_SOURCE_DIR}/tests/${test}_tests.cpp")
                 add_executable(${test}_tests "tests/${test}_tests.cpp")
                 target_link_libraries(${test}_tests PRIVATE langmake_core)

@@ -21,6 +21,13 @@ public:
     std::string message() const;
     const CompiledAssets& assets() const;
     double time() const;
+    // Passive observations: these never run bound state providers or game code.
+    std::uint64_t tick() const noexcept;
+    Json script_execution() const;
+    Json script_diagnostic() const;
+    // Host-owned optional measurements for input_events/ui_set/state_set.
+    // Set only while the VM is idle; disabled by default.
+    void set_script_profiling(bool enabled);
     Json audio_events() const;
     // Player save data is distinct from source checkpoints. Restore is transactional.
     Json save() const;

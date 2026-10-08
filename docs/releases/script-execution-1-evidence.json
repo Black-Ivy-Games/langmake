@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "engine_version": "0.5.0",
+  "feature": "script_execution",
+  "feature_revision": 1,
+  "diagnostic_version": 1,
+  "date": "2026-10-08",
+  "scope": "Engine source, public C++ runtime API, CLI discovery/profiling, regression fixtures and canonical engine documentation only.",
+  "git": {
+    "head": "3c55bae",
+    "branch": "main",
+    "existing_status_entries": 99,
+    "preexisting_dirty_work_preserved": true,
+    "committed": false
+  },
+  "platform": {
+    "executed": "Windows NT 10.0.26200.0, x64 Release, D3D11",
+    "android": "Source clock policy preserved; no new native build/device qualification.",
+    "ios": "Source clock policy preserved; no new native build/simulator/device qualification.",
+    "macos": "Prior elapsed clock policy retained; no native build/qualification."
+  },
+  "binary": {
+    "path": "build/langmake.exe",
+    "sha256": "1fe951934390a5b7a958e4196b101392ef083e56f88a4fe56448215baed70021",
+    "baseline_path": ".cache/script-budget-repair-20261008/before/langmake.exe",
+    "baseline_sha256": "d3e6bc04376ecc74209bfc7288a15e11483def73fa24ce80b65b81977a24f348"
+  },
+  "source_sha256": {
+    "src/world.cpp": "56b312762260ddca7b283fcd52fe5a3d93a337638e4284414c3a60907e4e69f3",
+    "src/world_services.inc": "a4b4cddd27b1107a8ce9bb544c070d284900faca4b73c19185de20550f63c972",
+    "src/script_budget.hpp": "f611295fcaaa79c46d58a4fcd3fb7f9ff61a717130252c72a566e9aaf86f2b37",
+    "tests/script_execution_tests.cpp": "73b79b282162ca28999f0abbd3888f0e69391c6856e573af47b638abcd291b0e"
+  },
+  "before_world_sha256": "66854916825a3efc1372e73758af113fa51e7834968cc983baf355d4af9fa334",
+  "checks": [
+    {
+      "command": "powershell -ExecutionPolicy Bypass -File scripts/build.ps1 -Jobs 4",
+      "result": "passed"
+    },
+    {
+      "command": "build/script_execution_tests.exe",
+      "result": "passed",
+      "log": ".cache/script-budget-repair-20261008/focused.log"
+    },
+    {
+      "command": "powershell -ExecutionPolicy Bypass -File scripts/test.ps1 -Graphics",
+      "result": "passed",
+      "exit_code": 0,
+      "native_tests": 15,
+      "log": ".cache/script-budget-repair-20261008/qualified-suite.log",
+      "coverage": [
+        "Physics and deterministic simulation",
+        "Interpreted/native runaway hooks, pcall/xpcall and nested module/state callbacks",
+        "Windows sleep/CPU clocks plus private deterministic failure/fallback policy fixtures",
+        "VM memory errors, bounded UTF-8 diagnostics and source locations",
+        "Passive failed-world observation, save/scene refusal and completed-save reconstruction",
+        "Migration metadata, large input decoding and failed input decoding preserving memory classification/running world",
+        "Optional binding profiling including on_load/on_recover inheritance",
+        "Native final-operation checks",
+        "Callback preview original-failure records and distinct recovery errors",
+        "Assets/audio, scene-local catalogs, content cooking and game workflow tooling",
+        "Graphics capture, live controls, source reload, failure pause, player isolation and receipt concurrency"
+      ]
+    },
+    {
+      "command": "Package script PowerShell AST parse and scoped git diff --check",
+      "result": "passed",
+      "packaging_executed": false
+    }
+  ],
+  "observed_clock_fixture": {
+    "sleep_cpu_ms": 0,
+    "sleep_elapsed_ms": 96.3066,
+    "busy_cpu_ms": 62.5,
+    "busy_elapsed_ms": 55,
+    "queries": 56,
+    "note": "One standalone observation, not a precision guarantee."
+  },
+  "observed_native_fixture": {
+    "cpu_ms": 890.625,
+    "elapsed_ms": 893.6032,
+    "function": "navigation_rebuild",
+    "result": "SCRIPT_BUDGET_EXCEEDED on return",
+    "note": "Deliberately expensive bounded native work demonstrates that synchronous C++ cannot be preempted at 50 ms."
+  },
+  "benchmark": {
+    "file": ".cache/script-budget-repair-20261008/qualified-measurements/benchmark.json",
+    "binary_sha256": "1fe951934390a5b7a958e4196b101392ef083e56f88a4fe56448215baed70021",
+    "steps_per_run": 180,
+    "unprofiled_repetitions": 3,
+    "small_p50_ms": {
+      "before": 0.0697,
+      "after": 0.0715
+    },
+    "large_p50_ms": {
+      "before": 5.9724,
+      "after": 6.0578
+    },
+    "interpretation": "Synthetic before/after medians differ by about 1-3%; timing noise prevents claiming a speedup. Large fixture write conversion/copy/serialization dominates. Profiling is optional and adds clock reads; coarse CPU counters may report zero or a 15.625 ms increment for short bindings. JSON write algorithms/limits are unchanged."
+  },
+  "qualification_limits": [
+    "The original frontend incident cause remains unknown; fixing the wall-clock false-positive mechanism does not prove every incident had that cause.",
+    "Windows GetThreadTimes accounting is coarse. 1 ms query cadence is not 1 ms CPU precision or a hard real-time deadline.",
+    "No new device, remote-machine, custom frontend or Core qualification.",
+    "Historical distributions and frontend binaries were not regenerated. A custom host must adopt the public API and handle exceptions/recovery itself.",
+    "Native diagnostic JSON allocation and persistence are best effort under actual process-wide memory/I/O failure; the 16 MiB cap applies to the Lua VM.",
+    "No human gameplay acceptance is inferred from engine fixtures."
+  ],
+  "documentation": {
+    "guide": "docs/39-script-execution-guide.md",
+    "portable_guide": "SCRIPT-EXECUTION.md",
+    "prompt_review_date": "2026-10-08",
+    "canonical_package_mapping_updated": true,
+    "distributions_regenerated": false
+  }
+}
+

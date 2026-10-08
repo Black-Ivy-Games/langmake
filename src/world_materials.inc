@@ -69,6 +69,9 @@ static int script_state_bind(lua_State*vm){auto&self=owner(vm);if(self.flushing_
     if(!remove){luaL_checktype(vm,2,LUA_TFUNCTION);if(!self.state_providers.contains(key)&&self.state_providers.size()>=32)luaL_error(vm,"At most 32 state providers");}
     if(auto i=self.state_providers.find(key);i!=self.state_providers.end()){lua_unref(vm,i->second);self.state_providers.erase(i);}if(!remove)self.state_providers[key]=lua_ref(vm,2);return 0;}
 void flush_state_providers(){
+    // A failed update may have partially mutated script locals. Observation must
+    // retain committed JSON without invoking more authored code until restore.
+    if(script_faulted)return;
     if(state_providers.empty()||flushing_state)return;
     if(executing_script)throw std::runtime_error("State providers cannot recursively observe bound state");
     auto*vm=script.get();Json candidate=game_state;flushing_state=true;

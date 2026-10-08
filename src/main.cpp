@@ -37,7 +37,7 @@ struct Arguments {
             std::string key = argv[i];
             if (!key.starts_with("--")) throw std::runtime_error("Expected --option, found: " + key);
             if (options.contains(key)) throw std::runtime_error("Duplicate option: " + key);
-            const bool is_flag = key == "--live" || key == "--no-audio" || key == "--include-state" || key == "--check-source" || key == "--no-overlay" || key == "--summary";
+            const bool is_flag = key == "--live" || key == "--no-audio" || key == "--include-state" || key == "--check-source" || key == "--no-overlay" || key == "--summary" || key == "--script-bindings";
             const bool has_value = i + 1 < argc && !std::string(argv[i + 1]).starts_with("--");
             if (is_flag) {
                 if (has_value) throw std::runtime_error("Flag does not accept a value: " + key);
@@ -162,7 +162,7 @@ Json help() {
             {"schema", "Return the version 1/2 project JSON schema"},
             {"script-api", "Generated Luau declarations and function metadata"},
             {"check", "Offline Luau checking across registered modules and scenes"},
-            {"profile", "simulate with machine-readable fixed-step timing and subsystem metrics"},
+            {"profile", "simulate with machine-readable fixed-step timing and subsystem metrics; --script-bindings measures input_events/ui_set/state_set"},
             {"play", "Player mode: game inputs, no source watching or developer shortcuts"},
             {"save", "Save running game: --slot NAME (default quick)"},
             {"load", "Restore running game: --slot NAME (default quick)"},
@@ -354,8 +354,9 @@ int main(int argc, char** argv) {
             }
             result=lm::filter_observation(std::move(result),observation_query(args));
         } else if (command == "simulate" || command=="profile") {
-            args.allow({"--project", "--profile", "--summary", "--steps", "--input", "--output", "--load-save", "--save-output", "--audio-output", "--width", "--height", "--density", "--safe-area"});
+            args.allow({"--project", "--profile", "--summary", "--steps", "--input", "--output", "--load-save", "--save-output", "--audio-output", "--width", "--height", "--density", "--safe-area", "--script-bindings"});
             auto project = lm::load_project(path,args.get("--profile")); lm::World world(project);
+            world.set_script_profiling(!args.get("--script-bindings").empty());
             if(!args.get("--width").empty()||!args.get("--height").empty()||!args.get("--density").empty()||!args.get("--safe-area").empty()) {
                 const auto width=args.number("--width",1280,8192),height=args.number("--height",720,8192);
                 world.set_viewport(width,height,args.real("--density",1,.25,8),safe_rectangle(args,width,height));

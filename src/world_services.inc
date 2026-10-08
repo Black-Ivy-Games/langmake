@@ -131,26 +131,32 @@ static int script_require(lua_State* vm) {
         const std::string file=self.project.module_files.contains(id)?self.project.module_files.at(id).generic_string():id;
         int status=luau_load(vm,("@"+file).c_str(),bytecode.data(),bytecode.size(),0);
         if(status==LUA_OK) self.compile_native(vm);
-        if(status==LUA_OK) status=lua_pcall(vm,0,1,0);
+        if(status==LUA_OK) status=call_with_trace(vm,0,1);
         self.loading_modules.erase(id);
-        if(status!=LUA_OK) { const char* error=lua_tostring(vm,-1); throw std::runtime_error(error?error:"module load failed"); }
-        if(!lua_istable(vm,-1)) throw std::runtime_error("module must return a table: "+id);
-        self.loaded_modules.emplace(id,lua_ref(vm,-1));return 1;
+        if(status==LUA_OK) {
+            if(!lua_istable(vm,-1)) throw std::runtime_error("module must return a table: "+id);
+            self.loaded_modules.emplace(id,lua_ref(vm,-1));return 1;
+        }
     } catch(const std::exception& error) { luaL_error(vm,"%s",error.what()); }
-    return 0;
+    // Outside the C++ catch: retain the original Lua object/status rather than
+    // converting OOM to an ordinary, prefixed runtime-error string.
+    lua_error(vm);return 0;
 }
 static int script_state_get(lua_State* vm) {
     try { auto& self=owner(vm);const auto key=key_argument(vm,1);
         if(auto provider=self.state_providers.find(key);provider!=self.state_providers.end()){
             if(self.flushing_state)throw std::runtime_error("Recursive bound state access");
             self.flushing_state=true;lua_getref(vm,provider->second);
-            if(lua_pcall(vm,0,1,0)!=LUA_OK){self.flushing_state=false;throw std::runtime_error(lua_tostring(vm,-1));}
-            self.flushing_state=false;auto value=json_argument(vm,-1,8*1024*1024,1048576);lua_pop(vm,1);push_json(vm,value);return 1;
-        }
-        if(self.game_state.contains(key)) push_json(vm,self.game_state[key]);else if(lua_gettop(vm)>=2) lua_pushvalue(vm,2);else lua_pushnil(vm);return 1; }
-    catch(const std::exception& error){luaL_error(vm,"%s",error.what());}return 0;
+            const int status=call_with_trace(vm,0,1);self.flushing_state=false;
+            if(status==LUA_OK){auto value=json_argument(vm,-1,8*1024*1024,1048576);lua_pop(vm,1);push_json(vm,value);return 1;}
+        } else {
+            if(self.game_state.contains(key)) push_json(vm,self.game_state[key]);else if(lua_gettop(vm)>=2) lua_pushvalue(vm,2);else lua_pushnil(vm);return 1;
+        } }
+    catch(const std::exception& error){owner(vm).flushing_state=false;luaL_error(vm,"%s",error.what());}
+    lua_error(vm);return 0;
 }
 static int script_state_set(lua_State* vm) {
+    BindingProbe probe(owner(vm),2);
     try { auto& self=owner(vm);const auto key=key_argument(vm,1);if(self.flushing_state||self.state_providers.contains(key))throw std::runtime_error("Unbind the state provider before replacing its state");auto candidate=self.game_state;const auto value=json_argument(vm,2);
         if(value.is_null())candidate.erase(key);else candidate[key]=value;
         if(candidate.dump().size()>1024*1024)throw std::runtime_error("game state exceeds 1 MiB");self.game_state=std::move(candidate);return 0; }
@@ -346,8 +352,8 @@ static int script_pressed(lua_State* vm){auto& self=owner(vm);const std::string 
     lua_pushboolean(vm,action_value(self.input,action)!=0&&action_value(self.previous_input,action)==0);return 1;}
 static int script_released(lua_State* vm){auto& self=owner(vm);const std::string action=luaL_checkstring(vm,1);
     lua_pushboolean(vm,action_value(self.input,action)==0&&action_value(self.previous_input,action)!=0);return 1;}
-static int script_events(lua_State* vm){push_json(vm,owner(vm).last_input_events);return 1;}
-static int script_ui_set(lua_State* vm){try{auto& self=owner(vm);const auto key=key_argument(vm,1);auto value=json_argument(vm,2);
+static int script_events(lua_State* vm){BindingProbe probe(owner(vm),0);push_json(vm,owner(vm).last_input_events);return 1;}
+static int script_ui_set(lua_State* vm){BindingProbe probe(owner(vm),1);try{auto& self=owner(vm);const auto key=key_argument(vm,1);auto value=json_argument(vm,2);
     auto candidate=self.ui_state;candidate[key]=value;if(candidate.dump().size()>1024*1024)throw std::runtime_error("UI state exceeds 1 MiB");
     self.ui_state=std::move(candidate);return 0;}catch(const std::exception& error){luaL_error(vm,"%s",error.what());}return 0;}
 static int script_ui_get(lua_State* vm){const std::string key=luaL_checkstring(vm,1);const auto& state=owner(vm).ui_state;
@@ -661,10 +667,10 @@ static int script_migration_entry(lua_State* vm){auto& self=owner(vm);lua_getref
     // push_json creates plain data tables and cannot invoke game code.
     self.executing_script=false;
     push_json(vm,*self.migration_source);lua_pushinteger(vm,self.migration_from);lua_pushinteger(vm,self.migration_to);
-    self.begin_script_budget();lua_call(vm,3,1);return 1;
+    self.begin_script_budget(false);lua_call(vm,3,1);return 1;
 }
 static int script_viewport(lua_State* vm){push_json(vm,owner(vm).viewport_state);return 1;}
-static std::unique_ptr<Impl> from_save(Project project,const Json& saved,const Json& viewport){
+static std::unique_ptr<Impl> from_save(Project project,const Json& saved,const Json& viewport,bool profiling=false){
     validate_saved_state(saved,project);
     project.save_fingerprint=save_structure_fingerprint(project);
     project.entities.clear();std::set<std::string> ids;
@@ -672,6 +678,7 @@ static std::unique_ptr<Impl> from_save(Project project,const Json& saved,const J
         if(entity.id.empty()||entity.id.size()>128||!ids.insert(entity.id).second)throw std::runtime_error("Saved entity IDs are empty, duplicated or too long");
         project.entities.push_back(std::move(entity));}
     auto result=std::make_unique<Impl>(project,false);
+    result->profile_bindings=profiling;
     result->tick=saved.at("tick").get<std::uint64_t>();result->elapsed=saved.at("time").get<double>();
     result->spawn_serial=saved.at("spawn_serial").get<std::uint64_t>();result->random_state=saved.at("random_state").get<std::uint64_t>();
     result->game_state=saved.at("state");result->ui_state=saved.value("ui",Json::object());result->camera=saved.at("camera");

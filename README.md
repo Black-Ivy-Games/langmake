@@ -8,6 +8,8 @@ Studio build **studio2 (2026-09-22)** adds local model discovery, grouped activi
 
 The optional [UI layout editor](docs/34-ui-editor-guide.md) lets humans adjust existing interfaces in native-rendered drafts and export exact screenshots, element IDs and design notes for agents. It preserves text-authored RML/RCSS and external-agent workflows.
 
+October 8 source builds add [CPU-based Windows script accounting and bounded failure diagnostics](docs/39-script-execution-guide.md), with optional native binding measurements. Existing packages retain their previous behavior; this source revision does not imply new mobile or frontend qualification.
+
 Langmake is an independent C++20 runtime with Luau gameplay and JSON projects. External coding agents create games through files and commands. A native window lets the human developer play the result. The engine does not own conversation, inference, credentials or model selection; games run without an LLM account.
 
 **Status: 0.5.0 workflow alpha with optional Studio.** New [game workflow tools](docs/26-game-workflow.md) add per-game target setup, shared presentation profiles, styled held controls, application icons/versions, resumable iOS signing, named verification scenarios and portable handoff records. The runtime retains live inspection, fixed-tick captures, UI, scenes/saves, spawning, navigation, animated models and shared live/offline audio. The separate [Studio application](docs/17-studio.md) adds projects, chats and provider adapters. External Codex, Claude and other coding agents use the same runtime and game folders directly. Games require neither Studio nor an AI account.

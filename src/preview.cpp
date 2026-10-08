@@ -683,14 +683,16 @@ static PreviewTask preview_frames(Project project, PreviewOptions options, Previ
             try { refresh_viewport();world->step(1.0f / 60.0f, input);sync_scene();game_requests();refresh_ui();update_audio();if(++healthy_steps>=600)recovery_failures=0; }
             catch (const std::exception& e) {
                 error = runtime_error_text = e.what(); paused = true; reload_status = "SCRIPT FAILED  /  PAUSED";
-                healthy_steps=0;script_failure={{"diagnostic",error},{"tick",world->snapshot().value("tick",0)},{"recovered",false}};
+                healthy_steps=0;script_failure={{"diagnostic",error},{"tick",world->tick()},{"recovered",false}};
+                const auto failure_details=world->script_diagnostic();
+                if(!failure_details.is_null())script_failure["script_diagnostic"]=failure_details;
                 // Avoid a recursive recovery loop if the recovery UI itself fails.
                 if(!safe_script_save.is_null() && recovery_failures++<2)try {
                     world->restore(safe_script_save,true);sync_scene();ui->reset_input();
                     pending_input_events=Json::array();start_music();refresh_ui();
                     script_failure["recovered"]=true;error.clear();runtime_error_text.clear();
                     paused=false;reload_status="RESTORED SAFE SAVE / AWAITING PLAYER";
-                }catch(const std::exception& recovery_error){error+=std::string("; recovery failed: ")+recovery_error.what();}
+                }catch(const std::exception& recovery_error){script_failure["recovery_diagnostic"]=recovery_error.what();error+=std::string("; recovery failed: ")+recovery_error.what();}
 
                 try{write_json_atomic(bridge/"script-failure.json",script_failure);}catch(...){}
                 if(paused&&!safe_script_save.is_null()&&options.steps<0&&!options.frames){

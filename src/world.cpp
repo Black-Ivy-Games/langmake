@@ -5,6 +5,7 @@
 #include "langmake/mobile_platform.hpp"
 #include "langmake/navigation.hpp"
 #include "langmake/model.hpp"
+#include "script_budget.hpp"
 
 #include <Jolt/Jolt.h>
 #include <Jolt/RegisterTypes.h>
@@ -37,9 +38,6 @@
 #include <algorithm>
 #include <atomic>
 #include <chrono>
-#ifdef LANGMAKE_MOBILE
-#include <time.h>
-#endif
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
@@ -163,18 +161,49 @@ struct World::Impl {
 
     struct ScriptMemory {
         std::size_t used = 0;
+        bool allocation_failed = false;
         static constexpr std::size_t limit = 16 * 1024 * 1024;
     } script_memory;
     std::size_t native_functions = 0;
     std::size_t native_code_bytes = 0;
     std::unique_ptr<lua_State, LuaCloser> script;
     int script_table = LUA_NOREF;
-    std::chrono::steady_clock::time_point deadline;
-#ifdef LANGMAKE_MOBILE
-    std::int64_t cpu_deadline_ns = 0;
-#endif
+    int script_error_handler = LUA_NOREF;
+    detail::ScriptBudget script_budget;
     bool executing_script = false;
     bool budget_exceeded = false;
+    bool script_faulted = false;
+    Json last_script_diagnostic;
+    const char* script_phase = "";
+    struct TraceFrame { char file[256]{}; char function[96]{}; int line = -1; bool native = false; };
+    std::array<TraceFrame,16> failure_trace{};
+    unsigned failure_trace_count = 0;
+    bool failure_trace_truncated = false;
+    bool error_was_memory = false;
+    bool profile_bindings = false;
+    struct BindingTiming {
+        std::uint64_t calls = 0;
+        std::int64_t elapsed_ns = 0, max_elapsed_ns = 0, cpu_ns = 0, max_cpu_ns = 0;
+        bool cpu_available = true;
+    };
+    std::array<BindingTiming,3> binding_timings{};
+    struct BindingProbe {
+        Impl& self;
+        unsigned index;
+        std::int64_t began = 0;
+        detail::CpuReading cpu;
+        BindingProbe(Impl& owner, unsigned binding) : self(owner), index(binding) {
+            if(self.profile_bindings) { began=detail::ScriptBudget::monotonic_ns(); cpu=detail::thread_cpu(); }
+        }
+        ~BindingProbe() {
+            if(!self.profile_bindings)return;
+            const auto end=detail::ScriptBudget::monotonic_ns();const auto finish=detail::thread_cpu();
+            auto& timing=self.binding_timings[index];++timing.calls;
+            const auto elapsed=end-began;timing.elapsed_ns+=elapsed;timing.max_elapsed_ns=std::max(timing.max_elapsed_ns,elapsed);
+            if(cpu.available&&finish.available&&finish.ns>=cpu.ns){const auto used=finish.ns-cpu.ns;timing.cpu_ns+=used;timing.max_cpu_ns=std::max(timing.max_cpu_ns,used);}
+            else timing.cpu_available=false;
+        }
+    };
     Input input;
     Input previous_input;
     std::uint64_t tick = 0;
@@ -492,9 +521,10 @@ struct World::Impl {
             memory.used -= old_size;
             return nullptr;
         }
-        if (new_size > ScriptMemory::limit - (memory.used - old_size)) return nullptr;
+        if (new_size > ScriptMemory::limit - (memory.used - old_size)) { memory.allocation_failed=true;return nullptr; }
         void* result = std::realloc(pointer, new_size);
         if (result) memory.used = memory.used - old_size + new_size;
+        else memory.allocation_failed=true;
         return result;
     }
 
@@ -503,20 +533,79 @@ struct World::Impl {
     }
     static void interrupt(lua_State* state, int gc) {
         auto& self = owner(state);
-        if (gc < 0 && self.executing_script && self.script_budget_expired()) {
-            self.budget_exceeded = true;
-            luaL_error(state, "script execution budget exceeded (50 ms)");
+        if (gc < 0 && self.executing_script && self.script_budget.poll()) {
+            if(!self.budget_exceeded)self.capture_script_trace(state);
+            self.budget_exceeded = self.budget_exceeded || self.script_budget.sample().exceeded;
+            luaL_error(state, self.script_budget.sample().clock_failed ? "script execution clock failed" : "script execution budget exceeded (50 ms)");
         }
     }
-    bool script_budget_expired() const {
-#ifdef LANGMAKE_MOBILE
-        // Scheduling pauses and Android lifecycle interruptions are not Luau CPU work.
-        // Keep the same execution limit without falsely rejecting a descheduled frame.
-        timespec now{};
-        if (cpu_deadline_ns && clock_gettime(CLOCK_THREAD_CPUTIME_ID, &now) == 0)
-            return std::int64_t(now.tv_sec) * 1000000000 + now.tv_nsec > cpu_deadline_ns;
-#endif
-        return std::chrono::steady_clock::now() > deadline;
+    static bool copy_trace_text(char* destination, std::size_t capacity, const char* source) noexcept {
+        std::size_t i=0;if(source)for(;i+1<capacity&&source[i];++i)destination[i]=source[i];destination[i]='\0';
+        return source&&source[i];
+    }
+    void capture_script_trace(lua_State* vm) noexcept {
+        failure_trace_count=0;failure_trace_truncated=lua_stackdepth(vm)>int(failure_trace.size());
+        for(int level=0;level<int(failure_trace.size());++level){
+            lua_Debug debug{};if(!lua_getinfo(vm,level,"sln",&debug))break;
+            auto& frame=failure_trace[failure_trace_count++];
+            const char* source=debug.source;if(source&&source[0]=='@')++source;
+            const bool file_truncated=copy_trace_text(frame.file,sizeof(frame.file),source);
+            const bool function_truncated=copy_trace_text(frame.function,sizeof(frame.function),debug.name);
+            frame.line=debug.currentline;frame.native=debug.what&&std::strcmp(debug.what,"C")==0;
+            failure_trace_truncated=failure_trace_truncated||file_truncated||function_truncated;
+        }
+    }
+    static void protected_error(lua_State* vm) {
+        auto& self=owner(vm);
+        // VM callback runs before frames are unwound. No Lua allocations, state
+        // providers, error handlers authored by the game, or global trace buffer.
+        if(!self.budget_exceeded&&!self.script_budget.sample().clock_failed)self.capture_script_trace(vm);
+    }
+    static int error_handler(lua_State* vm) {
+        auto& self=owner(vm);
+        if(!self.budget_exceeded&&!self.script_budget.sample().clock_failed)self.capture_script_trace(vm);
+        // Luau maps a successful pcall error handler to LUA_ERRRUN, including
+        // OOM. Preserve the VM's allocation failure classification, without
+        // invoking tostring/metatables or copying a script's error payload.
+        const char* text=lua_type(vm,1)==LUA_TSTRING?lua_tostring(vm,1):nullptr;
+        self.error_was_memory=self.script_memory.allocation_failed&&text&&std::strcmp(text,"not enough memory")==0;
+        lua_pushvalue(vm,1);return 1;
+    }
+    static int call_with_trace(lua_State* vm,int arguments,int results) {
+        // Nested module/provider calls share the outer guard; this handler
+        // captures errors without resetting its clock or rewriting error values.
+        const int handler=lua_gettop(vm)-arguments;
+        lua_getref(vm,owner(vm).script_error_handler);lua_insert(vm,handler);
+        const int code=lua_pcall(vm,arguments,results,handler);lua_remove(vm,handler);return code;
+    }
+    static int checked_binding(lua_State* vm) {
+        auto& self=owner(vm);
+        auto check=[&] {
+            if(self.executing_script&&(self.budget_exceeded||self.script_budget.poll())) {
+                if(!self.budget_exceeded)self.capture_script_trace(vm);
+                self.budget_exceeded=self.budget_exceeded||self.script_budget.sample().exceeded;
+                luaL_error(vm,self.script_budget.sample().clock_failed?"script execution clock failed":"script execution budget exceeded (50 ms)");
+            }
+        };
+        check();const auto function=lua_tocfunction(vm,lua_upvalueindex(1));
+        const int results=function(vm);check();return results;
+    }
+    Json script_execution() const {
+        const auto& sample=script_budget.sample();
+        Json result{{"budget_ms",50},{"clock",sample.clock},{"timing_available",sample.available},
+            {"cpu_ms",sample.available&&sample.cpu_available?Json(double(sample.cpu_ns)/1000000):Json()},
+            {"elapsed_ms",sample.available?Json(double(sample.elapsed_ns)/1000000):Json()},
+            {"fallback",sample.fallback},{"clock_error",sample.reason},{"clock_os_error",sample.os_error},
+            {"cpu_queries",sample.queries},{"sample_interval_ms",1},{"phase",script_phase},
+            {"binding_profiling",profile_bindings}};
+        if(profile_bindings){result["bindings"]=Json::object();const char* names[]{"input_events","ui_set","state_set"};
+            for(std::size_t i=0;i<binding_timings.size();++i){const auto& timing=binding_timings[i];
+                result["bindings"][names[i]]={{"calls",timing.calls},{"elapsed_ms",double(timing.elapsed_ns)/1000000},
+                    {"max_elapsed_ms",double(timing.max_elapsed_ns)/1000000},
+                    {"cpu_ms",timing.calls&&timing.cpu_available?Json(double(timing.cpu_ns)/1000000):Json()},
+                    {"max_cpu_ms",timing.calls&&timing.cpu_available?Json(double(timing.max_cpu_ns)/1000000):Json()}};
+            }}
+        return result;
     }
     static float number(lua_State* state, int index) {
         const double value = luaL_checknumber(state, index);
@@ -733,32 +822,66 @@ struct World::Impl {
         return 0;
     }
 
-    [[noreturn]] void script_error(const char* phase, int code) {
+    [[noreturn]] void script_error(const char* phase, int code, bool executed = true) {
         // A script may catch a VM budget exception and leave no result on the
         // stack. Never inspect stack index -1 unless an error object exists.
-        const char* error = budget_exceeded ? "script execution budget exceeded (50 ms)" :
+        const bool clock_failed=script_budget.sample().clock_failed;
+        const char* error = clock_failed ? "script execution clock failed" : budget_exceeded ? "script execution budget exceeded (50 ms)" :
             lua_gettop(script.get()) > 0 ? lua_tostring(script.get(), -1) : nullptr;
-        Json details{{"code", budget_exceeded ? "SCRIPT_BUDGET_EXCEEDED" : code == LUA_ERRMEM ? "SCRIPT_MEMORY_LIMIT" : "SCRIPT_ERROR"},
+        std::size_t message_length=0;if(error)while(message_length<2048&&error[message_length])++message_length;
+        Json details{{"code", clock_failed ? "SCRIPT_CLOCK_FAILURE" : budget_exceeded ? "SCRIPT_BUDGET_EXCEEDED" : (code == LUA_ERRMEM || error_was_memory) ? "SCRIPT_MEMORY_LIMIT" : "SCRIPT_ERROR"},
             {"phase", phase}, {"file", project.script_file.generic_string()}, {"tick", tick},
-            {"message", error ? error : "unknown Luau error"}, {"source_revision", project.revision}};
+            {"message", error ? std::string(error,message_length) : "unknown Luau error"}, {"source_revision", project.revision}};
+        try {
+            details["diagnostic_version"]=1;details["execution"]=script_execution();
+            if(!executed){auto& execution=details["execution"];execution["phase"]=phase;execution["timing_available"]=false;
+                execution["cpu_ms"]=nullptr;execution["elapsed_ms"]=nullptr;execution["cpu_queries"]=0;execution.erase("bindings");}
+            details["vm_memory_bytes"]=script_memory.used;details["vm_memory_limit_bytes"]=ScriptMemory::limit;
+            details["stack"]=Json::array();details["stack_truncated"]=failure_trace_truncated;
+            for(unsigned i=0;executed&&i<failure_trace_count;++i){const auto& frame=failure_trace[i];
+                Json location{{"file",frame.file},{"function",frame.function},{"line",frame.line},{"native_binding",frame.native}};
+                details["stack"].push_back(location);if(!frame.native&&!details.contains("location"))details["location"]=std::move(location);
+            }
+        }catch(...){details["diagnostic_truncated"]=true;}
+        // An ordinary observational provider failure retains its established
+        // transactional retry contract. Interrupted gameplay, CPU/memory/clock
+        // failures require reconstruction rather than resuming mutated locals.
+        script_faulted=std::strcmp(phase,"snapshot")!=0||budget_exceeded||clock_failed||code==LUA_ERRMEM||error_was_memory;
+        // Error strings may contain arbitrary bytes or end in a clipped UTF-8
+        // sequence. Normalize only this bounded record so serialization cannot
+        // replace the original script failure with a JSON encoding exception.
+        const auto serialized=details.dump(-1,' ',false,Json::error_handler_t::replace);
+        last_script_diagnostic=Json::parse(serialized);
         lua_settop(script.get(), 0);
-        throw std::runtime_error(details.dump());
+        throw std::runtime_error(serialized);
     }
-    void begin_script_budget() {
-        deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(50);
-#ifdef LANGMAKE_MOBILE
-        timespec began{};
-        cpu_deadline_ns = clock_gettime(CLOCK_THREAD_CPUTIME_ID, &began) == 0
-            ? std::int64_t(began.tv_sec) * 1000000000 + began.tv_nsec + 50000000 : 0;
-#endif
+    void begin_script_budget(bool new_call=true) {
+        if(new_call){budget_exceeded=false;failure_trace_count=0;failure_trace_truncated=false;binding_timings={};error_was_memory=false;script_memory.allocation_failed=false;}
+        else if(budget_exceeded||script_budget.sample().clock_failed)luaL_error(script.get(),"script execution failed before migration hook");
+        script_budget.begin();
         executing_script = true;
-        budget_exceeded = false;
     }
     void protected_call(const char* phase, int arguments, int results) {
+        if(script_faulted)throw std::runtime_error(last_script_diagnostic.dump());
+        if(executing_script)throw std::runtime_error("Nested protected call cannot renew the script budget");
+        script_phase=phase;
         begin_script_budget();
-        const int code = lua_pcall(script.get(), arguments, results, 0);
-        executing_script = false;
-        if (code != LUA_OK || budget_exceeded) script_error(phase, code);
+        int code=LUA_ERRRUN;
+        bool authored_execution=true;
+        try {
+            if(!script_budget.sample().clock_failed){
+                code=call_with_trace(script.get(),arguments,results);
+            }
+            // Synchronous native work is charged even when it was the hook's
+            // final operation and there is no later VM safepoint.
+            // The trusted migration decoder clears executing_script until it
+            // enters the authored hook. A decode failure must not charge setup
+            // CPU or replace an allocation error with an authored-hook timeout.
+            authored_execution=executing_script;
+            if(authored_execution){script_budget.poll(true);budget_exceeded=budget_exceeded||script_budget.sample().exceeded;}
+            executing_script=false;
+        }catch(...){executing_script=false;if(script_memory.allocation_failed)script_error(phase,LUA_ERRMEM);throw;}
+        if (code != LUA_OK || budget_exceeded || script_budget.sample().clock_failed) script_error(phase, code, authored_execution);
     }
     void compile_native(lua_State* vm) {
 #ifdef LANGMAKE_LUAU_NATIVE
@@ -786,6 +909,10 @@ struct World::Impl {
 #endif
         lua_callbacks(vm)->userdata = this;
         lua_callbacks(vm)->interrupt = interrupt;
+        lua_callbacks(vm)->debugprotectederror = protected_error;
+        // Reserve the native handler once, while initializing the VM. Hook and
+        // nested-call entry need not allocate a fresh closure near the VM limit.
+        lua_pushcfunction(vm,error_handler,"script_error_capture");script_error_handler=lua_ref(vm,-1);lua_pop(vm,1);
         luaL_openlibs(vm);
         lua_newtable(vm);
         const std::pair<const char*, lua_CFunction> functions[] = {
@@ -815,11 +942,13 @@ struct World::Impl {
             {"animation_events",script_animation_events},{"joint_position",script_joint_position},{"contacts",script_contacts}};
         for (const auto& [name, function] : functions) {
             lua_pushcfunction(vm, function, name);
+            lua_pushcclosure(vm,checked_binding,name,1);
             lua_setfield(vm, -2, name);
         }
         lua_setreadonly(vm, -1, true);
         lua_setglobal(vm, "engine");
         lua_pushcfunction(vm,script_require,"require");
+        lua_pushcclosure(vm,checked_binding,"require",1);
         lua_setglobal(vm,"require");
         // No print output may corrupt the machine-readable CLI stream.
         lua_pushnil(vm);
@@ -832,7 +961,7 @@ struct World::Impl {
         if (bytecode.size() > 8 * 1024 * 1024) throw std::runtime_error("Compiled script exceeds 8 MiB limit");
         const std::string chunk = "@" + project.script_file.generic_string();
         const int code = luau_load(vm, chunk.c_str(), bytecode.data(), bytecode.size(), 0);
-        if (code != LUA_OK) script_error("compile", code);
+        if (code != LUA_OK) script_error("compile", code, false);
         compile_native(vm);
         protected_call("load", 0, 1);
         if (!lua_istable(vm, -1)) {
@@ -852,12 +981,13 @@ struct World::Impl {
         if (lua_isnil(vm, -1)) { lua_pop(vm, 1); return; }
         if (!lua_isfunction(vm, -1)) {
             lua_pushfstring(vm, "script field '%s' must be a function", name);
-            script_error(name, LUA_ERRRUN);
+            script_error(name, LUA_ERRRUN, false);
         }
         if (with_dt) lua_pushnumber(vm, dt);
         protected_call(name, with_dt ? 1 : 0, 0);
     }
     void step(float dt, const Input& next_input) {
+        if(script_faulted)throw std::runtime_error(last_script_diagnostic.dump());
         if (!std::isfinite(dt) || dt <= 0 || dt > 0.1f)
             throw std::runtime_error("Simulation dt must be finite and in (0, 0.1]");
         if (!std::isfinite(next_input.move_x) || !std::isfinite(next_input.move_z))
@@ -909,6 +1039,13 @@ int World::collected() const { return impl_->collection_count; }
 std::string World::message() const { return impl_->status_message; }
 const CompiledAssets& World::assets() const { return impl_->compiled; }
 double World::time() const { return impl_->elapsed; }
+std::uint64_t World::tick() const noexcept { return impl_->tick; }
+Json World::script_execution() const { return impl_->script_execution(); }
+Json World::script_diagnostic() const { return impl_->last_script_diagnostic; }
+void World::set_script_profiling(bool enabled) {
+    if(impl_->executing_script)throw std::runtime_error("Script profiling must be changed between protected calls");
+    impl_->profile_bindings=enabled;impl_->binding_timings={};
+}
 Json World::audio_events() const { return impl_->sounds; }
 Json World::take_requests() { return std::exchange(impl_->session_requests,Json::array()); }
 const Project& World::current_project() const { return impl_->project; }
@@ -916,6 +1053,7 @@ Json World::presentation() const { return {{"camera",impl_->camera},{"ui",impl_-
 void World::set_scene_prepare(std::function<void(const Project&, const CompiledAssets&)> prepare) { scene_prepare_=std::move(prepare); }
 const std::map<std::string,DynamicSurface>& World::surfaces() const { return impl_->dynamic_surfaces; }
 Json World::save() const {
+    if(impl_->script_faulted)throw std::runtime_error(impl_->last_script_diagnostic.dump());
     impl_->flush_state_providers();
     auto result=impl_->save_state();result["scene_states"]=impl_->scene_states;
     if(result.dump().size()>16*1024*1024)throw std::runtime_error("Save exceeds 16 MiB");return result;
@@ -955,6 +1093,7 @@ void World::restore(const Json& saved, bool recovery) {
         }
     } else if(data.value("source_revision",std::string())!=impl_->project.revision||data.value("game_save_version",0)!=version){
         auto migration=std::make_unique<Impl>(impl_->project,false);
+        migration->profile_bindings=impl_->profile_bindings;
         data=migration->migrate_save(data,data.value("game_save_version",1),version);
         // Luau numbers cannot losslessly round-trip the RNG's 64-bit state.
         // Engine clock/identity metadata is immutable during content migration.
@@ -980,7 +1119,7 @@ void World::restore(const Json& saved, bool recovery) {
     stamp(data,project);
     if(data.contains("scene_states")&&data["scene_states"].is_object())for(auto&[id,state]:data["scene_states"].items())
         if(impl_->scene_catalog.contains(id)){auto scene_project=*impl_->scene_catalog.at(id);scene_project.scenes=impl_->scene_catalog;stamp(state,scene_project);}
-    auto next=Impl::from_save(project,data,impl_->viewport_state);next->scene_states=data.value("scene_states",Json::object());
+    auto next=Impl::from_save(project,data,impl_->viewport_state,impl_->profile_bindings);next->scene_states=data.value("scene_states",Json::object());
     if(recovery){next->call_hook("on_recover",false,0);next->flush_entities();}
     if(!next->scene_states.is_object()||next->scene_states.size()>64)throw std::runtime_error("Save scene_states must be an object with at most 64 scenes");
     for(const auto& [id,state]:next->scene_states.items()){
@@ -995,9 +1134,10 @@ void World::restore(const Json& saved, bool recovery) {
     next->audio_serial=impl_->audio_serial;
     for(auto& event:next->sounds)event["serial"]=++next->audio_serial;
     if(scene_prepare_)scene_prepare_(next->project,next->compiled);
-    impl_.swap(next);
+    next->profile_bindings=impl_->profile_bindings;impl_.swap(next);
 }
 void World::change_scene(const std::string& scene) {
+    if(impl_->script_faulted)throw std::runtime_error(impl_->last_script_diagnostic.dump());
     if(!impl_->scene_catalog.contains(scene))throw std::runtime_error("Unknown scene '"+scene+"'");
     if(scene==impl_->project.scene_id)return;
     Project project=*impl_->scene_catalog.at(scene);project.scenes=impl_->scene_catalog;
@@ -1007,10 +1147,11 @@ void World::change_scene(const std::string& scene) {
     std::unique_ptr<Impl> next;
     if(saved_scenes.contains(scene)){
         auto saved=saved_scenes[scene];saved["state"]=impl_->game_state;saved["tick"]=impl_->tick;saved["time"]=impl_->elapsed;
-        saved["spawn_serial"]=impl_->spawn_serial;saved["random_state"]=impl_->random_state;next=Impl::from_save(project,saved,impl_->viewport_state);
+        saved["spawn_serial"]=impl_->spawn_serial;saved["random_state"]=impl_->random_state;next=Impl::from_save(project,saved,impl_->viewport_state,impl_->profile_bindings);
     }else{
         next=std::make_unique<Impl>(project,false);next->game_state=impl_->game_state;next->tick=impl_->tick;next->elapsed=impl_->elapsed;
         next->spawn_serial=impl_->spawn_serial;next->random_state=impl_->random_state;next->viewport_state=impl_->viewport_state;
+        next->profile_bindings=impl_->profile_bindings;
         for(auto& record:next->records){record.animation_start=next->elapsed;record.previous_animation_start=next->elapsed;record.blend_start=next->elapsed;}
         next->call_hook("start",false,0);next->flush_entities();
     }
@@ -1024,12 +1165,13 @@ void World::change_scene(const std::string& scene) {
     Json requests=impl_->session_requests;for(const auto& request:next->session_requests)requests.push_back(request);next->session_requests=std::move(requests);
     next->scene_states=std::move(saved_scenes);
     if(scene_prepare_)scene_prepare_(next->project,next->compiled);
-    impl_.swap(next);
+    next->profile_bindings=impl_->profile_bindings;impl_.swap(next);
 }
 Json World::statistics() const {
     auto result=impl_->tick_statistics;result["entities"]=impl_->index.size();result["entity_capacity"]=4096;
     result["script_memory_bytes"]=impl_->script_memory.used;result["modules_loaded"]=impl_->loaded_modules.size();
     result["script_native_functions"]=impl_->native_functions;result["script_native_code_bytes"]=impl_->native_code_bytes;
+    result["script_execution"]=impl_->script_execution();
     size_t samples=0,active_chunks=0;for(const auto&weak:impl_->material_grids)if(auto grid=weak.lock()){samples+=grid->n;active_chunks+=std::count(grid->active.begin(),grid->active.end(),uint8_t(1));}
     result["material_samples"]=samples;result["material_active_chunks"]=active_chunks;result["material_surfaces"]=impl_->dynamic_surfaces.size();
     result["navigation_agents"]=impl_->nav_agents.size();result["navigation"]=impl_->navigation?impl_->navigation->inspect():Json();

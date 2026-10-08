@@ -274,7 +274,7 @@ $guideMap = [ordered]@{
     '25-workflow-implementation.md'='WORKFLOW-PROTOCOL.md'; '26-game-workflow.md'='GAME-WORKFLOW.md';
     '27-workflow-qualification.md'='RELEASE-EVIDENCE.md';
     '29-expressive-audio-plan.md'='MUSIC-PLAN.md'; '30-music-and-sound-guide.md'='MUSIC-AND-SOUND.md';
-    '31-audio-qualification.md'='AUDIO-QUALIFICATION.md';
+    '31-audio-qualification.md'='AUDIO-QUALIFICATION.md'; '39-script-execution-guide.md'='SCRIPT-EXECUTION.md';
     '33-ui-editor-plan.md'='UI-EDITOR-PLAN.md'; '34-ui-editor-guide.md'='UI-EDITOR.md'; '35-ui-editor-qualification.md'='UI-EDITOR-QUALIFICATION.md'; '37-studio-usability.md'='STUDIO-USABILITY.md'
 }
 function Convert-GuideLinks {
