@@ -1,5 +1,7 @@
 # A brief for your next game-creation agent
 
+When music or sound matters, use [the music and sound workflow](30-music-and-sound-guide.md) and [the soundtrack prompt example](../prompts/12-music-and-sound.md). The human chooses the musical direction through audible iterations; technical checks are separate.
+
 For an Android brief, follow the [Android agent workflow and documentation index](21-android-agent-guide.md) and adapt [the Android prompt](../prompts/09-android-game.md).
 
 For an iPhone brief, start with the [iOS workflow and qualification requirements](23-ios-agent-guide.md) and adapt [the iOS prompt](../prompts/11-ios-game.md). Read current Apple qualification and explicitly configure this game's authorized Mac workspace, signing team and device before requesting deployment.

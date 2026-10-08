@@ -186,7 +186,7 @@ int main(int argc, char** argv) {
     try {
         envelope_and_timing(); deterministic_blocks_and_patterns(); fractional_loop_clock(); malformed();
         wav_and_polyphony(argc > 1 ? std::filesystem::path(argv[1]) : std::filesystem::current_path());
-        require(lm::music_schema()["additionalProperties"] == false, "Music schema must forbid unknown fields");
+        require(lm::music_schema()["oneOf"][0]["additionalProperties"] == false && lm::music_schema()["oneOf"][1]["additionalProperties"] == false, "Music schema must forbid unknown fields");
         std::cout << "PASS music timing, envelopes, patterns, deterministic blocks/noise, allocation-free rendering, strict validation and WAV evidence\n";
         return 0;
     } catch (const std::exception& error) { forbid_allocations = false; std::cerr << "FAIL " << error.what() << '\n'; return 1; }

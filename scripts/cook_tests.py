@@ -29,7 +29,7 @@ def main():
 
     for template, target in itertools.product(
             ("2d", "3d", "rockets-2d", "rockets-3d", "adventure", "strategy", "shared-2d"),
-            ("windows", "android", "ios")):
+            ("windows", "android", "ios", "macos")):
         source, output = work / template / target / "source", work / template / target / "bundle"
         run("new", "--template", template, "--output", source)
         # Project-adjacent user history and runtime secrets must not be shipped.

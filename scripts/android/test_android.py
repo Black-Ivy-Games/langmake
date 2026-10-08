@@ -129,10 +129,11 @@ class AndroidToolTests(unittest.TestCase):
 
     def test_private_pull_preserves_binary_with_status_aware_nonpty_shell(self):
         payload=b'\x00\xff\x89PNG\r\n\x1a\ncat: this is legitimate file content\x00\r\n'
-        with patch.object(android,'adb_executable',return_value='adb'),patch.object(android,'env',return_value={}),patch.object(android.subprocess,'run',return_value=subprocess.CompletedProcess([],0,payload,b'')) as call:
+        encoded=android.base64.encodebytes(payload).replace(b'\n',b'\r\n')
+        with patch.object(android,'adb_executable',return_value='adb'),patch.object(android,'env',return_value={}),patch.object(android.subprocess,'run',return_value=subprocess.CompletedProcess([],0,encoded,b'')) as call:
             result=android.device_command(self.private_args())
         self.assertTrue(result['ok']);self.assertEqual((self.root/'received.bin').read_bytes(),payload)
-        self.assertEqual(call.call_args.args[0],['adb','-P','5038','-s','fixture-phone','shell','-T','run-as','org.test.game','cat','files/state/'+'a'*24+'/saves/progress.json'])
+        self.assertEqual(call.call_args.args[0],['adb','-P','5038','-s','fixture-phone','shell','-T','run-as','org.test.game','base64','files/state/'+'a'*24+'/saves/progress.json'])
         self.assertEqual(call.call_args.kwargs['timeout'],30)
         self.assertEqual(result['sha256'],android.digest(self.root/'received.bin'))
         self.assertEqual(list(self.root.glob('*.part')),[])
@@ -153,7 +154,7 @@ class AndroidToolTests(unittest.TestCase):
 
     def test_private_atomic_publication_failure_does_not_truncate_old_output(self):
         args=self.private_args();Path(args.output).write_bytes(b'previous')
-        with patch.object(android,'adb',return_value=subprocess.CompletedProcess([],0,b'new',b'')),patch.object(Path,'replace',side_effect=OSError('publication blocked')):
+        with patch.object(android,'adb',return_value=subprocess.CompletedProcess([],0,android.base64.b64encode(b'new'),b'')),patch.object(Path,'replace',side_effect=OSError('publication blocked')):
             with self.assertRaisesRegex(OSError,'publication blocked'):android.device_command(args)
         self.assertEqual(Path(args.output).read_bytes(),b'previous');self.assertEqual(list(self.root.glob('*.part')),[])
 

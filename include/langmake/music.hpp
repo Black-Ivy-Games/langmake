@@ -2,11 +2,13 @@
 #include "types.hpp"
 #include <memory>
 #include <cstdint>
+#include <string_view>
 
 namespace lm {
 struct MusicScore;
 std::shared_ptr<const MusicScore> compile_music(const AssetSource& source);
 Json music_schema();
+bool music_has_layer(const MusicScore& score,const std::string& id);
 Json inspect_music(const MusicScore& score);
 class MusicVoice {
 public:
@@ -15,6 +17,7 @@ public:
     // Prepare with render(nullptr,0,rate) before entering a realtime callback;
     // effect delay buffers are allocated once per sample rate, then reused.
     void render(float* stereo, std::size_t frames, int sample_rate = 48000);
+    bool set_layer(std::string_view id,float gain,float seconds,int quantization);
     void reset();
     bool finished() const;
 private:

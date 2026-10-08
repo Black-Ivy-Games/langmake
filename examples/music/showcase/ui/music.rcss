@@ -1,0 +1,9 @@
+body { display: block; width: 100%; height: 100%; margin: 0dp; font-family: Langmake; font-size: 16dp; color: #dce6f5; background-color: #0b1220; }
+#room { display: block; width: 88%; max-width: 900dp; margin: 8dp; padding: 8dp; background-color: #13243b; border: 1dp #365577; }
+h1 { display: block; font-size: 22dp; color: #f5d59b; margin: 0dp 0dp 4dp; }
+h2 { display: block; font-size: 18dp; color: #9de3dc; margin: 4dp 0dp; }
+p { display: block; margin: 4dp 0dp; }
+.row { display: block; margin: 4dp 0dp; }
+button { display: inline-block; padding: 7dp 10dp; margin: 3dp; background-color: #284665; color: #f7f7f7; border: 1dp #6586aa; }
+button:hover, button:focus { background-color: #41698b; }
+.note { font-size: 14dp; color: #b3c5da; }

@@ -58,7 +58,10 @@ class Assets(Suite):
     def sources_and_exports(self):
         for kind in ("sprite","mesh","music"):
             schema = self.run("asset","schema","--type",kind)
-            require(schema["type"] == "object", "recipe schema discovery")
+            if kind == "music":
+                require([s["properties"]["schema_version"]["const"] for s in schema["oneOf"]] == [1, 2], "synthesized and recorded recipe schema discovery")
+            else:
+                require(schema["type"] == "object", "recipe schema discovery")
         self.passed("all three recipe schemas are discoverable")
         for dimension in ("2d","3d"):
             project = self.directory / ("rockets-"+dimension)

@@ -33,3 +33,5 @@ do not request passwords or private keys. Refresh HANDOFF.json after the work.
 Give me the playable result, exact launch command, controls, changes, checks
 and focused feedback questions. I remain responsible for creative approval.
 ```
+
+For a greeting or connection check, answer directly without inspecting or changing project files. For authorized work, finish with a concise result and limitations after tool activity. A tool log alone is not a human handoff.

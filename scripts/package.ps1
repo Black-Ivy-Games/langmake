@@ -2,7 +2,9 @@
 param(
     [string]$BuildDirectory = 'build',
     [string]$AndroidPlayerDirectory = '.cache/workflow-qualification/android-player-0.5.0-final',
-    [string]$PackageDirectory = 'dist/Langmake-0.5.0'
+    [string]$PackageDirectory = 'dist/Langmake-0.5.0',
+    [switch]$IncludeMusicAuthoring,
+    [string]$MusicExampleDirectory = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -178,6 +180,28 @@ Copy-PackageFile -Source (Join-Path $projectRoot 'scripts/mobile_assets.py') -Re
 Copy-PackageFile -Source (Join-Path $projectRoot 'scripts/test_mobile_assets.py') -RelativePath 'scripts/test_mobile_assets.py'
 Copy-PackageTree -Source (Join-Path $projectRoot 'scripts/workflow') -RelativePath 'scripts/workflow'
 Copy-PackageTree -Source (Join-Path $projectRoot 'scripts/windows') -RelativePath 'scripts/windows'
+Copy-PackageTree -Source (Join-Path $projectRoot 'scripts/ui-editor') -RelativePath 'scripts/ui-editor'
+Copy-PackageTree -Source (Join-Path $projectRoot 'scripts/music') -RelativePath 'scripts/music'
+Copy-PackageTree -Source (Join-Path $projectRoot 'examples/music') -RelativePath 'examples/music'
+if ($IncludeMusicAuthoring) {
+    $musicBuild = Join-Path $projectRoot '.deps/music/build-report.json'
+    if (-not (Test-Path -LiteralPath $musicBuild)) { throw 'Run langmake music setup before packaging optional music authoring.' }
+    $musicInventory = Get-Content -LiteralPath $musicBuild -Raw | ConvertFrom-Json
+    foreach ($entry in $musicInventory.files) {
+        if ($entry.path -ne [System.IO.Path]::GetFileName($entry.path)) { throw 'Music binary inventory must contain filenames.' }
+        $musicFile = Join-Path $projectRoot ".deps/music/bin/$($entry.path)"
+        if ((Get-FileHash -LiteralPath $musicFile -Algorithm SHA256).Hash.ToLowerInvariant() -ne $entry.sha256) { throw "Music binary inventory mismatch: $($entry.path)" }
+        Copy-PackageFile -Source $musicFile -RelativePath "music-tools/bin/$($entry.path)"
+    }
+    Copy-PackageFile -Source $musicBuild -RelativePath 'music-tools/build-report.json'
+}
+if ($MusicExampleDirectory) {
+    $musicExample = [System.IO.Path]::GetFullPath((Join-Path $projectRoot $MusicExampleDirectory))
+    if (-not $musicExample.StartsWith($workspacePrefix, [System.StringComparison]::OrdinalIgnoreCase)) { throw 'MusicExampleDirectory must be inside this workspace.' }
+    & $executable validate --project $musicExample | Out-Null
+    if ($LASTEXITCODE -ne 0) { throw 'Music reference project is invalid.' }
+    Copy-PackageTree -Source $musicExample -RelativePath 'examples/music-room'
+}
 foreach ($asset in $dependencyLock.ios_bundled_upstream_assets) {
     $assetPath = Join-Path $projectRoot $asset.source_path
     if (-not (Test-Path -LiteralPath $assetPath -PathType Leaf) -or (Get-FileHash -LiteralPath $assetPath -Algorithm SHA256).Hash.ToLowerInvariant() -ne $asset.sha256) {
@@ -222,6 +246,9 @@ foreach ($abi in @('arm64-v8a', 'x86_64')) {
             $metadata.sha256 -ne $libraryHash -or $metadata.development -isnot [bool] -or $metadata.development -ne ($configuration -eq 'debug')) {
             throw "Android player variant is incomplete: $abi/$configuration"
         }
+        if (($inputCapabilities | ConvertFrom-Json).audio.feature_revision -ge 1 -and $metadata.audio_feature_revision -ne 1) {
+            throw "Android player $abi/$configuration predates recorded audio; rebuild the variants and pass -AndroidPlayerDirectory with their new inventory."
+        }
     }
 }
 foreach ($resource in @('runtime/shaders/vs_cubes.bin', 'runtime/shaders/fs_cubes.bin', 'runtime/fonts/LatoLatin-Regular.ttf')) {
@@ -245,7 +272,10 @@ $guideMap = [ordered]@{
     '20-android-qualification.md'='ANDROID-QUALIFICATION.md'; '21-android-agent-guide.md'='ANDROID-AGENT-GUIDE.md';
     '22-ios-plan.md'='IOS.md'; '23-ios-agent-guide.md'='IOS-AGENT-GUIDE.md'; '24-ios-qualification.md'='IOS-QUALIFICATION.md';
     '25-workflow-implementation.md'='WORKFLOW-PROTOCOL.md'; '26-game-workflow.md'='GAME-WORKFLOW.md';
-    '27-workflow-qualification.md'='RELEASE-EVIDENCE.md'
+    '27-workflow-qualification.md'='RELEASE-EVIDENCE.md';
+    '29-expressive-audio-plan.md'='MUSIC-PLAN.md'; '30-music-and-sound-guide.md'='MUSIC-AND-SOUND.md';
+    '31-audio-qualification.md'='AUDIO-QUALIFICATION.md';
+    '33-ui-editor-plan.md'='UI-EDITOR-PLAN.md'; '34-ui-editor-guide.md'='UI-EDITOR.md'; '35-ui-editor-qualification.md'='UI-EDITOR-QUALIFICATION.md'; '37-studio-usability.md'='STUDIO-USABILITY.md'
 }
 function Convert-GuideLinks {
     param([string]$Content)
@@ -253,7 +283,7 @@ function Convert-GuideLinks {
         $Content = $Content.Replace("($($entry.Key)", "($($entry.Value)")
         $Content = $Content.Replace("(../docs/$($entry.Key)", "($($entry.Value)")
     }
-    return $Content.Replace('(../prompts/', '(prompts/').Replace('(../scripts/', '(scripts/').Replace('(../examples/', '(examples/').Replace('(releases/0.5.0-evidence.json', '(api/release-evidence.json').Replace('(../studio/README.md', '(STUDIO-DETAILS.md')
+    return $Content.Replace('(../prompts/', '(prompts/').Replace('(../scripts/', '(scripts/').Replace('(../examples/', '(examples/').Replace('(releases/0.5.0-evidence.json', '(api/release-evidence.json').Replace('(releases/audio-feature-1-evidence.json', '(docs/releases/audio-feature-1-evidence.json').Replace('(releases/ui-editor-1-evidence.json', '(docs/releases/ui-editor-1-evidence.json').Replace('(../studio/README.md', '(STUDIO-DETAILS.md')
 }
 $agentGuide = [System.IO.File]::ReadAllText((Join-Path $projectRoot 'docs/08-agent-api.md'))
 $agentGuide = $agentGuide.Replace('.\build\langmake.exe', '.\langmake.exe').Replace('./build/langmake.exe', './langmake.exe').Replace('repository root', 'package folder').Replace(' after [building the alpha](07-first-release.md)', '')
@@ -338,6 +368,10 @@ For iOS work, read IOS-AGENT-GUIDE.md and IOS-QUALIFICATION.md. iOS tooling rema
 
 For optional prompt structures and filled game briefs, read prompts/README.md. Humans and agents can use these examples for new games, feedback, defects, assets and planning. They are inspiration, not authorization or evidence of built games. The human's actual direction takes precedence. Engine maintainers review these canonical prompts with relevant engine changes and regenerate packaged copies; see their maintenance checklist and the source checkout's AGENTS.md.
 
+For human UI corrections, read UI-EDITOR.md and the game's ui-design.json when present. Preserve stable IDs, bindings and pinned intent. The optional CLI at scripts/ui-editor/ui-editor.cjs shares Studio's isolated native drafts and review export contract.
+
+For music and sound, read MUSIC-AND-SOUND.md, AUDIO-QUALIFICATION.md and prompts/12-music-and-sound.md. The native player supports recorded WAV/FLAC stems and adaptive layers; optional music authoring uses Python and sfizz on the host. Run langmake.exe music status to check availability. The source bank is a separate pinned download. Technical audio checks do not establish musical approval; the human rejected the initial showcase arrangements as artificial.
+
 The human is the decision-making developer and primary gameplay playtester. AI agents are worker developers who implement the human's ideas, run technical checks and prepare playable iterations. Complete authorized work autonomously without requesting permission for every edit. At meaningful playable milestones, provide the correct launch command, controls, changes, known issues and focused feedback prompts. Human feedback directs the next creative iteration.
 
 Prefer native validate, simulate, inspect and capture commands for technical verification. Do not default to computer-use gameplay or autonomous full playthroughs in place of human playtesting. Supplementary agent playtests are appropriate when requested or for a focused defect; use computer use only when requested or a specific input/UI behavior cannot be checked with native commands. Passing checks do not establish human gameplay acceptance. If feedback is needed, report that the milestone is ready and awaiting human playtesting; do not invent approval.
@@ -395,6 +429,9 @@ the human playing. Agents must read AGENTS.md and the human-directed workflow
 at the start of AGENT-API.md before creating a game.
 AGENT-API.md documents the project format, Luau functions, patches and live controls.
 TEXT-ASSETS.md documents sprites, procedural meshes, music scores and sound effects.
+MUSIC-AND-SOUND.md covers recorded instruments, text compositions, imported audio,
+adaptive stems and effects. AUDIO-QUALIFICATION.md separates technical results
+from human listening feedback. Run langmake.exe music status for setup.
 RUNTIME-GUIDE.md documents the additional runtime systems and their limits.
 RELEASE-EVIDENCE.md separates technical verification from human gameplay acceptance.
 GAME-CREATION-BRIEF.md is a starting brief for your next external AI agent.
@@ -502,6 +539,8 @@ $manifest = [ordered]@{
     format_version = 1
     product = 'Langmake'
     version = '0.5.0'
+    audio_feature_revision = ($inputCapabilities | ConvertFrom-Json).audio.feature_revision
+    music_authoring_binaries = [bool]$IncludeMusicAuthoring
     platform = 'windows-x64'
     created_utc = [DateTime]::UtcNow.ToString('o')
     files = @($manifestEntries)

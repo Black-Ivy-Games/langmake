@@ -1,5 +1,7 @@
 # Text-authored graphics, music and sound effects
 
+Recorded tracks and sampled-instrument compositions are covered in the [music and sound guide](30-music-and-sound-guide.md). This page retains the version-1 synth recipe reference; `asset schema --type music` exposes both native recipe versions.
+
 Langmake 0.3 compiles pixel sprites, procedural solid meshes, animated models and synthesized music. They are project-local JSON recipes. An external coding agent can create or revise them with ordinary file operations; no Blender installation, image service, music service or engine-owned model connection is required. The Windows/D3D11 preview displays the results and miniaudio plays the scores. The [runtime guide](13-runtime-guide.md) covers the new model, UI, gameplay and audio-effect contracts.
 
 Follow the [human-directed development workflow](08-agent-api.md#human-directed-development-and-playtesting) before creating game assets. The human developer directs the visual and musical style and evaluates it in play; agents implement, validate and present iterations. Correct geometry, a clean render or an unclipped WAV is technical evidence, not creative approval. Default to human gameplay playtesting rather than replacing it with a computer-use playthrough.
@@ -173,7 +175,7 @@ Top-level manifest `music` starts background playback automatically. P/control p
 
 Live playback has one background score, eight simultaneous SFX scores and bounded command/voice preparation queues. Excess playback requests are dropped instead of blocking or terminating gameplay; the live audio dropped-command counter exposes this overload. Saturation can also drop music changes or stop requests, so avoid flooding playback calls. Separately, scripts may emit at most 32 audio events per update; exceeding that script contract produces a diagnostic. Live output clamps the mixed signal. Keep gain low enough for chords and overlapping effects; a score's offline report provides peak and clipping measurements.
 
-The included theme is an original chiptune with bass, drums, power-chord-like pulse voices and a lead riff. It demonstrates computer-composed electronic music. Ordered filters, delay, reverb and bus mixing can shape synthesized sounds. Recorded rock performances, vocals, realistic sampled guitars, sample libraries, tracker import and a general digital-audio workstation remain unsupported; the effect chains are bounded, not an arbitrary routing graph.
+The included theme is an original chiptune with bass, drums, power-chord-like pulse voices and a lead riff. It demonstrates computer-composed electronic music. Ordered filters, delay, reverb and bus mixing can shape synthesized sounds. Recorded performances and vocals can be imported as WAV/FLAC; the optional curated sample pack supports original acoustic compositions. Its current instrument list does not include realistic sampled guitars. Vocal generation, tracker import and general DAW/plugin hosting remain unsupported; the effect chains are bounded. See the music guide for the exact palette and limits.
 
 ## Render, export and replace
 

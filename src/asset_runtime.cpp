@@ -35,7 +35,7 @@ std::shared_ptr<const T> get_cached(Cache<T>& cache, const AssetSource& source, 
 }
 CompiledAssets compile_assets(const Project& project) {
     CompiledAssets result;
-    std::size_t visual_bytes = 0, music_notes = 0;
+    std::size_t visual_bytes = 0, music_notes = 0, music_bytes = 0;
     for (const auto& [id, source] : project.assets) {
         try {
             if (source.type == "sprite") result.sprites[id] = get_cached(sprite_cache, source, [](const AssetSource& s) { return std::make_shared<const SpriteAsset>(compile_sprite(s)); });
@@ -54,7 +54,8 @@ CompiledAssets compile_assets(const Project& project) {
                 for (const auto& p : model.primitives) visual_bytes += p.vertices.size()*sizeof(ModelVertex)+p.indices.size()*sizeof(uint32_t)+p.inverse_bind.size()*sizeof(Matrix4);
                 for (const auto& image : model.images) visual_bytes += image.rgba.size();
             }
-            if (source.type == "music") music_notes += inspect_music(*result.music.at(id)).at("notes").get<std::size_t>();
+            if (source.type == "music") {auto info=inspect_music(*result.music.at(id));music_notes+=info.at("notes").get<std::size_t>();music_bytes+=info.value("decoded_bytes",std::size_t(0));}
+            if(music_bytes>192*1024*1024)throw std::runtime_error("Project recorded audio exceeds 192 MiB of decoded PCM");
             if (visual_bytes > 256 * 1024 * 1024 || music_notes > 1024 * 1024)
                 throw std::runtime_error("Project compiled asset budget is 256 MiB of visual data and 1048576 music notes");
         } catch (const std::exception& e) {

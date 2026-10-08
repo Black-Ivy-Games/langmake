@@ -1,5 +1,13 @@
 # Langmake — an agent-first game engine
 
+Continuing engine, Studio or UI-editor development in a new agent context? Start with the [comprehensive development handoff](docs/36-engine-development-handoff.md), then follow the current [AGENTS.md](AGENTS.md). The handoff records the September 22, 2026 source/package checkpoint, uncommitted work, architecture, tests and qualification boundaries.
+
+For expressive music and sound, start with [the music authoring guide](docs/30-music-and-sound-guide.md): text compositions, a CC0 acoustic instrument pack, synchronized WAV/FLAC tracks, adaptive layers and shared effects. `langmake music status` checks optional authoring setup. See [audio qualification](docs/31-audio-qualification.md) for this revision; old mobile evidence does not qualify new audio automatically.
+
+Studio build **studio2 (2026-09-22)** adds local model discovery, grouped activity and explicit final-answer diagnostics. See [Studio usability and upgrade](docs/37-studio-usability.md).
+
+The optional [UI layout editor](docs/34-ui-editor-guide.md) lets humans adjust existing interfaces in native-rendered drafts and export exact screenshots, element IDs and design notes for agents. It preserves text-authored RML/RCSS and external-agent workflows.
+
 Langmake is an independent C++20 runtime with Luau gameplay and JSON projects. External coding agents create games through files and commands. A native window lets the human developer play the result. The engine does not own conversation, inference, credentials or model selection; games run without an LLM account.
 
 **Status: 0.5.0 workflow alpha with optional Studio.** New [game workflow tools](docs/26-game-workflow.md) add per-game target setup, shared presentation profiles, styled held controls, application icons/versions, resumable iOS signing, named verification scenarios and portable handoff records. The runtime retains live inspection, fixed-tick captures, UI, scenes/saves, spawning, navigation, animated models and shared live/offline audio. The separate [Studio application](docs/17-studio.md) adds projects, chats and provider adapters. External Codex, Claude and other coding agents use the same runtime and game folders directly. Games require neither Studio nor an AI account.
@@ -16,6 +24,8 @@ The [Android runtime and export tools](docs/18-android.md) build standalone game
 
 ## Human-directed development
 
+Native macOS local testing is available through the [Mac game guide](docs/28-macos-guide.md) and standalone app packager. It uses SDL/Metal and ad-hoc signing; public notarization/App Store distribution and broader hardware qualification remain separate.
+
 Langmake aims to dramatically reduce the time and effort a human needs to create the game they choose. **The human is the decision-making developer and primary gameplay playtester. AI agents are worker developers who turn that direction into working games.** The human owns the creative vision, priorities and acceptance of the result.
 
 The normal loop is: human direction → agent implementation and technical checks → human playtesting and feedback → the next iteration. Agents should use Langmake's native validation, simulation, state inspection and captures to catch defects, then provide a playable milestone with clear controls and a few focused feedback prompts. Automated checks do not establish whether a game feels right, is enjoyable or fulfills the human's vision.
@@ -29,8 +39,8 @@ For the desktop UI, use the [Studio launch guide](studio/README.md). Studio is a
 The prepared distributions can be opened directly from this workspace:
 
 ```powershell
-& ".\dist\Langmake-Studio-0.5.0\Langmake Studio.exe"
-.\dist\Langmake-0.5.0\langmake.exe play --project .\dist\Langmake-0.5.0\examples\adventure
+powershell -ExecutionPolicy Bypass -File .\studio\open-packaged.ps1
+.\dist\Langmake-0.5.0-ui1\langmake.exe play --project .\dist\Langmake-0.5.0-ui1\examples\adventure
 ```
 
 In Studio, configure **Providers & runtime**, then use **New** or **Open folder**. The runtime is included and discovered automatically. Connect your own provider before asking its agent to edit a game.
@@ -96,7 +106,7 @@ Packaging includes the executable, runtime data, eight starters, workflow/platfo
 
 The stack uses bgfx/SDL3 for Windows rendering/input, Flecs for components, Box2D/Jolt for physics, Luau for behavior, Manifold for solid modeling, ozz-animation/cgltf for animation/import, Recast/Detour for navigation, RmlUi/FreeType for UI and miniaudio for playback. Original sprites, solid parts, character joints/clips and synthesized scores can all be authored as text without another creative application.
 
-This is a foundation for larger iterative games, with concrete smaller references. It does not establish readiness for an Ocarina of Time- or Pikmin-sized production. Current boundaries include one active scene, axis-aligned primitive colliders, ground navigation, CPU skinning and simple base-color materials. There is no multiplayer, streaming world, automatic retargeting, IK, morph animation, recorded instruments or vocals. Console SDK access, approvals and device qualification remain separate prerequisites. Every future platform needs its own evidence.
+This is a foundation for larger iterative games, with concrete smaller references. It does not establish readiness for an Ocarina of Time- or Pikmin-sized production. Current boundaries include one active scene, axis-aligned primitive colliders, ground navigation, CPU skinning and simple base-color materials. There is no multiplayer, streaming world, automatic retargeting, IK, morph animation or native vocal generation. Optional sampled-instrument authoring and recorded WAV/FLAC playback are documented in the music guide. Console SDK access, approvals and device qualification remain separate prerequisites. Every future platform needs its own evidence.
 
 | Document | Purpose |
 | --- | --- |
@@ -117,3 +127,5 @@ This is a foundation for larger iterative games, with concrete smaller reference
 | [Foundations](docs/01-foundations.md), [architecture](docs/02-product-and-architecture.md), [platforms](docs/03-platforms.md) | Design rationale and future direction |
 
 Original Langmake code and example content use the [MIT license](LICENSE). Third-party terms and exact revisions are recorded in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md), [dependencies.lock.json](dependencies.lock.json) and `licenses/`.
+
+Native material boards use contiguous channels, a bounded classic chemistry kernel, active chunks, dynamic sprite surfaces and lazy state providers. See [material grids and bound state](docs/38-material-grid-guide.md). This feature is Windows-qualified; existing mobile qualification does not cover it.

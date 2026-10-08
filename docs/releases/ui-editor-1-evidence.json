@@ -1,0 +1,37 @@
+{
+  "format_version": 1,
+  "date": "2026-09-22",
+  "engine_version": "0.5.0",
+  "ui_observation_revision": 1,
+  "platform": "Windows / Direct3D 11",
+  "native_suites_passed": 13,
+  "studio_and_editor_node_tests_passed": 79,
+  "native_integration_checks": [
+    "native capture and source identity",
+    "draft isolation",
+    "geometry changes",
+    "undo and redo",
+    "optimistic draft revisions",
+    "agent review and advisory pin",
+    "atomic apply and reopen",
+    "phone profile/density/safe area",
+    "whole-source revision conflict"
+  ],
+  "electron_checks": [
+    "real Electron and native preview",
+    "select and edit width",
+    "undo/redo",
+    "32px drag matches native geometry",
+    "resize content box without padding growth",
+    "anchor preserves position",
+    "saved draft resumes after restart",
+    "agent note, advisory pin and screenshot export",
+    "apply text source",
+    "human Play lock"
+  ],
+  "engine_sha256": "a27a64f8aa3de3e34f8f56abfdc4997948e99f97fc3344eef4613e8e196bab99",
+  "editor_service_sha256": "a583c20c827b5bf2652401cb9616fc2087b62f46ddaeed001e44c35a806c8171",
+  "human_approval": "Awaiting human editor use and game-design feedback",
+  "mobile_qualification": "Host dimensions/profile/safe-area checks only; no new physical-device claim",
+  "packaging": "Separate ui1 runtime and Studio distributions; archive verification accompanies the local distribution report"
+}

@@ -1,0 +1,3 @@
+# Project-local orchestration only; preserve the human's main model and permissions.
+[agents]
+max_threads = 2

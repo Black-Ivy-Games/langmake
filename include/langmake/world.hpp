@@ -1,6 +1,7 @@
 #pragma once
 #include "types.hpp"
 #include "asset_runtime.hpp"
+#include "material_grid.hpp"
 #include <memory>
 #include <functional>
 
@@ -14,6 +15,7 @@ public:
     void step(float dt, const Input& input);
     std::vector<Entity> entities() const;
     Json snapshot() const;
+    const std::map<std::string,DynamicSurface>& surfaces() const;
     bool won() const;
     int collected() const;
     std::string message() const;
@@ -23,6 +25,8 @@ public:
     // Player save data is distinct from source checkpoints. Restore is transactional.
     Json save() const;
     void restore(const Json& save);
+    void restore(const Json& save, bool recovery);
+    bool supports_recovery() const;
     void change_scene(const std::string& scene);
     // Prepare presentation resources before committing a CPU-world replacement.
     // Throwing leaves the existing world intact; callers stage their own resources.

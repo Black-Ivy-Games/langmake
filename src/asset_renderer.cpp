@@ -40,7 +40,11 @@ struct AssetRenderer::Impl {
     struct Model { std::vector<bgfx::IndexBufferHandle> indices; std::vector<bgfx::TextureHandle> textures; };
     struct Sampler { const ModelAsset* asset=nullptr; std::unique_ptr<ModelSampler> value; };
     CompiledAssets assets;
-    std::map<std::string,std::vector<bgfx::TextureHandle>> textures;
+    struct SurfaceTexture { bgfx::TextureHandle texture=BGFX_INVALID_HANDLE; int w=0,h=0; uint64_t revision=0; };
+    std::map<std::string,SurfaceTexture> surfaces;
+    struct SpriteRegion { bgfx::TextureHandle texture; float u0=0,v0=0,u1=1,v1=1; };
+    std::map<std::string,std::vector<SpriteRegion>> textures;
+    std::vector<bgfx::TextureHandle> sprite_textures;
     std::map<std::string,Mesh> meshes;
     std::map<std::string,Model> models;
     std::map<std::string,Sampler> samplers;
@@ -53,7 +57,8 @@ struct AssetRenderer::Impl {
     bgfx::UniformHandle model_material=BGFX_INVALID_HANDLE;
     bgfx::TextureHandle white=BGFX_INVALID_HANDLE;
     ~Impl() {
-        for(auto& [id,frames]:textures) for(auto t:frames) if(bgfx::isValid(t)) bgfx::destroy(t);
+        for(auto&[id,s]:surfaces)if(bgfx::isValid(s.texture))bgfx::destroy(s.texture);
+        for(auto t:sprite_textures) if(bgfx::isValid(t)) bgfx::destroy(t);
         for(auto& [id,m]:meshes) {
             if(bgfx::isValid(m.vertices)) bgfx::destroy(m.vertices);
             if(bgfx::isValid(m.indices)) bgfx::destroy(m.indices);
@@ -93,14 +98,45 @@ struct AssetRenderer::Impl {
         size_t bytes=0, count=0;
         for(const auto& [id,sprite]:assets.sprites) {
             auto& frames=textures[id];
-            for(const auto& f:sprite->frames) {
-                bytes+=f.rgba.size();
-                if(bytes>256*1024*1024 || ++count>2048) throw std::runtime_error("Preview sprite budget is 256 MiB and 2048 frames");
-                auto t=bgfx::createTexture2D(uint16_t(f.width),uint16_t(f.height),false,1,bgfx::TextureFormat::RGBA8,
+            auto upload=[&](int width,int height,const std::vector<uint8_t>& pixels) {
+                bytes+=pixels.size();
+                if(bytes>256*1024*1024) throw std::runtime_error("Preview sprite GPU budget is 256 MiB");
+                auto t=bgfx::createTexture2D(uint16_t(width),uint16_t(height),false,1,bgfx::TextureFormat::RGBA8,
                     BGFX_SAMPLER_U_CLAMP|BGFX_SAMPLER_V_CLAMP|BGFX_SAMPLER_MIN_POINT|BGFX_SAMPLER_MAG_POINT|BGFX_SAMPLER_MIP_POINT,
-                    bgfx::copy(f.rgba.data(),uint32_t(f.rgba.size())));
+                    bgfx::copy(pixels.data(),uint32_t(pixels.size())));
                 if(!bgfx::isValid(t)) throw std::runtime_error("Cannot create sprite texture: "+id);
-                frames.push_back(t);
+                sprite_textures.push_back(t);return t;
+            };
+            count+=sprite->frames.size();
+            if(count>2048) throw std::runtime_error("Preview sprite budget is 2048 frames");
+            // Atlas animation frames without changing authored pixels. Duplicated
+            // gutters preserve clamp sampling at the edges of each frame.
+            const auto& first=sprite->frames.front();
+            const int cw=first.width+2,ch=first.height+2;
+            const int limit=std::min(4096,int(bgfx::getCaps()->limits.maxTextureSize));
+            const int columns=std::min(int(std::ceil(std::sqrt(double(sprite->frames.size())))),limit/cw);
+            const int rows=columns ? (int(sprite->frames.size())+columns-1)/columns : limit+1;
+            const bool uniform=std::all_of(sprite->frames.begin(),sprite->frames.end(),[&](const auto& f){return f.width==first.width&&f.height==first.height;});
+            if(sprite->frames.size()>1&&uniform&&columns>0&&rows*ch<=limit) {
+                const int width=columns*cw,height=rows*ch;
+                std::vector<uint8_t> pixels(size_t(width)*height*4);
+                for(size_t n=0;n<sprite->frames.size();++n) {
+                    const auto& f=sprite->frames[n];const int ox=int(n%columns)*cw,oy=int(n/columns)*ch;
+                    for(int y=0;y<ch;++y) for(int x=0;x<cw;++x) {
+                        const auto from=(size_t(std::clamp(y-1,0,int(f.height)-1))*f.width+std::clamp(x-1,0,int(f.width)-1))*4;
+                        const auto to=(size_t(oy+y)*width+ox+x)*4;
+                        std::memcpy(pixels.data()+to,f.rgba.data()+from,4);
+                    }
+                }
+                const auto texture=upload(width,height,pixels);
+                for(size_t n=0;n<sprite->frames.size();++n) {
+                    const int x=int(n%columns)*cw+1,y=int(n/columns)*ch+1;
+                    frames.push_back({texture,float(x)/width,float(y)/height,float(x+first.width)/width,float(y+first.height)/height});
+                }
+                continue;
+            }
+            for(const auto& f:sprite->frames) {
+                frames.push_back({upload(f.width,f.height,f.rgba)});
             }
         }
         for(const auto& [id,mesh]:assets.meshes) {
@@ -147,6 +183,18 @@ struct AssetRenderer::Impl {
 };
 AssetRenderer::AssetRenderer(const CompiledAssets& a):impl_(std::make_unique<Impl>()) { impl_->initialize(a); }
 AssetRenderer::~AssetRenderer()=default;
+void AssetRenderer::sync_surfaces(const std::map<std::string,DynamicSurface>& surfaces) {
+    for(auto it=impl_->surfaces.begin();it!=impl_->surfaces.end();)if(!surfaces.contains(it->first)){if(bgfx::isValid(it->second.texture))bgfx::destroy(it->second.texture);it=impl_->surfaces.erase(it);}else++it;
+    for(const auto&[id,source]:surfaces){auto& gpu=impl_->surfaces[id];
+        if(source.width!=gpu.w||source.height!=gpu.h){
+            if(bgfx::isValid(gpu.texture))bgfx::destroy(gpu.texture);
+            gpu.texture=bgfx::createTexture2D(uint16_t(source.width),uint16_t(source.height),false,1,bgfx::TextureFormat::RGBA8,BGFX_SAMPLER_U_CLAMP|BGFX_SAMPLER_V_CLAMP|BGFX_SAMPLER_MIN_POINT|BGFX_SAMPLER_MAG_POINT);
+            if(!bgfx::isValid(gpu.texture))throw std::runtime_error("Cannot create material surface");
+            gpu.w=source.width;gpu.h=source.height;gpu.revision=0;
+        }
+        if(gpu.revision!=source.revision){bgfx::updateTexture2D(gpu.texture,0,0,0,0,uint16_t(gpu.w),uint16_t(gpu.h),bgfx::copy(source.pixels.data(),uint32_t(source.pixels.size()*4)));gpu.revision=source.revision;}
+    }
+}
 void AssetRenderer::draw(const std::vector<Entity>& entities,bgfx::ProgramHandle /*program*/,bool flat,const Vec3& eye) {
     constexpr float radians=3.14159265358979323846f/180.f;
     std::vector<const Entity*> sprites;
@@ -213,24 +261,54 @@ void AssetRenderer::draw(const std::vector<Entity>& entities,bgfx::ProgramHandle
         auto distance=[&](const Entity* e){ double squared=0; for(int axis=0;axis<3;++axis) { const double delta=e->position[axis]-eye[axis]; squared+=delta*delta; } return squared; };
         return distance(a)>distance(b);
     });
+    std::vector<SpriteVertex> batch_vertices;
+    std::vector<uint16_t> batch_indices;
+    bgfx::TextureHandle batch_texture=BGFX_INVALID_HANDLE;
+    auto flush=[&]() {
+        if(batch_vertices.empty()) return;
+        bgfx::TransientVertexBuffer vb;bgfx::TransientIndexBuffer ib;
+        if(!bgfx::allocTransientBuffers(&vb,impl_->sprite_layout,uint32_t(batch_vertices.size()),&ib,uint32_t(batch_indices.size())))
+            throw std::runtime_error("Sprite transient buffer budget exceeded");
+        std::memcpy(vb.data,batch_vertices.data(),batch_vertices.size()*sizeof(SpriteVertex));
+        std::memcpy(ib.data,batch_indices.data(),batch_indices.size()*sizeof(uint16_t));
+        float identity[16];bx::mtxIdentity(identity);bgfx::setTransform(identity);
+        bgfx::setVertexBuffer(0,&vb);bgfx::setIndexBuffer(&ib);
+        bgfx::setTexture(0,impl_->sampler,batch_texture);
+        bgfx::setState(BGFX_STATE_WRITE_RGB|BGFX_STATE_WRITE_A|BGFX_STATE_DEPTH_TEST_LEQUAL|BGFX_STATE_BLEND_ALPHA|BGFX_STATE_MSAA);
+        bgfx::submit(0,impl_->sprite_program);
+        batch_vertices.clear();batch_indices.clear();
+    };
     for(auto ptr:sprites) {
         const auto& e=*ptr;
         auto sprite=impl_->assets.sprites.find(e.asset);
         if(sprite==impl_->assets.sprites.end()) continue;
         size_t frame=sprite_frame_at(*sprite->second,e.animation,e.animation_time);
+        auto region=impl_->textures.at(e.asset).at(frame);
+        if(auto surface=impl_->surfaces.find(e.id);surface!=impl_->surfaces.end())region={surface->second.texture,0,0,1,1};
+        // Consecutive runs only: preserve stable depth/alpha ordering, including
+        // overlapping sprites. Limit indices to the 16-bit transient format.
+        if(region.texture.idx!=batch_texture.idx||batch_vertices.size()+4>65532) flush();
+        batch_texture=region.texture;
         float transform[16];
-        bx::mtxSRT(transform,e.size[0]*e.visual_scale[0],e.size[1]*e.visual_scale[1],e.visual_scale[2],e.rotation[0]*radians,e.rotation[1]*radians,e.rotation[2]*radians,e.position[0],e.position[1],e.position[2]);
-        const float left=e.flip_x?1.f:0.f, right=1.f-left;
+        // Box2D and authored 2D polygons use counterclockwise positive angles.
+        // bx's SRT Z convention is clockwise; previews and body sprites must
+        // share the physics convention rather than counter-rotate on contact.
+        const float sprite_z = (flat ? -e.rotation[2] : e.rotation[2]) * radians;
+        bx::mtxSRT(transform,e.size[0]*e.visual_scale[0],e.size[1]*e.visual_scale[1],e.visual_scale[2],e.rotation[0]*radians,e.rotation[1]*radians,sprite_z,e.position[0],e.position[1],e.position[2]);
+        const float left=e.flip_x?region.u1:region.u0,right=e.flip_x?region.u0:region.u1;
         const uint32_t tint=color(e.color);
-        SpriteVertex vertices[]{{-.5f,.5f,0,tint,left,0},{.5f,.5f,0,tint,right,0},{.5f,-.5f,0,tint,right,1},{-.5f,-.5f,0,tint,left,1}};
+        SpriteVertex vertices[]{{-.5f,.5f,0,tint,left,region.v0},{.5f,.5f,0,tint,right,region.v0},{.5f,-.5f,0,tint,right,region.v1},{-.5f,-.5f,0,tint,left,region.v1}};
         const uint16_t indices[]{0,1,2,0,2,3};
-        bgfx::TransientVertexBuffer vb; bgfx::TransientIndexBuffer ib;
-        if(!bgfx::allocTransientBuffers(&vb,impl_->sprite_layout,4,&ib,6)) throw std::runtime_error("Sprite transient buffer budget exceeded");
-        std::memcpy(vb.data,vertices,sizeof(vertices)); std::memcpy(ib.data,indices,sizeof(indices));
-        bgfx::setTransform(transform); bgfx::setVertexBuffer(0,&vb); bgfx::setIndexBuffer(&ib);
-        bgfx::setTexture(0,impl_->sampler,impl_->textures.at(e.asset).at(frame));
-        bgfx::setState(BGFX_STATE_WRITE_RGB|BGFX_STATE_WRITE_A|BGFX_STATE_DEPTH_TEST_LEQUAL|BGFX_STATE_BLEND_ALPHA|BGFX_STATE_MSAA);
-        bgfx::submit(0,impl_->sprite_program);
+        const auto base=uint16_t(batch_vertices.size());
+        for(auto v:vertices) {
+            const float x=v.x,y=v.y,z=v.z;
+            v.x=transform[0]*x+transform[4]*y+transform[8]*z+transform[12];
+            v.y=transform[1]*x+transform[5]*y+transform[9]*z+transform[13];
+            v.z=transform[2]*x+transform[6]*y+transform[10]*z+transform[14];
+            batch_vertices.push_back(v);
+        }
+        for(auto index:indices) batch_indices.push_back(base+index);
     }
+    flush();
 }
 }

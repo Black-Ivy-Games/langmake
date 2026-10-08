@@ -120,6 +120,41 @@ update=function() engine.state_set('pointer',{engine.input('pointer_x'),engine.i
     seeded.document["seed"]=-1;rejects([&]{lm::World invalid(seeded);},"seed");
     seeded.document["seed"]=9007199254740992ull;rejects([&]{lm::World invalid(seeded);},"seed");
 }
+void state_budget_limits(){auto p=sample();p.script_source=R"(return {start=function()
+local t={{},{},{}}
+for b=1,3 do for i=1,22000 do t[b][i]=i end end
+local ok,err=pcall(function() engine.state_set('too_big',t) end)
+assert(not ok and string.find(err,'65536'))
+engine.state_set('still_running',true)
+end})";
+    lm::World w(p);require(w.snapshot()["state"]["still_running"]&&!w.snapshot()["state"].contains("too_big"),"Oversized state_set table was accepted or left partial state");
+}
+void luau_native_codegen(){
+    auto plain=sample();plain.gravity={0,0,0};plain.modules["mathmod"]=R"(local M={}
+function M.sum(n)local total=0;for i=1,n do total+=i end;return total end
+return M)";
+    plain.script_source=R"(local M=require('mathmod')
+return {start=function() engine.state_set('sum',M.sum(64)) end})";
+    lm::World interpreted(plain);auto stats=interpreted.statistics();
+    require(interpreted.snapshot()["state"]["sum"]==2080,"Unmarked Luau module produced wrong result");
+    require(stats.value("script_native_functions",0)==0&&stats.value("script_native_code_bytes",0)==0,"Unmarked Luau source compiled native functions");
+
+    auto native=plain;native.script_source="--!native\n"+plain.script_source;native.modules["mathmod"]="--!native\n"+plain.modules["mathmod"];
+    lm::World compiled(native);stats=compiled.statistics();
+    require(compiled.snapshot()["state"]["sum"]==2080,"Native-marked Luau module changed script result");
+    require(stats.contains("script_native_functions")&&stats.contains("script_native_code_bytes"),"Native Luau statistics are missing");
+#if defined(_WIN32) || defined(__ANDROID__)
+    require(stats["script_native_functions"].get<int>()>=2,"--!native Luau entry/module did not compile native functions on supported target");
+    require(stats["script_native_code_bytes"].get<int>()>0,"--!native Luau source reported no native code bytes on supported target");
+#endif
+
+    auto loop=sample();loop.script_source=R"(--!native
+return {update=function()
+ local ok,err=pcall(function() while true do end end)
+ engine.state_set('swallowed',{ok,err})
+end})";
+    rejects([&]{lm::World budget(loop);budget.step(1.f/60,{});},"SCRIPT_BUDGET_EXCEEDED");
+}
 void lifetime_and_queries(const std::string& dimension){auto p=sample(dimension);p.gravity={0,0,0};p.entities[1].controller.clear();p.entities[1].shape="box";p.entities[1].size={1,1,1};p.entities[1].position={0,0,0};
     p.entities[0].body="none";
     lm::Entity wall;wall.id="wall";wall.position={5,0,0};wall.size={1,2,2};p.entities.push_back(wall);
@@ -194,6 +229,25 @@ on_load=function() engine.ui_set('loaded',true) end})";
 on_load=function() engine.state_set('loaded_migration',true) end})";
     lm::World upgraded(revised);upgraded.restore(old_save);require(upgraded.snapshot()["state"]["gems"]==6&&upgraded.snapshot()["state"]["loaded_migration"],"authored save migration did not run transactionally");
     old_save["project_id"]="different-game";rejects([&]{upgraded.restore(old_save);},"another project");
+    auto large=sample();large.document["project_id"]="large-migration-test";large.document["save_version"]=1;large.revision="large-v1";large.entities.clear();
+    for(int i=0;i<3211;++i){lm::Entity item;item.id="tile_"+std::to_string(i);item.body="none";item.position={float(i%79),float(i/79),0};item.size={.25f,.25f,.25f};large.entities.push_back(item);}
+    large.script_source="return {start=function() engine.state_set('coins',3);engine.state_set('starts',engine.state_get('starts',0)+1) end}";
+    lm::World large_old(large);auto large_save=large_old.save();auto large_next=large;large_next.document["save_version"]=2;large_next.revision="large-v2";
+    large_next.script_source=R"(return {
+migrate=function(saved,from,to) assert(from==1 and to==2);saved.state.gems=saved.state.coins*2;saved.state.coins=nil;return saved end,
+on_load=function() engine.state_set('loaded_large_migration',true) end})";
+    lm::World large_loaded(large_next);large_loaded.restore(large_save);auto large_snapshot=large_loaded.snapshot();
+    require(large_snapshot["entities"].size()==3211&&large_snapshot["state"]["gems"]==6&&large_snapshot["state"]["starts"]==1&&large_snapshot["state"]["loaded_large_migration"],"Large save migration lost entities or progress");
+    require(large_snapshot["entities"][0]["id"]=="tile_0"&&large_snapshot["entities"][3210]["id"]=="tile_3210","Large save migration changed stable IDs");
+    auto large_timeout=large_next;large_timeout.revision="large-v2-timeout";
+    large_timeout.script_source=R"(return {migrate=function(saved,from,to)
+local ok,err=pcall(function() while true do end end)
+saved.state.swallowed={ok,err}
+return saved
+end})";
+    rejects([&]{lm::World timeout(large_timeout);timeout.restore(large_save);},"SCRIPT_BUDGET_EXCEEDED");
+    const auto migrated_large=large_loaded.save();large_loaded.restore(migrated_large);large_loaded.restore(migrated_large);large_snapshot=large_loaded.snapshot();
+    require(large_snapshot["entities"].size()==3211&&large_snapshot["state"]["gems"]==6&&large_snapshot["state"]["starts"]==1,"Repeated exact restore duplicated rewards or lost large save content");
     for(int i=0;i<40;++i){loaded.restore(saved);loaded.change_scene("other");loaded.change_scene("main");}
     require(loaded.statistics()["physics_bodies"]==2&&loaded.statistics()["entities"]==2,"repeated load/scene changes leaked runtime resources");
     const auto live=loaded.snapshot();loaded.set_scene_prepare([](const lm::Project&,const lm::CompiledAssets&){throw std::runtime_error("presentation allocation failed");});
@@ -294,7 +348,7 @@ end})";
     lm::Navigation two("2d",flat.entities,flat.document["navigation"]);require(two.path({-5,0,0},{5,0,0})["status"]=="ready","top-down 2D navigation failed");
 }
 }
-int main(){try{std::cout<<"viewport observation"<<std::endl;viewport_observation();std::cout<<"presentation save compatibility"<<std::endl;save_presentation_compatibility();std::cout<<"modules/state"<<std::endl;modules_and_state();std::cout<<"2D entities/queries"<<std::endl;lifetime_and_queries("2d");std::cout<<"3D entities/queries"<<std::endl;lifetime_and_queries("3d");
+int main(){try{std::cout<<"viewport observation"<<std::endl;viewport_observation();std::cout<<"presentation save compatibility"<<std::endl;save_presentation_compatibility();std::cout<<"modules/state"<<std::endl;modules_and_state();std::cout<<"state budget limits"<<std::endl;state_budget_limits();std::cout<<"Luau native codegen"<<std::endl;luau_native_codegen();std::cout<<"2D entities/queries"<<std::endl;lifetime_and_queries("2d");std::cout<<"3D entities/queries"<<std::endl;lifetime_and_queries("3d");
     std::cout<<"2D characters"<<std::endl;characters("2d");std::cout<<"3D characters"<<std::endl;characters("3d");std::cout<<"saves/scenes/camera"<<std::endl;save_scene_camera();std::cout<<"lock camera/contacts"<<std::endl;camera_and_contacts();
     std::cout<<"2D/3D moving support"<<std::endl;moving_support("2d");moving_support("3d");std::cout<<"joint attachments"<<std::endl;joint_attachments();
     std::cout<<"2D/3D prefab hierarchy/sensors"<<std::endl;hierarchy_and_sensors("2d");hierarchy_and_sensors("3d");std::cout<<"navigation/crowd"<<std::endl;navigation();

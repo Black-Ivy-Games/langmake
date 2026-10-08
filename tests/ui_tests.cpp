@@ -20,6 +20,8 @@ void layout_input(const std::filesystem::path& executable){
     const Json state={{"ui",{{"score",42},{"health",{{"value",.75},{"max",1}}}}}};
     ui.update(state,1,1280,800);ui.draw();auto first=ui.inspect();
     check(first["elements"]["score"]["value"]==42,"UI scalar binding missing");
+    check(first["editor_revision"]==1&&first["elements"]["panel"]["document"]=="ui/hud.rml","Editor must identify native document");
+    check(first["elements"]["panel"]["properties"]["position"]=="absolute"&&first["elements"]["panel"]["content_size"][0]==200,"Editor must expose native styles/content box");
     check(std::abs(first["elements"]["panel"]["position"][0].get<float>()-1060)<1,"Right anchor incorrect");
     ui.update(state,1,1600,900);ui.draw();auto resized=ui.inspect();
     check(std::abs(resized["elements"]["panel"]["position"][0].get<float>()-1380)<1,"Resize must preserve screen-space anchoring");
@@ -116,4 +118,42 @@ void layout_diagnostics(const std::filesystem::path& executable){
     check(codes.contains("ui_missing_glyph")&&codes.contains("ui_action")&&codes.contains("ui_overlap")&&codes.contains("ui_offscreen"),"UI diagnostics must report missing glyphs, action references, overlap and offscreen controls");
 }
 }
-int main(int argc,char** argv){try{const auto root=argc>1?std::filesystem::path(argv[1]):std::filesystem::current_path();const auto executable=argc>2?std::filesystem::path(argv[2]):root/"build";layout_input(executable);density_and_clipping(executable);safe_area(executable);authored_actions(executable);layout_diagnostics(executable);std::cout<<"PASS RmlUi layout, resize, safe area, action hold/release/cancel, keyboard/gamepad, independent pointers, enlarged hit regions, opacity, font/layout/action diagnostics and legacy events\n";return 0;}catch(const std::exception& error){std::cerr<<"FAIL "<<error.what()<<'\n';return 1;}}
+
+void pointer_only_gameplay(const std::filesystem::path& executable){
+    auto p=project();p.document["input"]={{"actions",{{"cast",Json::object()}}}};
+    p.sources["ui/main.rcss"]="body {width:100%;height:100%;} #cast-area {position:absolute;left:100dp;top:100dp;width:300dp;height:300dp;focus:none;} #spell {position:absolute;left:10dp;top:10dp;width:80dp;height:40dp;focus:none;}";
+    p.sources["ui/hud.rml"]="<rml><head><link type='text/rcss' href='main.rcss'/></head><body><button id='spell'>Water</button><div id='cast-area' data-action='cast'/></body></rml>";
+    lm::UiRenderer ui(p,executable,true);ui.update(Json::object(),0,800,600);ui.draw();
+    auto click=[&](float x,float y){SDL_Event e{};e.type=SDL_EVENT_MOUSE_MOTION;e.motion.x=x;e.motion.y=y;ui.process_event(e);e.type=SDL_EVENT_MOUSE_BUTTON_DOWN;e.button.button=SDL_BUTTON_LEFT;ui.process_event(e);e.type=SDL_EVENT_MOUSE_BUTTON_UP;ui.process_event(e);ui.consume_tick();ui.drain_events();};
+    for(auto xy:{std::pair{150.f,150.f},std::pair{30.f,30.f}}){
+        click(xy.first,xy.second);
+        check(!ui.captures_keyboard()&&!ui.consumes_key(SDL_SCANCODE_SPACE),"Gameplay click must leave Space to jump");
+        SDL_Event e{};e.type=SDL_EVENT_KEY_DOWN;e.key.key=SDLK_SPACE;e.key.scancode=SDL_SCANCODE_SPACE;ui.process_event(e);
+        lm::Input input;ui.apply(input);
+        check(input.actions["cast"]==0&&ui.drain_events().empty(),"Space after pointer release must not cast or activate a button");
+        e.type=SDL_EVENT_KEY_UP;ui.process_event(e);
+    }
+}
+
+void drag_scroll(const std::filesystem::path& executable){
+    auto p=project();
+    p.sources["ui/main.rcss"]="body {width:100%;height:100%;} div {display:block;} #list {position:absolute;left:10dp;top:10dp;width:200dp;height:200dp;overflow-y:auto;} #rows {height:900dp;} scrollbarvertical {width:16dp;} #exit {position:absolute;left:10dp;top:220dp;width:200dp;height:40dp;}";
+    p.sources["ui/hud.rml"]="<rml><head><link type='text/rcss' href='main.rcss'/></head><body><div id='list' data-drag-scroll='true'><div id='rows'>Discoveries</div></div><button id='exit'>Back</button></body></rml>";
+    lm::UiRenderer ui(p,executable,true);ui.set_safe_area({0,30,600,840});ui.update({{"ui",Json::object()}},0,600,900,2);ui.draw();
+    using Phase=lm::UiRenderer::PointerPhase;
+    const float before=ui.inspect()["elements"]["rows"]["position"][1];
+    check(ui.process_pointer(40,Phase::down,100,350),"List must capture drag on content");
+    check(ui.process_pointer(40,Phase::move,100,150),"List must retain drag");
+    ui.update({{"ui",Json::object()}},.1,600,900,2);ui.draw();
+    const auto after=ui.inspect()["elements"]["rows"]["position"][1].get<float>();
+    if(!(after<before-190))std::cerr<<"scroll before="<<before<<" after="<<after<<" list="<<ui.inspect()["elements"]["list"]<<'\n';
+    check(after<before-190,"Content must scroll with finger at device density and safe area");
+    check(ui.process_pointer(40,Phase::up,100,150),"List release must be consumed");
+    check(ui.drain_events().empty(),"Dragging must not click a game control");
+    check(!ui.process_pointer(41,Phase::down,100,500),"Back button must not become a scroll drag");
+    ui.process_pointer(42,Phase::down,100,200);ui.reset_input();
+    check(!ui.process_pointer(42,Phase::move,100,100),"Reset must cancel scroll ownership");
+    ui.process_pointer(43,Phase::down,100,200);ui.update({{"ui",{{"list",{{"visible",false}}}}}},.2,600,900,2);
+    check(!ui.process_pointer(43,Phase::move,100,100),"Hidden notebook must release drag ownership");
+}
+int main(int argc,char** argv){try{const auto root=argc>1?std::filesystem::path(argv[1]):std::filesystem::current_path();const auto executable=argc>2?std::filesystem::path(argv[2]):root/"build";layout_input(executable);density_and_clipping(executable);safe_area(executable);authored_actions(executable);layout_diagnostics(executable);drag_scroll(executable);pointer_only_gameplay(executable);std::cout<<"PASS RmlUi layout, safe area, controls, drag scrolling, cancellation and input tests\n";return 0;}catch(const std::exception& error){std::cerr<<"FAIL "<<error.what()<<'\n';return 1;}}

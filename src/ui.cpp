@@ -192,6 +192,8 @@ struct UiRenderer::Impl final : Rml::EventListener {
     bool enabled=false;
     struct Held {Rml::Element* element=nullptr;float x=0,y=0;bool active=true;bool positional=true;};
     std::map<std::int64_t,Held> pointers;
+    struct ScrollDrag {Rml::Element* element;float y,top;};
+    std::map<std::int64_t,ScrollDrag> scroll_drags;
     std::set<Rml::Element*> pulses;
     std::set<std::string> actions;
     std::map<std::string,std::string> font_sources;
@@ -252,6 +254,7 @@ struct UiRenderer::Impl final : Rml::EventListener {
         if(element->GetTagName()=="script")throw std::runtime_error("UI behavior belongs in Luau; embedded scripts are unsupported");
         if(element->HasAttribute("data-action")&&id.empty())throw std::runtime_error("UI data-action requires a stable element id");
         if(element->HasAttribute("data-hit-padding")){const auto value=element->GetAttribute<Rml::String>("data-hit-padding","");std::size_t used=0;float amount=0;try{amount=std::stof(value,&used);}catch(...){throw std::runtime_error("UI data-hit-padding must be a number in dp");}if(used!=value.size()||!std::isfinite(amount)||amount<0||amount>256)throw std::runtime_error("UI data-hit-padding must be within 0..256 dp");}
+        if(element->HasAttribute("data-drag-scroll"))element->SetProperty("pointer-events","auto");
         if(interactive(element)){element->SetProperty("pointer-events","auto");element->SetProperty("tab-index","auto");focusables.push_back(element);}
         for(int i=0;i<element->GetNumChildren();++i)walk(element->GetChild(i),depth+1);
     }
@@ -311,6 +314,7 @@ struct UiRenderer::Impl final : Rml::EventListener {
     void emit_action(Rml::Element* element,const char* phase){if(events.size()<256)events.push_back({{"type","ui"},{"id",element->GetId()},{"event",phase},{"action",element->GetAttribute<Rml::String>("data-action","")},{"value",""}});}
     void refresh_active(Rml::Element* element){element->SetPseudoClass("active",held(element));}
     void cancel_element(Rml::Element* element){
+        std::erase_if(scroll_drags,[&](const auto& entry){return entry.second.element==element;});
         bool canceled=pulses.erase(element)>0;
         for(auto i=pointers.begin();i!=pointers.end();)if(i->second.element==element){canceled=true;i=pointers.erase(i);}else ++i;
         if(canceled){emit_action(element,"cancel");element->SetPseudoClass("active",false);}
@@ -318,6 +322,28 @@ struct UiRenderer::Impl final : Rml::EventListener {
     void prune(){std::vector<Rml::Element*> canceled;for(const auto&[id,p]:pointers)if(!available(p.element)||(!p.positional&&context->GetFocusElement()!=p.element))canceled.push_back(p.element);for(auto* e:pulses)if(!available(e))canceled.push_back(e);for(auto* e:canceled)cancel_element(e);}
     bool pointer(std::int64_t id,UiRenderer::PointerPhase phase,float x,float y,Rml::Element* explicit_element=nullptr){
         if(!std::isfinite(x)||!std::isfinite(y))return false;
+        std::erase_if(scroll_drags,[&](const auto& entry){return !available(entry.second.element);});
+        if(auto drag=scroll_drags.find(id);drag!=scroll_drags.end()){
+            if(phase==UiRenderer::PointerPhase::move||phase==UiRenderer::PointerPhase::up){
+                const float delta=y-drag->second.y;
+                if(std::abs(delta)>=4*density)drag->second.element->SetScrollTop(drag->second.top-delta);
+            }
+            if(phase==UiRenderer::PointerPhase::up||phase==UiRenderer::PointerPhase::cancel)scroll_drags.erase(drag);
+            return true;
+        }
+        if(phase==UiRenderer::PointerPhase::down&&!explicit_element&&context&&scroll_drags.size()<16){
+            auto* hit=context->GetElementAtPoint({x-safe[0],y-safe[1]});
+            for(auto* p=hit;p;p=p->GetParentNode()){
+                const auto& tag=p->GetTagName();
+                // Preserve controls and the native scrollbar's own dragging.
+                if(interactive(p)||tag=="scrollbarvertical"||tag=="scrollbarhorizontal"||tag=="sliderbar"||tag=="slidertrack"||tag=="sliderarrowinc"||tag=="sliderarrowdec")break;
+                if(p->HasAttribute("data-drag-scroll")&&inside(p,x,y)){
+                    bool owned=false;for(const auto& [key,drag]:scroll_drags)if(drag.element==p)owned=true;
+                    if(owned)return true;
+                    scroll_drags.emplace(id,ScrollDrag{p,y,p->GetScrollTop()});return true;
+                }
+            }
+        }
         prune();auto found=pointers.find(id);
         if(phase==UiRenderer::PointerPhase::down){
             if(found!=pointers.end())return true;
@@ -339,13 +365,13 @@ struct UiRenderer::Impl final : Rml::EventListener {
         if(clicked&&element->HasAttribute("data-event"))element->DispatchEvent("click",{});
         return true;
     }
-    void reset_input(){std::set<Rml::Element*> owned=pulses;for(auto&[id,p]:pointers)owned.insert(p.element);for(auto* e:owned)cancel_element(e);}
+    void reset_input(){scroll_drags.clear();std::set<Rml::Element*> owned=pulses;for(auto&[id,p]:pointers)owned.insert(p.element);for(auto* e:owned)cancel_element(e);}
     bool focused()const{return context&&interactive(context->GetFocusElement())&&context->GetFocusElement()->IsVisible(true);}
     void focus_next(bool forward){
         if(!context||focusables.empty())return;
         const auto found=std::find(focusables.begin(),focusables.end(),context->GetFocusElement());
         int position=found==focusables.end()?(forward?-1:0):int(found-focusables.begin());
-        for(std::size_t i=0;i<focusables.size();++i){position=(position+(forward?1:-1)+int(focusables.size()))%int(focusables.size());auto* next=focusables[position];if(next->IsVisible(true)&&!next->HasAttribute("disabled")){next->Focus(true);prune();return;}}
+        for(std::size_t i=0;i<focusables.size();++i){position=(position+(forward?1:-1)+int(focusables.size()))%int(focusables.size());auto* next=focusables[position];if(next->IsVisible(true)&&!next->HasAttribute("disabled")){if(next->Focus(true)){prune();return;}}}
     }
 };
 UiRenderer::UiRenderer(const Project& project,const std::filesystem::path& executable,bool headless){
@@ -435,7 +461,22 @@ Json UiRenderer::inspect()const {
     const auto& self=*impl_;Json elements=Json::object();
     Json actions=Json::object();
     for(const auto& [id,element]:self.elements){const auto r=self.bounds(element),hit=self.hit_bounds(element);const auto action=element->GetAttribute<Rml::String>("data-action","");elements[id]={{"tag",element->GetTagName()},{"position",{r[0],r[1]}},{"size",{r[2],r[3]}},{"logical_position",{(r[0]-self.safe[0])/self.density,(r[1]-self.safe[1])/self.density}},{"logical_size",{r[2]/self.density,r[3]/self.density}},{"hit_rect",hit},{"visible",element->IsVisible(true)},{"interactive",interactive(element)},{"enabled",self.available(element)},{"action",action},{"held",self.held(element)},{"value",self.previous.value(id,Json())}};if(!action.empty())actions[action]=actions.value(action,false)||self.held(element);}
-    return {{"enabled",self.enabled},{"viewport",{self.width,self.height}},{"width",self.width},{"height",self.height},{"safe_area",self.safe},{"content_rect",self.safe},{"logical_content_size",{self.safe[2]/self.density,self.safe[3]/self.density}},{"insets",{self.safe[0],self.safe[1],self.width-self.safe[0]-self.safe[2],self.height-self.safe[1]-self.safe[3]}},{"density",self.density},{"held_actions",actions},{"owned_pointers",self.pointers.size()},{"focus",self.context&&self.context->GetFocusElement()?self.context->GetFocusElement()->GetId():""},{"elements",std::move(elements)}};
+    for(const auto& [id,element]:self.elements) {
+        auto& record=elements[id];auto* doc=element->GetOwnerDocument();
+        std::string source=doc?doc->GetSourceURL():"";
+        if(source.starts_with(self.name+"/"))source.erase(0,self.name.size()+1);
+        record["document"]=source;
+        bool transformed=false;for(auto* p=element;p;p=p->GetParentNode())if(const auto* v=p->GetProperty("transform"))if(v->ToString()!="none"&&!v->ToString().empty())transformed=true;record["transformed"]=transformed;
+        auto* parent=element->GetParentNode();record["parent"]=parent?parent->GetId():"";
+        auto* offset=element->GetOffsetParent();record["offset_parent_rect"]=offset?Json(self.bounds(offset)):Json(self.safe);
+        Json properties=Json::object();
+        for(const char* key:{"position","left","top","right","bottom","width","height","margin-left","margin-top","margin-right","margin-bottom","padding-left","padding-top","padding-right","padding-bottom","font-size","color","background-color","opacity","z-index","text-align","display","border-radius"}) {
+            if(const auto* property=element->GetProperty(key))properties[key]=property->ToString();
+        }
+        const auto content_size=element->GetBox().GetSize(Rml::BoxArea::Content);record["content_size"]={content_size.x,content_size.y};
+        record["properties"]=std::move(properties);
+    }
+    return {{"editor_revision",1},{"enabled",self.enabled},{"viewport",{self.width,self.height}},{"width",self.width},{"height",self.height},{"safe_area",self.safe},{"content_rect",self.safe},{"logical_content_size",{self.safe[2]/self.density,self.safe[3]/self.density}},{"insets",{self.safe[0],self.safe[1],self.width-self.safe[0]-self.safe[2],self.height-self.safe[1]-self.safe[3]}},{"density",self.density},{"held_actions",actions},{"owned_pointers",self.pointers.size()},{"focus",self.context&&self.context->GetFocusElement()?self.context->GetFocusElement()->GetId():""},{"elements",std::move(elements)}};
 }
 Json UiRenderer::diagnostics(const std::string& expected)const {
     const auto& self=*impl_;Json results=Json::array();

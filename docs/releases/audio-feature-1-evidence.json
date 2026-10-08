@@ -1,0 +1,293 @@
+{
+  "format_version": 1,
+  "engine_version": "0.5.0",
+  "audio_feature_revision": 1,
+  "date": "2026-09-21",
+  "technical_scope": "recorded instruments, symbolic composition, WAV/FLAC stems and SFX, adaptive layers and richer native mixing",
+  "artistic_status": "not approved: initial sketches and fuller ensemble rejected as artificial/tacky",
+  "native_ctest_suites": 13,
+  "composition_unit_tests": 5,
+  "android_tool_tests": 32,
+  "source_graph_and_cli": [
+    "recorded source revision",
+    "binary checkpoint restore",
+    "Windows/Android/iOS complete source cook",
+    "audio feature requirement",
+    "authored WAV overwrite protection",
+    "recorded import and native audition",
+    "targeted composition transform preserves other parts"
+  ],
+  "capture_parity": {
+    "ok": true,
+    "checks": [
+      {
+        "platform": "windows",
+        "tick": 0,
+        "matched": [
+          "state",
+          "music",
+          "music_layers",
+          "audio_events",
+          "camera"
+        ],
+        "capture_sha256": "f6ec843b7a4d8ab58e6a73b359640b82dfa2bff51d48f112cdf784cb3a7e26b5",
+        "sidecar_sha256": "c95a6b7b4d88ffe089c2e124af85f66e49aefd1922f7dbf025e7fc37c57e249e"
+      },
+      {
+        "platform": "android",
+        "tick": 0,
+        "matched": [
+          "state",
+          "music",
+          "music_layers",
+          "audio_events",
+          "camera"
+        ],
+        "capture_sha256": "f43252885fdf811bfbcf7aba2b7bdd19f57f91ae3a1db69188338dea8eff4b5e",
+        "sidecar_sha256": "b04df267e4b016f7497ad5ca9c3540d10fd3f908bbfb085c84e8dbeed623ce4a"
+      },
+      {
+        "platform": "ios-simulator",
+        "tick": 0,
+        "matched": [
+          "state",
+          "music",
+          "music_layers",
+          "audio_events",
+          "camera"
+        ],
+        "capture_sha256": "f96320fd8a148dd853b151d9ca77c90234d34bb41fb79dae448cb7b8bbad8609",
+        "sidecar_sha256": "e8a3a19847d7eb9321c17f0e11eec7882507958633fd38c0122dcf2dc86fce8a"
+      },
+      {
+        "platform": "windows",
+        "tick": 61,
+        "matched": [
+          "state",
+          "music",
+          "music_layers",
+          "audio_events",
+          "camera"
+        ],
+        "capture_sha256": "07fba931da1ba9547cac17391336ec6debf50f683480a2630d49203f52a768a6",
+        "sidecar_sha256": "06a63fcade1531167cd67417145f1d7b86a5e0eca2da4e605fd2de20bf01bf38"
+      },
+      {
+        "platform": "android",
+        "tick": 61,
+        "matched": [
+          "state",
+          "music",
+          "music_layers",
+          "audio_events",
+          "camera"
+        ],
+        "capture_sha256": "75ad2ca2fd01a57de7220a5b340199ac220d088b479606bfce46dc2a46b8ee8e",
+        "sidecar_sha256": "23dd25be9d18ccb18554fd0040765d36ea0b7ca105948ef71e8f07321f7b5713"
+      },
+      {
+        "platform": "ios-simulator",
+        "tick": 61,
+        "matched": [
+          "state",
+          "music",
+          "music_layers",
+          "audio_events",
+          "camera"
+        ],
+        "capture_sha256": "81fc9c52bc4470d6aa6879e17a02af531f123375fee4b5ff7f9522d25b732032",
+        "sidecar_sha256": "5434ab0e09cacce691d67019c80fb6a1a502e3fcf584ff87a57be862646a3624"
+      },
+      {
+        "platform": "windows",
+        "tick": 420,
+        "matched": [
+          "state",
+          "music",
+          "music_layers",
+          "audio_events",
+          "camera"
+        ],
+        "capture_sha256": "fdf074fa433cc7843073e2104a9aeca0f16bcd7d24696b90574b5b641ae0e90f",
+        "sidecar_sha256": "9c691d94832f81a548b527d9e59ee47fb9b7d3c98bb7c73d8f5e5354a91ca209"
+      },
+      {
+        "platform": "android",
+        "tick": 420,
+        "matched": [
+          "state",
+          "music",
+          "music_layers",
+          "audio_events",
+          "camera"
+        ],
+        "capture_sha256": "158b06badfc7303dc84d4f62253d82d7682c7e49ff5158138d8d8be45c3cd929",
+        "sidecar_sha256": "4b9c1044284d73b4881114c2f38c7756e410719e924a022c2f1aad48f67c8100"
+      },
+      {
+        "platform": "ios-simulator",
+        "tick": 420,
+        "matched": [
+          "state",
+          "music",
+          "music_layers",
+          "audio_events",
+          "camera"
+        ],
+        "capture_sha256": "9f2432d2115c117b5853900627435a98a84f589065b34fa5b9a1ed540c7151cd",
+        "sidecar_sha256": "d63563d263f8a8968c8f4fac37bb4f04d13a0975a5400c09951d09e50604b99e"
+      }
+    ]
+  },
+  "android": {
+    "device": "Samsung SM-A146U",
+    "abi": "arm64-v8a",
+    "controls": {
+      "ok": true,
+      "commands": 8,
+      "audio": {
+        "clipped_frames": 0,
+        "device_backend": "AAudio",
+        "device_initialization_status": "ready",
+        "device_interrupted": false,
+        "device_is_null": false,
+        "device_last_error": "",
+        "device_last_operation": "start",
+        "device_last_result": 0,
+        "device_ready": true,
+        "device_requested": true,
+        "device_suspended": false,
+        "dropped_commands": 0,
+        "output_available": true,
+        "peak": 0.3262021243572235,
+        "rms": 0.06997723649988248,
+        "sample_frames": 182272
+      },
+      "state": {
+        "changes": 0,
+        "chimes": 1.0,
+        "cue": "storm-gate",
+        "drums": false
+      },
+      "layers": {
+        "drums": {
+          "fade_seconds": 0.3499999940395355,
+          "gain": 0.0,
+          "quantization": "bar",
+          "requested_tick": 0
+        }
+      }
+    },
+    "final_run": {
+      "ok": true,
+      "state": {
+        "changes": 0,
+        "chimes": 1.0,
+        "cue": "storm-gate",
+        "drums": true
+      },
+      "audio": {
+        "clipped_frames": 0,
+        "device_backend": "AAudio",
+        "device_initialization_status": "ready",
+        "device_interrupted": false,
+        "device_is_null": false,
+        "device_last_error": "",
+        "device_last_operation": "start",
+        "device_last_result": 0,
+        "device_ready": true,
+        "device_requested": true,
+        "device_suspended": false,
+        "dropped_commands": 0,
+        "output_available": true,
+        "peak": 0.33843857049942017,
+        "rms": 0.07171179481292854,
+        "sample_frames": 260096
+      }
+    },
+    "native_sha256": "e5d37f19fc4ed3003681dbc01d26b6db4650fa096291fe66f53ab37c0a32a64b"
+  },
+  "ios": {
+    "hardware": "Apple M2 Max",
+    "macos": "26.6.2",
+    "xcode": "27.0",
+    "destination": "iPhone 16 arm64 simulator, iOS 27.0",
+    "controls": {
+      "ok": true,
+      "audio": {
+        "clipped_frames": 0,
+        "device_backend": "Core Audio",
+        "device_initialization_status": "ready",
+        "device_interrupted": false,
+        "device_is_null": false,
+        "device_last_error": "",
+        "device_last_operation": "start",
+        "device_last_result": 0,
+        "device_ready": true,
+        "device_requested": true,
+        "device_suspended": false,
+        "dropped_commands": 0,
+        "output_available": true,
+        "peak": 0.3262021243572235,
+        "rms": 0.066326395127768,
+        "sample_frames": 130048
+      },
+      "checks": 8
+    },
+    "final_run": {
+      "ok": true,
+      "tick": 420,
+      "state": {
+        "changes": 0,
+        "chimes": 1.0,
+        "cue": "storm-gate",
+        "drums": true
+      },
+      "audio": {
+        "clipped_frames": 0,
+        "device_backend": "Core Audio",
+        "device_initialization_status": "ready",
+        "device_interrupted": false,
+        "device_is_null": false,
+        "device_last_error": "",
+        "device_last_operation": "start",
+        "device_last_result": 0,
+        "device_ready": true,
+        "device_requested": true,
+        "device_suspended": false,
+        "dropped_commands": 0,
+        "output_available": true,
+        "peak": 0.290351003408432,
+        "rms": 0.06665519496900216,
+        "sample_frames": 76544
+      }
+    },
+    "native_sha256": "6f0cd1659a17b6f240aaca8d7b3849a1bb0dfedd75bd23c027b69c2adf173a31",
+    "physical_new_audio_qualified": false
+  },
+  "windows_executable_sha256": "d1e5f31eba4aa2a88d908917652bbf1233d4a97c4220c0d6263767a7f0a760e5",
+  "limits": {
+    "resident_pcm_bytes_per_asset": 100663296,
+    "resident_pcm_bytes_per_project": 201326592,
+    "tracks": 16,
+    "sampler_voices_per_instrument": 128,
+    "instrument_count": 15
+  },
+  "packaging": {
+    "status": "portable directory verified with empty PATH; archive and Studio distribution reports accompany release artifacts",
+    "directory": "dist/Langmake-0.5.0-audio1",
+    "checks": [
+      "all manifest hashes",
+      "all eight starters create/validate/check/simulate/render",
+      "Music Room offline playback without sampler",
+      "packaged optional sampler renders a text composition using an explicitly supplied pack"
+    ]
+  },
+  "evidence_directory": ".cache/expressive-audio",
+  "studio": {
+    "tests": 74,
+    "passed": 74,
+    "broker_render_verified": true,
+    "scope": "project-scoped music tools, installed documentation, play-session locks; real sampled-chime render"
+  }
+}

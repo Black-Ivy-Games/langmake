@@ -1,6 +1,3 @@
-#define MINIAUDIO_IMPLEMENTATION
-#define MA_NO_DECODING
-#define MA_NO_ENCODING
 #include <miniaudio.h>
 #include "langmake/audio.hpp"
 #include "langmake/audio_mixer.hpp"
@@ -44,6 +41,7 @@ Audio::Audio(bool enabled,const Json& configuration):impl_(std::make_unique<Impl
 Audio::~Audio(){if(impl_->ready)ma_device_uninit(&impl_->device);}
 void Audio::play(float frequency,float seconds){if(impl_->ready)impl_->mixer->play(frequency,seconds);}
 void Audio::set_music(std::shared_ptr<const MusicScore> score,bool loop,const std::string& bus){if(impl_->ready)impl_->mixer->set_music(std::move(score),loop,bus);}
+void Audio::set_music_layer(const std::string& id,float gain,float seconds,const std::string& quantization){if(impl_->ready)impl_->mixer->set_music_layer(id,gain,seconds,quantization);}
 void Audio::stop_music(){if(impl_->ready)impl_->mixer->stop_music();}
 void Audio::stop_all(){if(impl_->ready)impl_->mixer->stop_all();}
 void Audio::play_sfx(std::shared_ptr<const MusicScore> score,const std::string& bus){if(impl_->ready)impl_->mixer->play_sfx(std::move(score),bus);}

@@ -1,5 +1,30 @@
 # Working on Langmake
 
+## Efficient Codex delegation
+
+For external Codex work in this checkout, use the project roles in `.codex/agents/`
+when present. Delegate bounded planning to `planner` (gpt-5.6-luna, medium) and
+narrow lookups or explicitly specified mechanical edits to `grunt` (gpt-5.5, low)
+when they can run independently alongside useful main-agent work. Do not spawn
+both by default: handle small tasks and tightly dependent work directly.
+Before delegating, briefly state the split. Give each child a compact task brief,
+relevant paths, constraints, acceptance criteria and exclusive file ownership if
+editing; prefer fresh context over a full conversation fork. Limit to two active
+children, forbid recursive delegation, and request concise evidence with file
+references. Do not repeat a child's searches unless its result needs verification.
+
+The main agent owns architecture, difficult runtime/provider/editor changes,
+integration, appropriate tests and final review. Escalate ambiguity instead of
+letting low-effort workers guess. Required guides, verification and human feedback
+remain mandatory; efficiency never authorizes implementation or weakens boundaries.
+Preserve existing dirty/untracked work and active human play sessions. Delegation
+does not authorize broad cleanup, deployments, credential access or new scope.
+Read `.codex/README.md` for loading, explicit-model fallback and model retirement.
+Clients without these optional roles continue normally; Studio and games do not
+depend on them. Keep the human-selected main model/effort unless explicitly changed.
+
+## Product and development contract
+
 Langmake is an independent C++20 runtime with Luau game behavior and JSON projects. External agents own conversation and inference; do not add an engine-owned model connection or provider dependency.
 
 The optional `studio/` module may host coding agents, project management and chats. Keep its provider SDKs, credentials, conversation state and desktop dependencies out of the runtime and exported games. External Codex, Claude and other directory/CLI agents remain fully supported; Studio is never a prerequisite. Maintain runtime-only and Studio distributions. Android build/deployment tools under `scripts/android/` must also work independently of Studio.
@@ -30,3 +55,7 @@ Test graphics/live changes: add `-Graphics`; this opens temporary preview window
 Package: `powershell -ExecutionPolicy Bypass -File scripts/package.ps1`.
 
 Do not alter pinned dependency checkouts to fix integration code. Record intentional dependency changes in CMake, the revision lock and notices. Qualify each platform and feature with actual evidence; this release is a Windows/D3D11 and Android/GLES3 alpha. Read docs/20-android-qualification.md for actual device coverage. Android games use scripts/android/android.py independently of Studio; select an explicit device serial, ABI and orientation, and preserve declared gameplay state. Use dp for phone UI dimensions and fonts; native observations expose safe-area bounds.
+
+For soundtrack or sound-effect work, read `docs/30-music-and-sound-guide.md` and `docs/31-audio-qualification.md`. Use `music instruments`, `music schema`, and `asset schema --type music` for actual support. Author contrasting short musical sketches, render them, and let human listening direct revisions. Music compositions and optional CC0 packs belong to authoring; exported games use native v1 synthesis or v2 WAV/FLAC tracks. Keep authoring dependencies out of the player and qualify new audio on the actual target build. Review `prompts/12-music-and-sound.md` when audio contracts change.
+
+For UI layout edits or exported human direction, read `docs/34-ui-editor-guide.md` and the game's `ui-design.json` when present. Preserve stable IDs, bindings and pinned design intent unless the human changes it. Use native isolated drafts/captures, coordinate writers/play sessions, and export reviews without silently sending them to providers. Editor tools are optional; RML/RCSS and external agents remain supported. Review `prompts/13-ui-layout.md` when these contracts change.

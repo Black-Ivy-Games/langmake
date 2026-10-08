@@ -10,8 +10,8 @@ namespace lm {
 Json cook_project(const std::filesystem::path& path, const std::filesystem::path& output,
                   const std::string& target, const std::string& profile) {
     namespace fs = std::filesystem;
-    if (target != "android" && target != "windows" && target != "ios")
-        throw std::runtime_error("Cook target must be android, ios or windows");
+    if (target != "android" && target != "windows" && target != "ios" && target != "macos")
+        throw std::runtime_error("Cook target must be android, ios, macos or windows");
     const auto destination = fs::weakly_canonical(fs::absolute(output));
     if (output.empty() || destination == destination.root_path() || fs::exists(destination))
         throw std::runtime_error("Cook requires a new output directory; existing content is never overwritten");
@@ -55,6 +55,27 @@ Json cook_project(const std::filesystem::path& path, const std::filesystem::path
         }
         for (const auto& [id, source] : project.assets)
             manifest["assets"].push_back({{"id",id},{"type",source.type},{"revision",source.revision}});
+        manifest["scene_assets"]=Json::object();
+        for(const auto&[scene_id,scene]:project.scenes) {
+            auto& entries=manifest["scene_assets"][scene_id];entries=Json::array();
+            for(const auto&[id,source]:scene->assets)
+                entries.push_back({{"id",id},{"type",source.type},{"revision",source.revision}});
+        }
+        bool expressive_audio=false;
+        std::function<void(const Json&)> scan_audio=[&](const Json& value){
+            if(value.is_object()) {
+                if(value.value("type",Json())=="music"&&value.value("schema_version",Json())==2)expressive_audio=true;
+                if(value.value("type",Json())=="eq"||value.value("type",Json())=="compressor"||value.value("type",Json())=="limiter")expressive_audio=true;
+                for(const auto& v:value)scan_audio(v);
+            }else if(value.is_array())for(const auto& v:value)scan_audio(v);
+        };
+        scan_audio(project.document);
+        for(const auto&[id,source]:project.assets)if(source.type=="music")scan_audio(source.document);
+        for(const auto&[id,scene]:project.scenes) {
+            scan_audio(scene->document);
+            for(const auto&[asset_id,source]:scene->assets)if(source.type=="music")scan_audio(source.document);
+        }
+        manifest["audio_feature_revision"]=expressive_audio?1:0;
         manifest["source_bytes"] = bytes;
         manifest["runtime_content_limit_bytes"] = 256 * 1024 * 1024;
         // Revisions identify source changes. Mobile packagers add SHA-256

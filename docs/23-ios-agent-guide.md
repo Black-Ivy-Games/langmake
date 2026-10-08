@@ -1,5 +1,7 @@
 # iOS/iPadOS agent workflow and documentation index
 
+For sampled music or recorded sound effects, also read [the music and sound guide](30-music-and-sound-guide.md). Bake on the authoring host, then include only recipes/recordings in the app; build the current player source on the Mac. Sample banks, Python and sfizz stay out of the iOS app. Check [audio qualification](31-audio-qualification.md) separately from historical iPhone/iPad evidence.
+
 For 0.5.0 authoring, start with `langmake context --project GAME` and [the per-game workflow](26-game-workflow.md). Explicitly configure this game's authorized Mac/SSH reference, signing team and device; templates and new games do not inherit another game's settings. Application icons/versions, presentation profiles, held custom controls and persistent deployment/signing operations are supported. Use the native tools below independently of Studio when needed. The historical platform evidence in the next paragraph is not automatic qualification of new 0.5.0 behavior.
 
 Historical source qualification on the Langmake 0.4.1 baseline, recorded September 20, 2026: **The signed adventure runs on an iPhone 17 Pro Max, with nine capture/state checks and positive initial human feedback.** The human confirmed movement, interaction, music and readable text. At that milestone, physical persistence/lifecycle checks and final release packaging were pending; broader coverage came from 2D/3D simulator scenarios. Read the [qualification record](24-ios-qualification.md) before promising coverage for a particular game or device.

@@ -10,6 +10,8 @@ Project: [EXISTING_PROJECT_DIRECTORY]
 Authorized workspace: [DIRECTORY]
 Read AGENTS.md, prompts/00-workflow.md, the native asset guide and the
 relevant asset schemas. Inspect the current asset IDs and references first.
+For music, also read docs/30-music-and-sound-guide.md and discover the installed
+instruments. Use prompts/12-music-and-sound.md for a soundtrack-specific brief.
 
 PURPOSE AND DIRECTION
 These assets support [PLAYER ACTION, CHARACTER OR SCENE].
@@ -19,10 +21,13 @@ They must remain readable at [ACTUAL GAME VIEW/SIZE].
 DELIVERABLES
 - [SPRITE: PURPOSE, APPROXIMATE DIMENSIONS, FRAMES AND REQUIRED STATES].
 - [MODEL: SCALE, SILHOUETTE, SIMPLE JOINTS AND REQUIRED ANIMATION CLIPS].
-- [MUSIC: SHORT SYNTHESIZED LOOP, MOOD, RHYTHM AND RELATIVE INTENSITY].
+- [MUSIC: SYNTHESIZED OR SAMPLED CUE, MOOD, RHYTHM, PHRASING AND INTENSITY].
 - [SOUND EFFECTS: DISTINCT CUES AND THEIR GAMEPLAY TRIGGERS].
 Use the native text-authoring pipeline for the selected deliverables.
 Keep original recipes editable and register all required dependencies.
+For sampled composition, retain the note source and instrument provenance,
+then bake synchronized stems. Offer contrasting auditions before developing
+the soundtrack. More instruments alone do not establish better music.
 
 INTEGRATION
 Replace or add [ASSET IDS]. Keep [GAMEPLAY RULES AND OTHER VISUAL CHOICES].

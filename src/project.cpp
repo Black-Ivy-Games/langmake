@@ -1,5 +1,6 @@
 #include "langmake/collision2d.hpp"
 #include "langmake/project.hpp"
+#include "langmake/recorded_music.hpp"
 #include "langmake/asset_runtime.hpp"
 #include "langmake/io.hpp"
 #include "langmake/model.hpp"
@@ -247,7 +248,7 @@ Json validate_document(const Json& document) {
             if(value.contains("build")&&(!value["build"].is_number_integer()||!numeric(value["build"],1,2100000000)))issue(errors,"range",path+"/build","Expected integer build 1..2100000000.");
         };
         app_fields(app,"/application",false);
-        if(app.is_object()&&app.contains("platforms")&&object_keys(app["platforms"],{"android","ios","windows"},"/application/platforms",errors))
+        if(app.is_object()&&app.contains("platforms")&&object_keys(app["platforms"],{"android","ios","macos","windows"},"/application/platforms",errors))
             for(const auto&[platform,value]:app["platforms"].items())app_fields(value,"/application/platforms/"+platform,true);
     }
     if(document.contains("save_compatibility")) {
@@ -612,7 +613,9 @@ SourceBundle read_bundle(const fs::path& root, const fs::path& file, const Sourc
         project.camera_position = doc["camera"]["position"].get<Vec3>();
         project.camera_target = doc["camera"]["target"].get<Vec3>();
     }
-    if (doc.contains("assets")) for (const auto& [id, registration] : doc["assets"].items()) {
+    auto read_assets = [&](Project& target, const Json& registrations) {
+      target.assets.clear();
+      for (const auto& [id, registration] : registrations.items()) {
         AssetSource source;
         source.type = registration["type"].get<std::string>();
         const auto asset_path = registration["path"].get<std::string>();
@@ -631,9 +634,12 @@ SourceBundle read_bundle(const fs::path& root, const fs::path& file, const Sourc
             dependency_files[input] = source.inputs[input];
         }
         if(source.type=="model")for(int pass=0;pass<3;++pass){bool added=false;for(auto& input:model_dependencies(source))if(!source.inputs.contains(input)){source.inputs[input]=read(input);dependency_files[input]=source.inputs[input];added=true;}if(!added)break;}
+        if(source.type=="music")for(auto& input:music_dependencies(source)){source.inputs[input]=read(input);dependency_files[input]=source.inputs[input];}
         source.revision = files_revision(dependency_files, "asset-" + source.type);
-        project.assets.emplace(id, std::move(source));
-    }
+        target.assets.emplace(id, std::move(source));
+      }
+    };
+    read_assets(project,doc.value("assets",Json::object()));
     populate_entities(project,doc);
     if(doc.contains("modules"))for(auto&[id,path]:doc["modules"].items()){auto name=path.get<std::string>();project.modules[id]=read(name);project.module_files[id]=scoped(root,name);}
     if(doc.contains("prefabs"))for(auto&[id,path]:doc["prefabs"].items()) {
@@ -644,14 +650,47 @@ SourceBundle read_bundle(const fs::path& root, const fs::path& file, const Sourc
     if(doc.contains("definitions"))for(auto&[id,path]:doc["definitions"].items())project.definitions[id]=parse_document(read(path.get<std::string>()));
     project.ui=doc.value("ui",Json::object());
     read_ui(project.ui);
+    // Account for each resolved catalog rather than multiplying the complete
+    // union graph: a scene with its own registry does not copy another game's
+    // asset inputs. The separate full source-map copy guard remains below.
+    auto catalog_bytes=[](const Project& p) {
+        std::size_t bytes=p.script_source.size()+p.document.dump().size()+p.definitions.dump().size()+p.prefabs.dump().size()+p.ui.dump().size();
+        for(const auto&[name,source]:p.modules)bytes+=source.size();
+        for(const auto&[id,asset]:p.assets) {
+            bytes+=asset.bytes.size()+asset.document.dump().size();
+            for(const auto&[path,source]:asset.inputs)bytes+=source.size();
+        }
+        return bytes;
+    };
+    std::size_t resident_catalog_bytes=catalog_bytes(project);
     if(doc.contains("scenes"))for(auto&[id,path]:doc["scenes"].items()) {
         auto local=parse_document(read(path.get<std::string>()));
-        Json scene_errors=Json::array();object_keys(local,{"entities","script","camera","game_camera","gravity","music","audio","navigation","state","ui"},"/scenes/"+id,scene_errors);
+        Json scene_errors=Json::array();object_keys(local,{"entities","script","camera","game_camera","gravity","music","audio","navigation","state","ui","assets","modules","prefabs","definitions"},"/scenes/"+id,scene_errors);
         if(!scene_errors.empty())throw std::runtime_error(Json({{"diagnostics",scene_errors}}).dump());
         read_ui(local.value("ui",Json::object()));
         Json merged=doc;merged.update(local);merged.update(project.resolved_profile);ensure_valid(merged);
-        if(total*(project.scenes.size()+2)>256ull*1024*1024)throw std::runtime_error("Scene source catalog exceeds resident budget; reduce scene count or asset sizes.");
         auto child=std::make_shared<Project>(project);child->scenes.clear();child->document=merged;child->scene_id=id;
+        // Registries replace the complete root registry, just like other scene
+        // fields. Each scene retains the usual asset and source safety limits.
+        if(local.contains("assets"))read_assets(*child,merged["assets"]);
+        if(local.contains("modules")) {
+            child->modules.clear();child->module_files.clear();
+            for(const auto&[name,path]:merged["modules"].items()) {
+                auto relative=path.get<std::string>();child->modules[name]=read(relative);child->module_files[name]=scoped(root,relative);
+            }
+        }
+        if(local.contains("definitions")) {
+            child->definitions.clear();
+            for(const auto&[name,path]:merged["definitions"].items())child->definitions[name]=parse_document(read(path.get<std::string>()));
+        }
+        if(local.contains("prefabs")) {
+            child->prefabs.clear();
+            for(const auto&[name,path]:merged["prefabs"].items()) {
+                auto prefab=parse_document(read(path.get<std::string>()));
+                auto candidate=merged;candidate["entities"]=prefab.contains("entities")?prefab["entities"]:Json::array({prefab});
+                ensure_valid(candidate);child->prefabs[name]=std::move(prefab);
+            }
+        }
         child->entities.clear();populate_entities(*child,merged);
         child->script_file=scoped(root,merged["script"].get<std::string>());child->script_source=read(merged["script"].get<std::string>());
         child->gravity=merged.value("gravity",Json(project.gravity)).get<Vec3>();
@@ -659,6 +698,8 @@ SourceBundle read_bundle(const fs::path& root, const fs::path& file, const Sourc
         if(merged.contains("camera")){child->camera_position=merged["camera"]["position"].get<Vec3>();child->camera_target=merged["camera"]["target"].get<Vec3>();}
         child->ui=merged.value("ui",Json::object());
         read_ui(child->ui);
+        resident_catalog_bytes+=catalog_bytes(*child);
+        if(resident_catalog_bytes>256ull*1024*1024)throw std::runtime_error("Scene source catalog exceeds resident budget; reduce scene count or asset sizes.");
         project.scenes[id]=std::move(child);
     }
     if(doc.contains("entry_scene")) {
@@ -777,7 +818,7 @@ Json capabilities() {
     constexpr const char* backend = "OpenGL ES 3";
     constexpr const char* platform = "Android";
 #elif defined(__APPLE__)
-    constexpr const char* backend = "None (headless host tools)";
+    constexpr const char* backend = "Metal";
     constexpr const char* platform = "macOS";
 #else
     constexpr const char* backend = "Direct3D 11";
@@ -788,12 +829,13 @@ Json capabilities() {
         {"commands",{"help","capabilities","schema","script-api","check","validate","inspect","simulate","profile","patch","checkpoint","restore","preview","play","capture","control","save","load","new","cook","ui-check","save-check",
             "context","target","deploy","operation","verify","receipt","handoff","session","asset schema","asset list","asset inspect","asset build","asset render","asset export","asset replace"}},
         {"workflow",{{"guide","docs/26-game-workflow.md"},{"protocol","docs/25-workflow-implementation.md"},{"qualification","docs/27-workflow-qualification.md"},{"human_playtesting","Technical verification is distinct from physical input qualification and human gameplay acceptance"}}},
+        {"ui_editor",{{"observation_revision",1},{"guide","docs/34-ui-editor-guide.md"},{"tool","scripts/ui-editor/ui-editor.cjs"},{"optional_studio",true},{"native_captures",true},{"runtime_editor_dependency",false}}},
         {"authoring",{{"external_agents",true},{"studio","Optional separate application; no engine model/provider dependency"},{"entry_point","project.json"}}},
         {"presentation_profiles",{{"selection","Explicit --profile or authored default_profile; never inferred from target"},{"overrides",{"input","ui","camera","game_camera","application"}},
             {"merge","Whole top-level field replacement, applied after scene overrides"},{"geometry","Gameplay geometry is never resized or replaced by a presentation profile"},{"max_profiles",32}}},
         {"save_compatibility",{{"default","Exact revision/save-version or explicit Luau migration"},{"opt_in","Matching explicit contract ID and structural fingerprint allow assessed presentation changes"},
             {"refresh","Cross-revision presentation reuse refreshes authored UI defaults and camera; all loads clear transient input before on_load"}}},
-        {"cook",{{"targets",{"android","ios","windows"}},{"encoding","validated-source-graph"},{"includes","Complete registered graph; excludes caches, saves, credentials and chat history"},{"asset_compilation","Native recipes are compiled by the player"}}},
+        {"cook",{{"targets",{"android","ios","macos","windows"}},{"encoding","validated-source-graph"},{"includes","Complete registered graph; excludes caches, saves, credentials and chat history"},{"asset_compilation","Native recipes are compiled by the player"}}},
         {"ios",{{"status","Native universal iPhone/iPad player and deployment implemented; simulator and physical-device coverage is scoped to recorded devices, scenarios and build revisions"},{"qualified",false},{"tools","scripts/ios/ios.py"},{"guide","docs/23-ios-agent-guide.md"},{"qualification","docs/27-workflow-qualification.md"},{"baseline_qualification","docs/24-ios-qualification.md"},{"device_families",{"iPhone","iPad"}},{"qualification_policy","No blanket device qualification; consult separate simulator, iPhone, iPad, physical-input and human-feedback evidence"},{"minimum_os","17.0"},{"graphics","Metal"},{"architectures",{{"device",{"arm64"}},{"simulator",{"arm64","x86_64"}}}},{"build_host","macOS with full Xcode"},{"orientations",{"landscape","portrait","sensor"}},{"external_agents",true},{"studio_required",false}}},
         {"android",{{"status","Player and game export implemented; see reference-device qualification"},{"tools","scripts/android/android.py"},{"guide","docs/18-android.md"},{"qualification","docs/20-android-qualification.md"},{"minimum_api",26},{"abis",{"arm64-v8a","x86_64"}},{"graphics","OpenGL ES 3"},{"orientations",{"landscape","portrait","sensor"}},{"player_variants",{"debug","release"}},{"standalone_games",true},{"hud_safe_area",true},{"script_budget_clock","Android thread CPU time; wall-clock fallback if unavailable"},{"touch","input.touch: virtual stick and paged named-action buttons; authored UI has input priority"}}},
         {"starter_templates",{"2d","3d","rockets-2d","rockets-3d","adventure","strategy","shared-2d","workflow-2d"}},
@@ -805,19 +847,20 @@ Json capabilities() {
             {"models",{"Native joint/part/clip recipes","glTF/GLB triangle meshes, skins, textures and LINEAR animation","ozz sampling/blending","CPU skinning","OBJ posed export"}},{"music","Synthesized scores with filters, delay and reverb"}}},
         {"renderer",{{"library","bgfx"},{"backend",backend},{"platform",platform},{"materials",{"vertex color","base-color texture","simple lighting","unlit","transparency"}}}},
         {"physics",{{"2d","Box2D"},{"3d","Jolt"},{"body_rotation",{{"2d","opt-in physics2d.rotate"},{"3d",false}}},{"simulation","Fixed 1/60-second steps"},{"features",{"capsule character controllers","native raycasts, overlaps, sphere casts","contacts","independent collision participation","bounded convex 2D fixtures and angular motion (Windows tested)"}}}},
+        {"material_grid",{{"kernel","classic-chemistry-v1"},{"guide","docs/38-material-grid-guide.md"},{"max_samples",262144},{"max_live_samples",1048576},{"presentation_qualified","Windows/D3D11"},{"features",{"native contiguous channels","active chunks","dirty surface regions","lazy bound state"}}}},
         {"navigation",{{"library","Recast/Detour 1.6.0"},{"modes",{"3D ground","top-down 2D"}},{"crowd_capacity",256},{"reference_agents",128},{"obstacle_updates","Explicit navigation_rebuild() from current registered static geometry"}}},
         {"ui",{{"library","RmlUi 6.3 + FreeType 2.14.3"},{"features",{"RML/RCSS screen-space HUD","text, panels, bars, images, buttons","keyboard/mouse/gamepad focus","inspectable values and semantic events"}},{"font","Lato Latin; Latin text coverage"}}},
-        {"audio",{{"library","miniaudio"},{"optional",true},{"features",{"shared playback/offline mixer","master/music/sfx/ui and custom buses","lowpass/highpass","delay","reverb","smoothed gain/pan/mute","bounded voices and command queue"}}}},
+        {"audio",{{"feature_revision",1},{"music_recipe_versions",{1,2}},{"authoring_guide","docs/30-music-and-sound-guide.md"},{"library","miniaudio"},{"optional",true},{"features",{"shared playback/offline mixer","WAV/FLAC recorded tracks","text composition via optional sfizz authoring","sample-aligned adaptive layers","parametric EQ/compressor/peak limiter","master/music/sfx/ui and custom buses","lowpass/highpass","delay","reverb","smoothed gain/pan/mute","bounded voices and command queue"}}}},
         {"preview",{{"source_watch",true},{"reload","Complete source graph; restart on valid changes, keep last good world on load failure"},{"live_state",".langmake/live.json"},{"control_api_version",2},{"compact_receipts",true},
             {"live_controls",{"pause","resume","reset","snapshot","step","capture","save","load"}},{"live_queries","--ids --role --visible --fields --offset --limit; --check-source explicitly reads authored sources"},
             {"capture",{{"format","PNG"},{"timing",{"legacy --frames","isolated fixed-tick --steps --input --ticks --output-dir"}},{"metadata","Tick, scene, source/asset revisions, camera, viewport, scenario and state"}}}}},
         {"play",{{"overlay",false},{"source_watch",false},{"developer_shortcuts",false}}},
-        {"scripts",{{"language","Luau"},{"entry","Return optional start(), update(dt), on_load(), migrate(saved,from,to) hooks"},{"api",script_api()["functions"]},{"modules","Registered require(ID), sandboxed/cache-once; cycles diagnosed"},{"checking","check command and script-api generated declarations"}}},
-        {"world",{{"active_scenes",1},{"features",{"transactional scene changes","bounded prefab spawning/destruction","JSON gameplay state","versioned project-scoped saves and migration hooks","fixed-tick gameplay cameras"}},{"starter_systems",{"health/combat","inventory/equipment","dialogue/quests","timers/state machines","cinematics","group orders/tasks"}}}},
+        {"scripts",{{"language","Luau"},{"entry","Return optional start(), update(dt), on_load(), on_recover(), migrate(saved,from,to) hooks"},{"api",script_api()["functions"]},{"modules","Registered require(ID), sandboxed/cache-once; cycles diagnosed"},{"checking","check command and script-api generated declarations"}}},
+        {"world",{{"active_scenes",1},{"scene_registry_overrides",{"assets","modules","prefabs","definitions"}},{"features",{"transactional scene changes","bounded prefab spawning/destruction","JSON gameplay state","versioned project-scoped saves and migration hooks","fixed-tick gameplay cameras"}},{"starter_systems",{"health/combat","inventory/equipment","dialogue/quests","timers/state machines","cinematics","group orders/tasks"}}}},
         {"limits",{{"max_entities",4096},{"max_assets",256},{"max_source_files",2048},{"max_profiles",32},{"max_file_bytes",4*1024*1024},{"max_binary_file_bytes",32*1024*1024},{"max_source_bytes",256*1024*1024},{"max_v1_source_bytes",32*1024*1024},
             {"max_compiled_visual_bytes",256*1024*1024},{"max_project_music_notes",1024*1024},{"max_script_source_bytes",1024*1024},{"script_memory_bytes",16*1024*1024},{"script_call_budget_ms",50},{"players",1},
-            {"model_joints",128},{"model_vertices",100000},{"model_clips",64},{"audio_buses",8},{"effects_per_bus",4},{"delay_seconds",2},{"audio_tail_seconds",10},{"receipt_queue_bytes",16*1024*1024},{"receipt_retention_seconds",600}}},
-        {"limitations",{"Windows/D3D11, Android/GLES3 and iOS/Metal coverage is limited to the devices, scenarios and build revisions in the current qualification record; do not infer another device or feature from a platform label; consoles and XR remain future work","One active scene; ground navigation; no streaming or multiplayer","No FBX, retargeting, morph targets, root motion or advanced/PBR materials","No samples, recorded instruments or vocals","Legacy and 3D colliders remain axis aligned; opt-in physics2d supports convex fixtures and Z rotation; visual_scale never changes collision","Save reconstructs systems; it does not serialize a physics solver or Luau VM","Source restore rolls back ordinary I/O failures but is not a crash-atomic multi-file transaction","External editors do not participate in the engine mutation lock"}}};
+            {"model_joints",128},{"model_vertices",100000},{"model_clips",64},{"recorded_music_tracks",16},{"recorded_music_asset_bytes",96*1024*1024},{"recorded_music_project_bytes",192*1024*1024},{"audio_buses",8},{"effects_per_bus",4},{"delay_seconds",2},{"audio_tail_seconds",10},{"receipt_queue_bytes",16*1024*1024},{"receipt_retention_seconds",600}}},
+        {"limitations",{"Windows/D3D11, Android/GLES3 and iOS/Metal coverage is limited to the devices, scenarios and build revisions in the current qualification record; do not infer another device or feature from a platform label; consoles and XR remain future work","One active scene; ground navigation; no streaming or multiplayer","No FBX, retargeting, morph targets, root motion or advanced/PBR materials","Recorded WAV/FLAC playback and text-authored sampled instruments are supported; no neural music/vocal generation, arbitrary sampler plugins, or streaming audio","Legacy and 3D colliders remain axis aligned; opt-in physics2d supports convex fixtures and Z rotation; visual_scale never changes collision","Save reconstructs systems; it does not serialize a physics solver or Luau VM","Source restore rolls back ordinary I/O failures but is not a crash-atomic multi-file transaction","External editors do not participate in the engine mutation lock"}}};
 }
 
 Json project_schema() {
@@ -880,7 +923,7 @@ Json project_schema() {
     app_fields["label"]={{"type","string"},{"minLength",1},{"maxLength",160}};
     app_fields["version"]={{"type","string"},{"pattern","^[0-9]+(\\.[0-9]+)*$"},{"maxLength",64},{"default","1.0"}};
     app_fields["build"]={{"type","integer"},{"minimum",1},{"maximum",2100000000},{"default",1}};
-    app_fields["platforms"]={{"type","object"},{"additionalProperties",false},{"properties",{{"android",app_platform},{"ios",app_platform},{"windows",app_platform}}}};
+    app_fields["platforms"]={{"type","object"},{"additionalProperties",false},{"properties",{{"android",app_platform},{"ios",app_platform},{"macos",app_platform},{"windows",app_platform}}}};
     props["application"]={{"type","object"},{"additionalProperties",false},{"properties",app_fields}};
     props["save_compatibility"]={{"type","object"},{"additionalProperties",false},{"required",{"id","allow_presentation_changes"}},
         {"properties",{{"id",{{"type","string"},{"pattern","^[A-Za-z0-9_-]{1,64}$"}}},{"allow_presentation_changes",{{"type","boolean"}}}}}};

@@ -1,4 +1,5 @@
 #include "langmake/music.hpp"
+#include "langmake/recorded_music.hpp"
 #include "langmake/audio_mixer.hpp"
 #include <algorithm>
 #include <array>
@@ -102,10 +103,12 @@ struct MusicScore {
     uint32_t seed = 1;
     Json effects = Json::array();
     double tail = 0;
+    std::shared_ptr<const RecordedMusic> recorded;
     std::vector<Instrument> instruments;
     std::vector<Note> notes;
     double seconds_per_tick() const { return 60.0 / (bpm * ppq); }
     uint64_t render_frames(int rate) const {
+        if(recorded)return uint64_t(std::ceil((recorded->length/48000.0+tail)*rate));
         uint64_t result = uint64_t(std::ceil(length * seconds_per_tick() * rate));
         for (const auto& note : notes) {
             const auto end = uint64_t(std::llround(static_cast<long double>(note.tick + note.duration) * 60.0L * rate / (bpm * ppq)));
@@ -120,6 +123,17 @@ std::shared_ptr<const MusicScore> compile_music(const AssetSource& source) {
     try {
         if (source.type != "music") reader.fail("/type", "Asset must have type music");
         const auto doc = parse_document(source, reader);
+        if(doc.value("schema_version",Json(1))==2) {
+            if(reader.string(doc,"type","")!="music")reader.fail("/type","Expected music");
+            auto score=std::make_shared<MusicScore>();score->revision=source.revision;
+            score->title=reader.string(doc,"title","",false);score->gain=reader.number(doc,"gain",.7,0,1,"");
+            score->bpm=reader.number(doc,"bpm",120,20,400,"");score->recorded=compile_recorded_music(source);
+            score->effects=doc.value("effects",Json::array());AudioEffects effect(score->effects);
+            score->tail=reader.number(doc,"tail_seconds",effect.tail_seconds(),0,10,"");
+            score->duration=score->recorded->length/48000.0+score->tail;
+            if(score->duration>600)reader.fail("/length_frames","Including tails, music may not exceed 600 seconds");
+            return score;
+        }
         reader.object(doc, "", {"schema_version", "type", "title", "bpm", "ppq", "length", "gain", "seed", "polyphony", "instruments", "notes", "patterns", "arrangement", "effects", "tail_seconds"});
         reader.integer(doc, "schema_version", 0, 1, 1, "", true);
         if (reader.string(doc, "type", "") != "music") reader.fail("/type", "Expected type music, including for short SFX");
@@ -241,6 +255,13 @@ std::shared_ptr<const MusicScore> compile_music(const AssetSource& source) {
 }
 
 Json inspect_music(const MusicScore& score) {
+    if(score.recorded) {
+        Json tracks=Json::array();for(const auto& t:score.recorded->tracks)tracks.push_back({{"id",t.id},{"source",t.source},{"frames",t.pcm.size()/2},{"gain",t.gain},{"pan",t.pan},{"effects",t.effects},{"automation_points",t.automation.size()}});
+        return {{"type","music"},{"schema_version",2},{"title",score.title},{"source_revision",score.revision},
+            {"notes",0},{"instruments",0},{"tracks",tracks},{"decoded_bytes",score.recorded->bytes},{"sample_rate",48000},{"channels",2},
+            {"sample_frames",score.render_frames(48000)},{"loop_seconds",score.recorded->length/48000.0},{"duration_seconds",score.duration},
+            {"effects",score.effects},{"effect_tail_seconds",score.tail},{"beats_per_bar",score.recorded->beats_per_bar},{"beat_count",score.recorded->beats.size()}};
+    }
     return {{"type", "music"}, {"title", score.title}, {"source_revision", score.revision},
         {"bpm", score.bpm}, {"ppq", score.ppq}, {"length", score.length}, {"notes", score.notes.size()},
         {"instruments", score.instruments.size()}, {"polyphony", score.polyphony}, {"voice_policy", "oldest"},
@@ -249,7 +270,7 @@ Json inspect_music(const MusicScore& score) {
         {"effects", score.effects}, {"effect_tail_seconds", score.tail}};
 }
 
-Json music_schema() {
+Json legacy_music_schema() {
     auto number = [](double lo, double hi, double fallback) { return Json{{"type", "number"}, {"minimum", lo}, {"maximum", hi}, {"default", fallback}}; };
     auto integer = [](int lo, int hi) { return Json{{"type", "integer"}, {"minimum", lo}, {"maximum", hi}}; };
     Json note{{"type", "object"}, {"additionalProperties", false}, {"required", {"tick", "duration", "note", "instrument"}},
@@ -281,6 +302,9 @@ Json music_schema() {
         {"$comment", "Ticks use ppq divisions per quarter note. Envelopes use seconds. Compile checks IDs, note/pattern endpoints, transposed pitches, 65536 total authored/expanded notes, and a 600 second maximum including release tails. Rests are gaps. Concurrent patterns form tracks; oldest voices are stolen at the polyphony limit."}};
 }
 
+Json music_schema() {return {{"$schema","https://json-schema.org/draft/2020-12/schema"},{"title","Langmake synthesized and recorded music/SFX"},{"oneOf",Json::array({legacy_music_schema(),recorded_music_schema()})}};}
+bool music_has_layer(const MusicScore& score,const std::string& id) {if(!score.recorded)return false;for(const auto& t:score.recorded->tracks)if(t.id==id)return true;return false;}
+
 struct MusicVoice::Impl {
     struct Voice {
         bool active = false;
@@ -297,9 +321,11 @@ struct MusicVoice::Impl {
     bool exhausted = false;
     std::array<Voice, max_voices> voices{};
     std::unique_ptr<AudioEffects> effects;
+    std::unique_ptr<RecordedVoice> recorded;
     int effects_rate = 0;
     explicit Impl(std::shared_ptr<const MusicScore> value, bool repeat) : score(std::move(value)), loop(repeat) {
         if (!score) throw std::runtime_error("MusicVoice requires a compiled score");
+        if(score->recorded)recorded=std::make_unique<RecordedVoice>(score->recorded);
     }
     uint64_t tick_frame(uint64_t tick) const {
         return uint64_t(std::llround(static_cast<long double>(tick) * 60.0L * sample_rate / (score->bpm * score->ppq)));
@@ -340,11 +366,16 @@ void MusicVoice::reset() {
     impl_->serial = 0; impl_->exhausted = false; impl_->finish_frame = 0;
     for (auto& voice : impl_->voices) voice = Impl::Voice{};
     if (impl_->effects) impl_->effects->reset();
+    if(impl_->recorded)impl_->recorded->reset();
+}
+bool MusicVoice::set_layer(std::string_view id,float gain,float seconds,int quantization) {
+    return impl_->recorded&&impl_->recorded->set_layer(id,gain,seconds,quantization,impl_->frame,impl_->loop);
 }
 bool MusicVoice::finished() const { return !impl_->loop && impl_->sample_rate != 0 && impl_->frame >= impl_->finish_frame; }
 void MusicVoice::render(float* stereo, std::size_t frames, int sample_rate) {
     auto& state = *impl_;
     if ((!stereo && frames) || sample_rate < 8000 || sample_rate > 192000) throw std::runtime_error("Invalid music render buffer or sample rate");
+    if(state.recorded&&sample_rate!=48000)throw std::runtime_error("Recorded music playback requires 48000 Hz");
     if (state.sample_rate && state.sample_rate != sample_rate) throw std::runtime_error("Reset MusicVoice before changing its sample rate");
     if (!state.sample_rate) {
         if (!state.score->effects.empty() && state.effects_rate != sample_rate) {
@@ -354,6 +385,17 @@ void MusicVoice::render(float* stereo, std::size_t frames, int sample_rate) {
         state.sample_rate = sample_rate;
         state.finish_frame = state.score->render_frames(sample_rate);
         state.schedule();
+    }
+    if(state.recorded) {
+        for(std::size_t i=0;i<frames;++i,++state.frame) {
+            float l=0,r=0;
+            if(state.loop||state.frame<state.finish_frame) {
+                state.recorded->sample(l,r,state.frame,state.loop);l*=float(state.score->gain);r*=float(state.score->gain);
+                if(state.effects)state.effects->process(l,r);
+            }
+            stereo[2*i]=l;stereo[2*i+1]=r;
+        }
+        return;
     }
     for (std::size_t i = 0; i < frames; ++i, ++state.frame) {
         while (!state.exhausted && state.frame >= state.next_frame) state.trigger();

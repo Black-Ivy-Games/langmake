@@ -1,0 +1,515 @@
+{
+  "schema_version": 1,
+  "type": "composition",
+  "beats_per_bar": 4,
+  "gain": 0.85,
+  "loop": true,
+  "tail_seconds": 2,
+  "seed": 17,
+  "humanize": {
+    "timing_ms": 4,
+    "velocity": 0.025
+  },
+  "effects": [
+    {
+      "type": "reverb",
+      "room_size": 0.68,
+      "damping": 0.48,
+      "wet": 0.22
+    },
+    {
+      "type": "limiter",
+      "ceiling_db": -1
+    }
+  ],
+  "title": "The Gate Beyond the Storm",
+  "length_beats": 32,
+  "tempo": [
+    {
+      "beat": 0,
+      "bpm": 116
+    }
+  ],
+  "sections": {
+    "call": {
+      "start": 0,
+      "end": 16
+    },
+    "answer": {
+      "start": 16,
+      "end": 32
+    }
+  },
+  "patterns": {
+    "pulse": {
+      "length_beats": 4,
+      "notes": [
+        {
+          "beat": 0.0,
+          "duration": 0.3,
+          "pitch": 62,
+          "velocity": 0.5
+        },
+        {
+          "beat": 0.5,
+          "duration": 0.3,
+          "pitch": 69,
+          "velocity": 0.58
+        },
+        {
+          "beat": 1.0,
+          "duration": 0.3,
+          "pitch": 65,
+          "velocity": 0.5
+        },
+        {
+          "beat": 1.5,
+          "duration": 0.3,
+          "pitch": 69,
+          "velocity": 0.58
+        },
+        {
+          "beat": 2.0,
+          "duration": 0.3,
+          "pitch": 62,
+          "velocity": 0.5
+        },
+        {
+          "beat": 2.5,
+          "duration": 0.3,
+          "pitch": 69,
+          "velocity": 0.58
+        },
+        {
+          "beat": 3.0,
+          "duration": 0.3,
+          "pitch": 65,
+          "velocity": 0.5
+        },
+        {
+          "beat": 3.5,
+          "duration": 0.3,
+          "pitch": 72,
+          "velocity": 0.58
+        }
+      ]
+    }
+  },
+  "tracks": [
+    {
+      "id": "strings",
+      "instrument": "violins-spiccato",
+      "pan": -0.22,
+      "gain": 1.05,
+      "arrangement": [
+        {
+          "pattern": "pulse",
+          "beat": 0,
+          "transpose": 0
+        },
+        {
+          "pattern": "pulse",
+          "beat": 4,
+          "transpose": -2
+        },
+        {
+          "pattern": "pulse",
+          "beat": 8,
+          "transpose": -4
+        },
+        {
+          "pattern": "pulse",
+          "beat": 12,
+          "transpose": -5
+        },
+        {
+          "pattern": "pulse",
+          "beat": 16,
+          "transpose": 0
+        },
+        {
+          "pattern": "pulse",
+          "beat": 20,
+          "transpose": 3
+        },
+        {
+          "pattern": "pulse",
+          "beat": 24,
+          "transpose": -2
+        },
+        {
+          "pattern": "pulse",
+          "beat": 28,
+          "transpose": 0
+        }
+      ]
+    },
+    {
+      "id": "horn",
+      "instrument": "horn",
+      "notes": [
+        {
+          "beat": 0,
+          "duration": 1.3,
+          "pitch": 62,
+          "velocity": 0.64
+        },
+        {
+          "beat": 1.5,
+          "duration": 0.4,
+          "pitch": 65,
+          "velocity": 0.7
+        },
+        {
+          "beat": 2,
+          "duration": 1.6,
+          "pitch": 69,
+          "velocity": 0.75
+        },
+        {
+          "beat": 4,
+          "duration": 2.6,
+          "pitch": 72,
+          "velocity": 0.77
+        },
+        {
+          "beat": 7,
+          "duration": 0.7,
+          "pitch": 69,
+          "velocity": 0.64
+        },
+        {
+          "beat": 8,
+          "duration": 1.3,
+          "pitch": 67,
+          "velocity": 0.65
+        },
+        {
+          "beat": 9.5,
+          "duration": 0.4,
+          "pitch": 65,
+          "velocity": 0.62
+        },
+        {
+          "beat": 10,
+          "duration": 1.4,
+          "pitch": 64,
+          "velocity": 0.6
+        },
+        {
+          "beat": 12,
+          "duration": 2.8,
+          "pitch": 62,
+          "velocity": 0.66
+        },
+        {
+          "beat": 16,
+          "duration": 1.3,
+          "pitch": 67,
+          "velocity": 0.64
+        },
+        {
+          "beat": 17.5,
+          "duration": 0.4,
+          "pitch": 70,
+          "velocity": 0.7
+        },
+        {
+          "beat": 18,
+          "duration": 1.6,
+          "pitch": 74,
+          "velocity": 0.75
+        },
+        {
+          "beat": 20,
+          "duration": 2.6,
+          "pitch": 77,
+          "velocity": 0.77
+        },
+        {
+          "beat": 23,
+          "duration": 0.7,
+          "pitch": 74,
+          "velocity": 0.64
+        },
+        {
+          "beat": 24,
+          "duration": 1.3,
+          "pitch": 72,
+          "velocity": 0.65
+        },
+        {
+          "beat": 25.5,
+          "duration": 0.4,
+          "pitch": 70,
+          "velocity": 0.62
+        },
+        {
+          "beat": 26,
+          "duration": 1.4,
+          "pitch": 69,
+          "velocity": 0.6
+        },
+        {
+          "beat": 28,
+          "duration": 2.8,
+          "pitch": 67,
+          "velocity": 0.66
+        }
+      ],
+      "gain": 1.1,
+      "pan": -0.06
+    },
+    {
+      "id": "trumpet",
+      "instrument": "trumpet",
+      "notes": [
+        {
+          "beat": 18,
+          "duration": 1.4,
+          "pitch": 74,
+          "velocity": 0.65
+        },
+        {
+          "beat": 20,
+          "duration": 1.4,
+          "pitch": 77,
+          "velocity": 0.65
+        },
+        {
+          "beat": 22,
+          "duration": 1.4,
+          "pitch": 76,
+          "velocity": 0.65
+        },
+        {
+          "beat": 24,
+          "duration": 1.4,
+          "pitch": 74,
+          "velocity": 0.65
+        },
+        {
+          "beat": 26,
+          "duration": 1.4,
+          "pitch": 72,
+          "velocity": 0.65
+        },
+        {
+          "beat": 28,
+          "duration": 1.4,
+          "pitch": 74,
+          "velocity": 0.65
+        }
+      ],
+      "gain": 0.8,
+      "pan": 0.22
+    },
+    {
+      "id": "bass",
+      "instrument": "cellos",
+      "notes": [
+        {
+          "beat": 0,
+          "duration": 3.55,
+          "pitch": 38,
+          "velocity": 0.6
+        },
+        {
+          "beat": 4,
+          "duration": 3.55,
+          "pitch": 36,
+          "velocity": 0.6
+        },
+        {
+          "beat": 8,
+          "duration": 3.55,
+          "pitch": 46,
+          "velocity": 0.6
+        },
+        {
+          "beat": 12,
+          "duration": 3.55,
+          "pitch": 45,
+          "velocity": 0.6
+        },
+        {
+          "beat": 16,
+          "duration": 3.55,
+          "pitch": 38,
+          "velocity": 0.6
+        },
+        {
+          "beat": 20,
+          "duration": 3.55,
+          "pitch": 41,
+          "velocity": 0.6
+        },
+        {
+          "beat": 24,
+          "duration": 3.55,
+          "pitch": 36,
+          "velocity": 0.6
+        },
+        {
+          "beat": 28,
+          "duration": 3.55,
+          "pitch": 38,
+          "velocity": 0.6
+        }
+      ],
+      "gain": 0.8,
+      "pan": 0.12
+    },
+    {
+      "id": "drums",
+      "instrument": "bass-drum",
+      "notes": [
+        {
+          "beat": 0,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.85
+        },
+        {
+          "beat": 2,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.5
+        },
+        {
+          "beat": 3.5,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.5
+        },
+        {
+          "beat": 4,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.85
+        },
+        {
+          "beat": 6,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.5
+        },
+        {
+          "beat": 7.5,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.5
+        },
+        {
+          "beat": 8,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.85
+        },
+        {
+          "beat": 10,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.5
+        },
+        {
+          "beat": 11.5,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.5
+        },
+        {
+          "beat": 12,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.85
+        },
+        {
+          "beat": 14,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.5
+        },
+        {
+          "beat": 15.5,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.5
+        },
+        {
+          "beat": 16,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.85
+        },
+        {
+          "beat": 18,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.5
+        },
+        {
+          "beat": 19.5,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.5
+        },
+        {
+          "beat": 20,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.85
+        },
+        {
+          "beat": 22,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.5
+        },
+        {
+          "beat": 23.5,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.5
+        },
+        {
+          "beat": 24,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.85
+        },
+        {
+          "beat": 26,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.5
+        },
+        {
+          "beat": 27.5,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.5
+        },
+        {
+          "beat": 28,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.85
+        },
+        {
+          "beat": 30,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.5
+        },
+        {
+          "beat": 31.5,
+          "duration": 0.2,
+          "pitch": 60,
+          "velocity": 0.5
+        }
+      ],
+      "gain": 0.6
+    }
+  ]
+}

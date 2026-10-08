@@ -71,7 +71,7 @@ def context(project,engine,target=None):
                        'profiles':list(document.get('profiles',{})),'default_profile':document.get('default_profile'),'resolved_profile':info.get('profile'),'scenarios':list(document.get('scenarios',{})),
                        'application':info.get('application',document.get('application',{}))},
             'local_configuration':configuration,
-            'documentation':{name:str(ROOT/path) for name,path in {'workflow':'docs/26-game-workflow.md','agent_api':'docs/08-agent-api.md','runtime':'docs/13-runtime-guide.md','android':'docs/21-android-agent-guide.md','ios':'docs/23-ios-agent-guide.md','prompts':'prompts/README.md'}.items()}}
+            'documentation':{name:str(ROOT/path) for name,path in {'workflow':'docs/26-game-workflow.md','agent_api':'docs/08-agent-api.md','runtime':'docs/13-runtime-guide.md','music_sound':'docs/30-music-and-sound-guide.md','ui_editor':'docs/34-ui-editor-guide.md','android':'docs/21-android-agent-guide.md','ios':'docs/23-ios-agent-guide.md','prompts':'prompts/README.md'}.items()}}
     if target:result['target_check']=prerequisite(project,engine,target)
     return result
 

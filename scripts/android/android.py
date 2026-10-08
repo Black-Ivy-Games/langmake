@@ -1,5 +1,6 @@
 """Workspace-local Android build/deployment tools. Run through android.ps1 or Python."""
 import argparse
+import base64
 import hashlib
 import json
 import os
@@ -496,6 +497,10 @@ def build(args):
         libraries = list(native.rglob('libmain.so'))
     if len(libraries) != 1:
         raise ValueError('Native build must contain exactly one libmain.so.')
+    requirements = json.loads((cooked / 'cook-manifest.json').read_text(encoding='utf-8'))
+    if requirements.get('audio_feature_revision', 0) >= 1:
+        if b'langmake_recorded_audio_v1' not in libraries[0].read_bytes():
+            raise ValueError('This game requires expressive audio revision 1; rebuild the Android player or use a matching newer prebuilt player. Historical synthesis-only binaries cannot run this content.')
     native_validation = verify_native_library(libraries[0], abi)
     gradle_project = folder / 'gradle'
     copy_tree(ROOT / 'platform/android', gradle_project)
@@ -665,7 +670,6 @@ def device_command(args):
         command = ['shell', 'am', 'start', '-W', '-S', '-n', app + '/org.langmake.player.LangmakeActivity']
         if args.debug_args:
             # A single base64 JSON argument avoids remote-shell interpretation of arbitrary game paths.
-            import base64
             encoded = base64.b64encode(json.dumps(args.debug_args).encode()).decode()
             command += ['--es', 'langmake_debug_args', encoded]
         result = adb(args, command)
@@ -688,17 +692,19 @@ def device_command(args):
     elif args.command in ('inspect', 'pull'):
         relative = bridge_path(args.storage_id, args.path if args.command == 'pull' else 'live.json')
         # The shell-v2 protocol preserves the remote exit status and separates
-        # stderr from stdout. exec-out can return success with cat's error text
-        # in its byte stream. -T disables PTY transformations for binary files.
-        result = adb(args, ['shell', '-T', 'run-as', app, 'cat', relative], timeout=30)
+        # stderr from stdout. Some Windows adb shell builds still translate LF
+        # to CRLF even with -T. Encode binary pulls on the device, keeping both
+        # exact bytes and shell-v2's remote failure status (unlike exec-out).
+        result = adb(args, ['shell', '-T', 'run-as', app, 'base64' if args.command == 'pull' else 'cat', relative], timeout=30)
         if args.command == 'pull':
+            payload = base64.b64decode(b''.join(result.stdout.split()), validate=True)
             target = selected_path(args.output)
             target.parent.mkdir(parents=True, exist_ok=True)
             temporary = None
             try:
                 with tempfile.NamedTemporaryFile(mode='wb', dir=target.parent, prefix='.' + target.name + '.', suffix='.part', delete=False) as stream:
                     temporary = Path(stream.name)
-                    stream.write(result.stdout)
+                    stream.write(payload)
                     stream.flush()
                     os.fsync(stream.fileno())
                 temporary.replace(target)

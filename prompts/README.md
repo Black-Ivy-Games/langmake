@@ -17,6 +17,8 @@ These are **authoring briefs**, not additional bundled games or evidence that th
 | Turn human playtest feedback into changes | [Feedback and iteration](05-feedback-iteration.md) |
 | Ask for a focused defect investigation | [Bug report and repair](06-bug-report.md) |
 | Commission native text-authored art or music | [Asset creation](07-assets.md) |
+| Precise visual UI direction and corrections | [UI layout](13-ui-layout.md) |
+| Soundtracks, adaptive cues and recorded effects | [Music and sound](12-music-and-sound.md) |
 | Discuss a larger idea before authorizing implementation | [Plan only](08-plan-only.md) |
 | Follow Android instructions and reading order | [Android workflow](../docs/21-android-agent-guide.md) |
 | Author one shared Windows/Android game | [Android game](09-android-game.md) |
@@ -37,7 +39,17 @@ Use current capabilities for the first milestone. A larger ambition can be recor
 
 ## Compatibility and maintenance
 
-**Last reviewed:** September 21, 2026, against Langmake 0.5.0 discovery, workflow tools, runtime documentation and bundled starter layouts. The prompt texts have been reviewed for supported scope; these proposed games have not been executed as tests. Engine release evidence lives separately.
+**Last reviewed:** September 23, 2026, against Langmake 0.5.0 discovery, workflow tools, runtime documentation and bundled starter layouts. The prompt texts have been reviewed for supported scope; these proposed games have not been executed as tests. Engine release evidence lives separately.
+
+September 22, 2026 large-save repair review: reviewed shared workflow, feedback,
+defect, Android and provider-handoff examples for the bounded full-save migration
+conversion fix. Existing migration/progress-preservation instructions remain
+valid; no prompt changes were needed. The runtime guide documents the separate
+whole-save value bound. This review is not new platform qualification.
+
+September 22, 2026 scene registry review: reviewed the shared workflow, feedback, defect and provider handoff prompts for scene-local asset/module/prefab/definition replacement. Their existing native-verification and save-migration requirements remain valid. New collection builds must use a runtime supporting these registries and preserve all stored scenes and global state. The core agent/runtime guides describe the contract; the Ivy collection Windows package includes generated copies of those guides and prompts. This review does not qualify mobile ports or historical binaries.
+
+September 21, 2026 Mac desktop review: reviewed the shared workflow, new-game and Apple/provider-handoff briefs for native macOS local packaging. Their explicit target and human-playtesting requirements remain valid. The new [Mac guide](../docs/28-macos-guide.md) distinguishes the standalone SDL/Metal app from iOS, local ad-hoc signing from public distribution, and source support from executed game evidence. No Windows distribution was regenerated for this game-specific Mac package.
 
 September 21, 2026 shaped-2D review: reviewed new-game, 2D, feedback, defect, asset and platform examples for optional bounded `physics2d` fixtures and rotation. Existing prompt scopes remain valid; the runtime guide documents authoring. This iteration has PC evidence only. Portable copies are generated from canonical documentation during packaging.
 
@@ -93,3 +105,23 @@ Future agents working on the engine are instructed to do this in the source `AGE
 September 20, 2026 receipt review (0.5.0): reviewed the shared workflow, mobile and defect prompts after mobile copy-acknowledgment recovery and verified missing-file handling. Existing examples remain valid: native receipts establish execution, and uncertain delivery must not cause duplicate mutations. The workflow now observes the original request ID after a lost copy acknowledgment and preserves the warning when a matching receipt resolves it. Optional iOS recovery files are skipped only after the native tool verifies absence; transport failures and malformed saves remain errors. This review adds no human gameplay acceptance.
 
 September 21, 2026 touch-release review (0.5.0 source): reviewed the shared workflow and Android game brief for deferred touch pointer coordinates. Added fast tap-position verification to the Android brief. The fix preserves release coordinates for the consuming fixed tick and clears them on consumption/reset. This is prompt maintenance, not new qualification of historical distributions or the example game.
+
+September 21, 2026 content-drag review (0.5.0 source): reviewed the shared workflow, Android and iOS briefs for opt-in `data-drag-scroll` lists. Existing briefs remain valid. The runtime guide now describes pointer ownership, native scrollbar compatibility, and cancellation. Verify drag/release and an always-reachable exit at the actual device density; a layout screenshot alone does not qualify touch behavior. Regenerate portable documentation from canonical source when distributing a runtime.
+
+September 21, 2026 expressive-audio review (0.5.0 source, audio feature revision 1): reviewed the asset and feedback briefs, and added [music and sound structures](12-music-and-sound.md). New examples distinguish sampled text composition, recorded playback, adaptive layers and human listening from neural generation or artistic approval. Canonical guide: [Music and sound](../docs/30-music-and-sound-guide.md). The initial sparse sketches were rejected as tacky; the requested direction is a fuller, blended ensemble. This records feedback, not acceptance of the revised example.
+
+Audio feedback update, September 21, 2026: both the sparse sketches and the fuller ensemble were rejected for sounding artificial. Prompt examples must request a change in musical/performance direction after that feedback, not presume that adding parts solves it. Technical audio qualification remains separate.
+
+September 21, 2026 2D rotation review (0.5.0 source): reviewed the asset and defect prompts for sprite/physics angle consistency. Existing examples remain valid. The renderer correction in docs/32-sprite-rotation-correction.md requires rotated asymmetric contact captures in addition to axis-aligned silhouette sheets; no API or authoring schema changed. This review does not qualify historical binaries.
+
+September 21, 2026 script recovery review (0.5.0 source): reviewed the defect and Android briefs for optional `on_recover()` support. Existing prompts remain applicable: reproduce on the target device, retain the diagnostic, and verify checkpoint recovery separately from performance. Historical players lack this hook; only newly built runtimes can be qualified. No audio workflow changed.
+
+September 22, 2026 UI editor review (0.5.0, UI observation revision 1): reviewed feedback, asset and mobile briefs and added the UI layout brief. Native screenshots, profile/tick/density, stable IDs, proposal/applied status and advisory human pins travel together. External agents stay supported. This records prompt maintenance, not creative approval or new mobile-device qualification.
+
+September 22, 2026 Studio usability review (0.5.0, studio2): reviewed the shared human agreement, feedback, provider handoff and UI layout briefs. Renamed the human entry point to UI editor and clarified that a greeting/connection check needs a direct answer, not project mutations. Tool activity remains available for audit, and agents must finish with a readable outcome or limitation. No new model-quality, gameplay or device qualification is claimed.
+
+September 22, 2026 Poppleworks performance review (0.5.0 source): reviewed 00-workflow, 05-feedback-iteration, 06-bug-report, 07-assets, 09-android-game and 10-provider-handoff for opt-in Luau native compilation, bounded sprite atlases/batching, real-time catch-up pacing and full-save migration conversion. Existing examples remain applicable. Runtime guide documents fallback, limits and statistics. Require actual device performance and save restoration evidence; passing headless tests does not qualify responsiveness. Regenerate canonical documentation into new distributions; historical player qualification is unchanged.
+
+September 23, 2026 native material-grid review (0.5.0 source, classic-chemistry-v1): reviewed workflow, feedback, defect, assets and provider handoff prompts. Existing examples remain applicable. The new docs/38-material-grid-guide.md describes fixed material slots, grid/storage/surface budgets, lazy state provider limits, exact-save boundaries and Windows-only presentation qualification. Changed particle resolution requires separate fine-grid routes and legacy-save expansion checks; original-grid parity alone is insufficient. Regenerate canonical docs into the new Windows package. No mobile qualification is implied.
+
+September 23, 2026 Poppleworks controls review: reviewed defect/feedback prompts for the optional bounded material Pull strength/hold arguments. Existing guidance applies; require pointer-release then Space UI regression and fluid suspension/release tests. Windows only; historical mobile builds unchanged.

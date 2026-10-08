@@ -1,0 +1,15 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs/promises'),path=require('node:path'),{execFileSync}=require('node:child_process'),{operate}=require('./editor.cjs');
+(async()=>{const root=path.resolve('.cache/ui-editor/integration-'+Date.now()),engine=path.resolve(process.env.LANGMAKE_ENGINE||'build/langmake.exe');execFileSync(engine,['new','--template','workflow-2d','--output',root]);const source=await fs.readFile(path.join(root,'ui/hud.rml'),'utf8');
+ let d=await operate({root,engine,action:'open',config:{width:960,height:640}});assert(d.capture.state.ui_renderer.elements['pause-button']);const original=d.capture.state.ui_renderer.elements['pause-button'];
+ const call=async(action,extra={})=>{const r=await operate({root,engine,session:d.session,version:d.version,action,...extra});if(r.session)d=r;return r;};
+ await call('patch',{id:'pause-button',properties:{width:'120dp',color:'#ffaa55'}});assert(d.capture.state.ui_renderer.elements['pause-button'].size[0]>original.size[0]);assert.equal(await fs.readFile(path.join(root,'ui/hud.rml'),'utf8'),source);
+ await call('undo');assert.equal(d.content,source);await call('redo');assert(d.content.includes('width: 120dp'));
+ await assert.rejects(operate({root,engine,session:d.session,version:0,action:'apply'}),/revision changed/);
+ await call('note',{id:'pause-button',text:'Keep this size; make its purpose clear.',locked:true});const review=await call('export');assert.equal(JSON.parse(await fs.readFile(path.join(root,review.brief),'utf8')).notes['pause-button'].locked,true);
+ await call('apply');assert.equal(await fs.readFile(path.join(root,'ui/hud.rml'),'utf8'),d.content);
+ const fresh=await operate({root,engine,action:'read',session:d.session});assert(fresh.applied);
+ await call('discard');d=await operate({root,engine,action:'open',config:{profile:'phone',width:780,height:1440,density:2,safe_area:'0,48,780,1344'}});assert.equal(d.document,'ui/phone.rml');assert.equal(d.capture.state.ui_renderer.density,2);
+ await fs.appendFile(path.join(root,'ui/phone.rcss'),'\n/* external edit */\n');await assert.rejects(call('apply'),/source changed/);
+ const report={ok:true,root,checks:['native capture and source identity','draft isolation','geometry changes','undo and redo','optimistic draft revisions','agent review and advisory pin','atomic apply and reopen','phone profile/density/safe area','whole-source revision conflict']};await fs.writeFile('.cache/ui-editor/integration.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report));
+})().catch(e=>{console.error(e);process.exitCode=1;});

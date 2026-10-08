@@ -24,7 +24,7 @@ def within(path, parent):
 
 def collect(root, include_studio=False):
     paths = [root / p for p in TOP_FILES]
-    trees = list(SOURCE_TREES) + ["examples/" + t for t in TEMPLATES]
+    trees = list(SOURCE_TREES) + ["examples/" + t for t in TEMPLATES] + ["examples/music"]
     if include_studio:
         paths.extend(root / "studio" / p for p in STUDIO_FILES)
         trees.extend("studio/" + p for p in ("core", "providers", "renderer", "scripts", "test"))

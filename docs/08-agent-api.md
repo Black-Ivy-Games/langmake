@@ -1,5 +1,9 @@
 # Agent API: files, commands, and observable state
 
+For human UI corrections and agent review exports, read [the UI layout guide](34-ui-editor-guide.md). Before UI changes, inspect the game's `ui-design.json` when present and preserve pinned human intent unless the developer changes it.
+
+For music or sound work, read [Music and sound: agent authoring guide](30-music-and-sound-guide.md). `music instruments`, `music schema` and `asset schema --type music` distinguish the editable composition format from native synthesized/recorded assets. Offer contrasting audible sketches and let human listening direct the musical iteration.
+
 Langmake 0.5.0 workflow alpha · September 2026
 
 The engine is operated through project files and a JSON-producing command line. Any external agent that can read and write files and run a process can use it. Conversation, inference, credentials, and model selection belong to that external agent; the engine has no model dependency. This guide describes the implemented alpha, not the later platform and feature roadmap.
@@ -76,7 +80,7 @@ Each completed command writes JSON to stdout. Check the exit code and `ok`; exis
 | `session` | `show`, `protect --target NAME`, or `release` human-session protection. `launch --target NAME` restarts the deployed mobile artifact in player mode; debug verification targets may use `--development` and/or `--fresh`. No rebuild or install occurs. |
 | `handoff` | Write portable project context with optional project-relative `--brief` and `--notes` files; excludes local host/device settings. |
 | `new` | `--output NEW_DIRECTORY`, optional `--template NAME` or `--dimension 2d|3d`. Copies registered source files without generated state. |
-| `cook` | `--project PATH --target android\|ios\|windows --output NEW_DIRECTORY`. Validates all registered scenes and copies the complete registered source graph with revision/asset manifest. Excludes saves, caches, chats and unregistered files. Existing destinations are rejected. This is a validated source bundle; native asset recipes compile on player load. Mobile tools add SHA-256 integrity hashes and platform packaging; iOS native builds additionally require Mac/Xcode and qualification. |
+| `cook` | `--project PATH --target android\|ios\|macos\|windows --output NEW_DIRECTORY`. Validates all registered scenes and copies the complete registered source graph with revision/asset manifest. Excludes saves, caches, chats and unregistered files. Existing destinations are rejected. This is a validated source bundle; native asset recipes compile on player load. Mobile tools add SHA-256 integrity hashes and platform packaging; iOS native builds additionally require Mac/Xcode and qualification. |
 | `validate` | `--project PATH`. Loads sources, compiles assets and scripts, initializes physics/UI, runs top-level code and `start()` for entry and registered scenes. Does not run updates. |
 | `check` | `--project PATH`. Offline Luau checking against engine declarations for entry, scenes and registered modules; not a gameplay proof. |
 | `inspect` | Authored summary, or `--live` published runtime state. Entity filters below apply to either. `--check-source` explicitly compares a live observation with source. |
@@ -94,7 +98,7 @@ Each completed command writes JSON to stdout. Check the exit code and `ok`; exis
 | `asset render`, `asset export` | `--id ID --output FILE`; optional sprite `--scale 1..8`, music `--seconds 0..120` (0 full score). Sprite PNG; mesh/model render PNG or export posed OBJ; music WAV. Model export does not retain a rig/animation bundle. |
 | `asset replace` | `--id ID --file RECIPE.json --expected-revision REV`. Compiles a complete candidate recipe before atomic replacement. Uses the project revision. |
 
-Desktop command defaults are 1280×800, width 640..3840 and height 400..2160, using Windows/D3D11. Android uses the device framebuffer dimensions and GLES3; its APK launch, physical input and timeline capture commands are documented in the Android guide. One interactive preview/play can own a project's live bridge. Standalone capture uses an isolated bridge and does not control that interactive session.
+Desktop command defaults are 1280×800, width 640..3840 and height 400..2160, using Windows/D3D11 or macOS/Metal. See the [Mac guide](28-macos-guide.md) for local app packaging and its qualification limits. Android uses the device framebuffer dimensions and GLES3; its APK launch, physical input and timeline capture commands are documented in the Android guide. One interactive preview/play can own a project's live bridge. Standalone capture uses an isolated bridge and does not control that interactive session.
 
 ## Input timelines and exact-tick captures
 
@@ -187,6 +191,8 @@ Revisions cover paths and raw bytes of the **complete registered graph**: manife
 
 Gameplay saves are separate. Use `save/load --slot NAME` for a live session, `engine.save_game/load_game` from game input, or simulation's `--save-output/--load-save`. Project identity, source revision and save version are checked. Changed game content requires an explicit Luau migration hook unless an opted-in, assessed presentation change passes structural compatibility checks; see the [save contract](13-runtime-guide.md#scenes-and-persistent-saves). Save files reconstruct declared systems, not arbitrary Luau locals or physics solver internals.
 
+Source builds support scene-local replacement asset/module/prefab/definition registries. Keep each scene within its usual limits, preserve unique global state keys, and migrate the complete collection save (active and inactive scenes) when adding a game. Cook manifests include `scene_assets` in addition to the selected entry scene's `assets`. Older packaged runtimes do not accept these scene fields; see the runtime guide before distributing a collection.
+
 ## Diagnostics and execution boundaries
 
 Errors are structured JSON, commonly `diagnostics:[{code,path,message}]`; live receipt errors may have singular `diagnostic`. Script errors include phase/file/tick/source revision and Luau source information. Codes include `SCRIPT_ERROR`, `SCRIPT_BUDGET_EXCEEDED` and `SCRIPT_MEMORY_LIMIT`. Branch on available fields instead of assuming every error has the same shape.
@@ -196,3 +202,5 @@ Luau has no filesystem, process, networking or FFI bindings. Engine/standard-lib
 Schema 2 permits 256 MiB of source graph, 4 MiB per text source and 32 MiB per supported binary source; schema 1 retains its 32 MiB graph budget. There are at most 256 assets, 4096 active entities and 256 MiB compiled visual data. Asset/subsystem compilers have additional limits in their schemas. These checks do not isolate the native process or cap every native allocation; source confinement is not an operating-system sandbox.
 
 Report what passed, what remains limited and what the human should try. Technical evidence and human creative acceptance must remain distinct.
+
+Native material boards use contiguous channels, a bounded classic chemistry kernel, active chunks, dynamic sprite surfaces and lazy state providers. See [material grids and bound state](38-material-grid-guide.md). This feature is Windows-qualified; existing mobile qualification does not cover it.

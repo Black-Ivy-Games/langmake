@@ -45,7 +45,7 @@ Each run takes a Studio source checkpoint. History shows added/removed/modified 
 
 Studio stores configuration, encrypted keys, chats, periodic run journals, memory and checkpoints in `.data/` beside its executable (or in `studio/.data/` during source development). `LANGMAKE_STUDIO_DATA` can select another writable Studio-data directory before launch. This directory is private authoring state; do not distribute it with games. Interrupted runs are marked on restart. Conversation history persists; model handoffs use recent 24 user/assistant messages plus explicit project memory rather than an unlimited context window. Runs have an 80-round API tool budget and a 30-minute upper bound.
 
-The player launches in a separate native window. Studio protects sessions it owns; external CLI sessions should be coordinated separately. No embedded viewport editor, autonomous desktop gameplay, local-model downloader, network multiplayer or shared multi-user editing is claimed.
+The player launches in a separate native window. Studio protects sessions it owns; external CLI sessions should be coordinated separately. The optional UI layout tool uses isolated native captures; no continuously embedded game viewport, autonomous desktop gameplay, local-model downloader, network multiplayer or shared multi-user editing is claimed.
 
 ## Android panel
 
@@ -93,3 +93,31 @@ The core test suite covers project containment, junction rejection, revision con
 The iOS adapter tests use explicitly fake process results to verify command routing, selected-device checks, signing opt-in, artifact containment, junction rejection, play locks and report validation. The real Windows Electron test verifies target settings and Mac prerequisite messages. Neither test suite is a substitute for Xcode, simulator or physical iPhone qualification.
 
 `node test/ios-stage.cjs` performs a real Studio broker â†’ Python â†’ native `cook --target ios` integration check using the source runtime. It verifies two independently generated stages, content manifests and stable game identity. Set `LANGMAKE_ENGINE` or `LANGMAKE_IOS_PYTHON` for explicit executable locations. This still does not compile or run an Apple application.
+
+## Music authoring
+
+A runtime with audio feature revision 1 exposes recorded WAV/FLAC music/SFX, synchronized layers and new effects. Read [music and sound](../docs/30-music-and-sound-guide.md) and [audio qualification](../docs/31-audio-qualification.md). The worker's `engine` tool accepts `command:"music"` with `subcommand` status, instruments, schema, validate, pack-install, pack-verify, render, audition, transform or import. Its options use the native CLI names without `--`; every score, source, pack and output path remains relative to the active project. Writing/rendering respects the human play-session lock.
+
+Portable authoring packages can include the sfizz host library. If `music status` reports it missing, the human installs/builds it once through `langmake music setup` outside an agent turn; Studio does not grant project workers permission to rebuild the engine installation. Pack installation is an optional 395 MiB download inside the selected project, for example `directory:".cache/music-packs/vsco-ce"`. External directory agents can instead reuse an authorized shared pack. Baked games need no sampler or source bank. Give the human the generated audition file path to listen in their player; Studio does not add an audio editor or claim musical approval from render metrics.
+
+## UI layout editor
+
+Click **UI editor** beside Play to adjust existing game elements with native-rendered drafts, property editing, anchors, drag/resize, undo/redo and source review. Apply saves one RML document after a checkpoint and revision checks. Export writes `ui-design.json`, a screenshot and per-element notes/pinned intent for agents. Read [the complete guide](../docs/34-ui-editor-guide.md) and [qualification](../docs/35-ui-editor-qualification.md). No provider connection is needed. The matching runtime and optional editor scripts are required; old packages do not have UI observation revision 1.
+
+## Studio build studio2 · September 22, 2026
+
+This build includes the **UI editor** button beside Play, even without a provider profile. It edits existing registered RML interfaces, not entire game scenes. Use Open draft to capture a preview; stop Play or an active worker first. Older 0.5.0 packages may lack this feature. Providers & runtime shows the Studio build identity; pair it with a runtime supporting UI observation revision 1.
+
+For LM Studio on this computer, start the server and select **Local OpenAI-compatible endpoint**. Use **http://127.0.0.1:1234/v1** (adjust the port if configured), then **Test connection & fetch models**. Choose the exact Model ID from the suggestions and save. An optional API key is needed only if the server requires authentication. The network address LM Studio advertises may not be loopback: Studio continues to require HTTPS for non-loopback endpoints. Testing fetches only the model list; it does not run inference or qualify tool use. An existing saved key is used only for an unchanged provider type and endpoint; enter a key explicitly when testing a changed destination.
+
+Tool requests/results are retained under collapsed **Agent activity**. Intermediate tool-round commentary is separate from the final answer. Empty API completions get at most one summary-only retry with tools removed; a second empty response, interrupted stream or output limit reports an error. Completed tool actions are not replayed by that retry. A human retry can still repeat prior work, so inspect activity and History first. Greetings and connection checks are prompted to answer directly; model compliance is not guaranteed.
+
+New projects use the name entered in Studio, while template game titles remain authored project content. For an existing imported project, use the project **…** button to rename its sidebar entry; this does not rewrite the in-game title.
+
+In the source workspace, close the old Studio and run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\studio\open-packaged.ps1
+```
+
+This launches dist/studio2/Langmake-Studio-0.5.0 with its matching runtime, reusing dist/Langmake-Studio-0.5.0/.data when present. It retains projects, profiles, chats and checkpoints in place; it does not read/export credentials or copy private data into a release. Supply -DataDirectory for a different workspace data folder. Launching the new executable directly uses its own .data instead. LANGMAKE_ENGINE explicitly overrides the saved runtime path. Never run old and new releases against the same data simultaneously.

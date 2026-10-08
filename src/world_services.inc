@@ -23,9 +23,9 @@ static void push_json(lua_State* vm, const Json& value) {
     }
 }
 
-static Json read_lua_json(lua_State* vm, int position, unsigned depth, std::set<const void*>& seen, std::size_t& count) {
+static Json read_lua_json(lua_State* vm, int position, unsigned depth, std::set<const void*>& seen, std::size_t& count, std::size_t max_values, std::size_t max_bytes) {
     if(!lua_checkstack(vm,8))throw std::runtime_error("not enough script stack for state");
-    if (++count>65536 || depth>16) throw std::runtime_error("state exceeds 65536 values or 16 nesting levels");
+    if (++count>max_values || depth>16) throw std::runtime_error("state exceeds "+std::to_string(max_values)+" values or 16 nesting levels");
     const int type=lua_type(vm,position);
     if (type==LUA_TNIL) return nullptr;
     if (type==LUA_TBOOLEAN) return lua_toboolean(vm,position)!=0;
@@ -36,7 +36,7 @@ static Json read_lua_json(lua_State* vm, int position, unsigned depth, std::set<
     }
     if (type==LUA_TSTRING) {
         size_t size=0; const char* value=lua_tolstring(vm,position,&size);
-        if (size>1024*1024) throw std::runtime_error("state string exceeds 1 MiB");
+        if (size>max_bytes) throw std::runtime_error(max_bytes==1024*1024?"state string exceeds 1 MiB":"state string exceeds bound byte limit");
         return std::string(value,size);
     }
     if (type!=LUA_TTABLE) throw std::runtime_error("state accepts JSON-compatible values only");
@@ -49,7 +49,7 @@ static Json read_lua_json(lua_State* vm, int position, unsigned depth, std::set<
     bool has_strings=false,has_numbers=false;
     lua_pushnil(vm);
     while(lua_next(vm,index)) {
-        Json value=read_lua_json(vm,-1,depth+1,seen,count);
+        Json value=read_lua_json(vm,-1,depth+1,seen,count,max_values,max_bytes);
         if (lua_type(vm,-2)==LUA_TSTRING) {
             has_strings=true; size_t size=0;const char* key=lua_tolstring(vm,-2,&size);
             if(size>256) throw std::runtime_error("state keys exceed 256 bytes");
@@ -68,9 +68,9 @@ static Json read_lua_json(lua_State* vm, int position, unsigned depth, std::set<
     for(auto& [key,value]:array) { if(key!=expected++) throw std::runtime_error("state arrays must be contiguous"); result.push_back(std::move(value)); }
     return result;
 }
-static Json json_argument(lua_State* vm,int position,std::size_t max_bytes=1024*1024) {
+static Json json_argument(lua_State* vm,int position,std::size_t max_bytes=1024*1024,std::size_t max_values=65536) {
     std::set<const void*> seen; std::size_t count=0;
-    auto value=read_lua_json(vm,position,0,seen,count);
+    auto value=read_lua_json(vm,position,0,seen,count,max_values,max_bytes);
     if(value.dump().size()>max_bytes) throw std::runtime_error("script JSON value exceeds byte limit");
     return value;
 }
@@ -125,10 +125,12 @@ static int script_require(lua_State* vm) {
         if(!self.loading_modules.insert(id).second) throw std::runtime_error("module dependency cycle at '"+id+"'");
         const auto& source=self.project.modules.at(id);
         if(source.size()>1024*1024) throw std::runtime_error("module source exceeds 1 MiB: "+id);
-        const std::string bytecode=Luau::compile(source);
+        Luau::CompileOptions options;options.typeInfoLevel=1;
+        const std::string bytecode=Luau::compile(source,options);
         if(bytecode.size()>8*1024*1024) throw std::runtime_error("module bytecode exceeds 8 MiB: "+id);
         const std::string file=self.project.module_files.contains(id)?self.project.module_files.at(id).generic_string():id;
         int status=luau_load(vm,("@"+file).c_str(),bytecode.data(),bytecode.size(),0);
+        if(status==LUA_OK) self.compile_native(vm);
         if(status==LUA_OK) status=lua_pcall(vm,0,1,0);
         self.loading_modules.erase(id);
         if(status!=LUA_OK) { const char* error=lua_tostring(vm,-1); throw std::runtime_error(error?error:"module load failed"); }
@@ -138,11 +140,18 @@ static int script_require(lua_State* vm) {
     return 0;
 }
 static int script_state_get(lua_State* vm) {
-    try { auto& self=owner(vm);const auto key=key_argument(vm,1);if(self.game_state.contains(key)) push_json(vm,self.game_state[key]);else if(lua_gettop(vm)>=2) lua_pushvalue(vm,2);else lua_pushnil(vm);return 1; }
+    try { auto& self=owner(vm);const auto key=key_argument(vm,1);
+        if(auto provider=self.state_providers.find(key);provider!=self.state_providers.end()){
+            if(self.flushing_state)throw std::runtime_error("Recursive bound state access");
+            self.flushing_state=true;lua_getref(vm,provider->second);
+            if(lua_pcall(vm,0,1,0)!=LUA_OK){self.flushing_state=false;throw std::runtime_error(lua_tostring(vm,-1));}
+            self.flushing_state=false;auto value=json_argument(vm,-1,8*1024*1024,1048576);lua_pop(vm,1);push_json(vm,value);return 1;
+        }
+        if(self.game_state.contains(key)) push_json(vm,self.game_state[key]);else if(lua_gettop(vm)>=2) lua_pushvalue(vm,2);else lua_pushnil(vm);return 1; }
     catch(const std::exception& error){luaL_error(vm,"%s",error.what());}return 0;
 }
 static int script_state_set(lua_State* vm) {
-    try { auto& self=owner(vm);const auto key=key_argument(vm,1);auto candidate=self.game_state;const auto value=json_argument(vm,2);
+    try { auto& self=owner(vm);const auto key=key_argument(vm,1);if(self.flushing_state||self.state_providers.contains(key))throw std::runtime_error("Unbind the state provider before replacing its state");auto candidate=self.game_state;const auto value=json_argument(vm,2);
         if(value.is_null())candidate.erase(key);else candidate[key]=value;
         if(candidate.dump().size()>1024*1024)throw std::runtime_error("game state exceeds 1 MiB");self.game_state=std::move(candidate);return 0; }
     catch(const std::exception& error){luaL_error(vm,"%s",error.what());}return 0;
@@ -182,7 +191,7 @@ static Json entity_json(const Entity& e) {
             {"visual_scale",e.visual_scale},{"collision_enabled",e.collision_enabled},{"controller",e.controller},
             {"flip_x",e.flip_x},{"animation_speed",e.animation_speed},{"parent",e.parent},{"parent_joint",e.parent_joint}};
 }
-void validate_visual(const Entity& e)const {
+static void validate_visual(const Entity& e,const Project& project,const CompiledAssets& compiled) {
     if(!e.asset.empty()&&!project.assets.contains(e.asset))throw std::runtime_error("unknown visual asset '"+e.asset+"'");
     if(!e.asset.empty()&&project.assets.at(e.asset).type=="music")throw std::runtime_error("music cannot be a visual asset");
     if(!e.animation.empty()&&compiled.sprites.contains(e.asset)&&!compiled.sprites.at(e.asset)->animations.contains(e.animation))
@@ -190,6 +199,7 @@ void validate_visual(const Entity& e)const {
     if(!e.animation.empty()&&compiled.models.contains(e.asset)&&!compiled.models.at(e.asset)->animations.contains(e.animation))
         throw std::runtime_error("unknown model animation '"+e.animation+"'");
 }
+void validate_visual(const Entity& e)const { validate_visual(e,project,compiled); }
 void remove_body(Record& record) {
     if(record.character) {record.character.reset();record.jolt_body=JPH::BodyID();}
     else if(physics&&!record.jolt_body.IsInvalid()) {
@@ -204,7 +214,7 @@ void flush_entities() {
         const auto parent=index.find(record.source.parent);if(parent==index.end()||records[parent->second].pending_destroy){record.pending_destroy=true;changed=true;}}}
     for(auto& record:records) {
         if(!record.alive)continue;
-        if(record.pending_destroy){remove_body(record);index.erase(record.source.id);nav_agents.erase(record.source.id);
+        if(record.pending_destroy){remove_body(record);index.erase(record.source.id);nav_agents.erase(record.source.id);dynamic_surfaces.erase(record.source.id);surface_sources.erase(record.source.id);
             ecs_delete(ecs.get(),record.ecs_id);record.alive=false;continue;}
         if(record.pending_create){record.pending_create=false;create_body(record);set_velocity(record,record.character_velocity);}
     }
@@ -606,7 +616,7 @@ Json save_state()const {
             {"project_id",project.document.is_object()?project.document.value("project_id",project.title):project.title},
             {"game_save_version",project.document.is_object()?project.document.value("save_version",1):1},
             {"tick",tick},{"time",elapsed},{"spawn_serial",spawn_serial},{"random_state",random_state},{"entities",entities},
-            {"state",game_state},{"ui",ui_state},{"camera",camera},{"audio_buses",buses},{"music",current_music},{"music_bus",current_music_bus},{"music_loop",current_music_loop},
+            {"state",game_state},{"ui",ui_state},{"camera",camera},{"audio_buses",buses},{"music_layers",music_layers},{"music",current_music},{"music_bus",current_music_bus},{"music_loop",current_music_loop},
             {"navigation_agents",nav_agents},{"contacts",contact_pairs},{"won",did_win},{"collected",collection_count},{"message",status_message},
             {"input",{{"move_x",input.move_x},{"move_z",input.move_z},{"jump",input.jump},{"fire",input.fire},{"actions",input.actions},{"pointer",input.pointer}}}};
 }
@@ -618,7 +628,7 @@ static void validate_saved_state(const Json& saved,const Project& project){
     if(saved.value("game_save_version",0)!=(project.document.is_object()?project.document.value("save_version",1):1))throw std::runtime_error("Save game version differs; explicit migration is required");
     if(saved.value("dimension",std::string())!=project.dimension)throw std::runtime_error("Save dimension differs from the project");
     if(!saved.contains("entities")||!saved["entities"].is_array()||saved["entities"].size()>4096)throw std::runtime_error("Save entities must be an array with at most 4096 entries");
-    if(!saved.contains("state")||!saved["state"].is_object()||saved["state"].dump().size()>1024*1024)throw std::runtime_error("Saved game state must be an object up to 1 MiB");
+    if(!saved.contains("state")||!saved["state"].is_object()||saved["state"].dump().size()>8*1024*1024)throw std::runtime_error("Saved game state must be an object up to 8 MiB");
     validate_data(saved["state"]);validate_data(saved.value("ui",Json::object()));
     if(saved.dump().size()>16*1024*1024)throw std::runtime_error("Save exceeds 16 MiB");
     const double time=saved.value("time",0.0);if(!std::isfinite(time)||time<0)throw std::runtime_error("Save time must be finite and nonnegative");
@@ -634,16 +644,24 @@ static void validate_saved_state(const Json& saved,const Project& project){
     if(!saved.value("navigation_agents",Json::object()).is_object())throw std::runtime_error("Saved navigation agents must be an object");
 }
 Json migrate_save(const Json& saved,int from,int to){
+    validate_data(saved);
     auto* vm=script.get();migration_source=&saved;migration_from=from;migration_to=to;
     lua_pushcfunction(vm,script_migration_entry,"migrate_save");
     try{protected_call("migrate",0,1);}catch(...){migration_source=nullptr;throw;}
     migration_source=nullptr;
-    auto result=json_argument(vm,-1,16*1024*1024);lua_pop(vm,1);
+    // Whole saves contain up to 4096 entity records, unlike a single state value.
+    // Keep ordinary script-state limits unchanged and validate the returned save below.
+    auto result=json_argument(vm,-1,16*1024*1024,1024*1024);lua_pop(vm,1);
     if(!result.is_object())throw std::runtime_error("migrate must return a save object");return result;
 }
 static int script_migration_entry(lua_State* vm){auto& self=owner(vm);lua_getref(vm,self.script_table);lua_rawgetfield(vm,-1,"migrate");lua_remove(vm,-2);
     if(!lua_isfunction(vm,-1))luaL_error(vm,"Save content changed; provide migrate(saved, from_version, to_version) returning updated save data");
-    push_json(vm,*self.migration_source);lua_pushinteger(vm,self.migration_from);lua_pushinteger(vm,self.migration_to);lua_call(vm,3,1);return 1;
+    // Decode bounded, validated native save data inside the protected Lua call
+    // for allocation safety, but start the authored hook's clock after decoding.
+    // push_json creates plain data tables and cannot invoke game code.
+    self.executing_script=false;
+    push_json(vm,*self.migration_source);lua_pushinteger(vm,self.migration_from);lua_pushinteger(vm,self.migration_to);
+    self.begin_script_budget();lua_call(vm,3,1);return 1;
 }
 static int script_viewport(lua_State* vm){push_json(vm,owner(vm).viewport_state);return 1;}
 static std::unique_ptr<Impl> from_save(Project project,const Json& saved,const Json& viewport){
@@ -680,6 +698,13 @@ static std::unique_ptr<Impl> from_save(Project project,const Json& saved,const J
     // manufacture an input_released edge on the first restored update.
     result->input=Input{};result->previous_input=Input{};result->viewport_state=viewport;
     if(!result->current_music.empty()&&!result->compiled.music.contains(result->current_music))throw std::runtime_error("Save references unknown music");
+    result->music_layers=saved.value("music_layers",Json::object());
+    if(!result->music_layers.is_object()||result->music_layers.size()>16)throw std::runtime_error("Invalid saved music layers");
+    for(auto&[id,layer]:result->music_layers.items()) {
+        if(result->current_music.empty()||!music_has_layer(*result->compiled.music.at(result->current_music),id)||!layer.is_object()||!layer.contains("gain")||!layer["gain"].is_number())throw std::runtime_error("Invalid saved music layer");
+        double gain=layer["gain"].get<double>();if(!std::isfinite(gain)||gain<0||gain>2)throw std::runtime_error("Invalid saved music layer gain");
+    }
+
     for(const auto& entry:saved["entities"]){auto& record=result->records[result->index.at(entry["id"].get<std::string>())];
         record.spin=entry.value("angular_velocity",0.0f);if(!std::isfinite(record.spin)||std::abs(record.spin)>3600)throw std::runtime_error("Invalid saved angular velocity");
         if(record.source.physics2d.value("rotate",false)&&result->has_body(record))b2Body_SetAngularVelocity(record.box_body,record.spin*3.14159265f/180);

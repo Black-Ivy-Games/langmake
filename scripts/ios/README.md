@@ -67,7 +67,7 @@ After installing or updating Xcode, open it and complete its initial setup. `doc
 
 The host shader compiler explicitly targets the running Mac's macOS version, so installing a newer Xcode SDK does not raise the host tool's minimum OS requirement. The separate iPhone and simulator builds retain their iOS 17.0 deployment floor.
 
-To stage future game changes directly on the Mac, build the headless host CLI separately. It supports validation/cooking/simulation; it is not a macOS graphical player:
+To stage future game changes directly on the Mac, build the host CLI separately. It supports validation/cooking/simulation. Current source also supports desktop Metal; standalone macOS app packaging is a separate [native workflow](../macos/README.md):
 
 ```sh
 cmake -S . -B .cache/ios/host -G Xcode -DBUILD_TESTING=OFF -DCMAKE_OSX_DEPLOYMENT_TARGET="$(sw_vers -productVersion)"

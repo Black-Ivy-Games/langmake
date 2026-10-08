@@ -1,6 +1,10 @@
 # Langmake 0.5.0 runtime and authoring guide
 
-This documents the implemented Windows/D3D11 and Android/GLES3 alpha. Start with the [human-directed workflow and command contract](08-agent-api.md). The human directs the game and is its primary gameplay playtester; reference scenarios establish technical behavior, not design acceptance.
+For human UI corrections and agent review exports, read [the UI layout guide](34-ui-editor-guide.md). Before UI changes, inspect the game's `ui-design.json` when present and preserve pinned human intent unless the developer changes it.
+
+For acoustic/orchestral compositions, WAV/FLAC music and effects, synchronized adaptive tracks, and EQ/compression/limiting, read [the music and sound guide](30-music-and-sound-guide.md). Native music recipes now support versions 1 and 2; optional authoring tools bake text scores without adding sfizz or Python to games.
+
+This documents the implemented Windows/D3D11 and Android/GLES3 alpha. Native macOS/Metal local packaging is documented in [the Mac guide](28-macos-guide.md); its qualification and public distribution are separate. Start with the [human-directed workflow and command contract](08-agent-api.md). The human directs the game and is its primary gameplay playtester; reference scenarios establish technical behavior, not design acceptance.
 
 The [0.5.0 game workflow](26-game-workflow.md) documents shared presentation profiles, portable application icons/versions, custom held UI actions, viewport/glyph diagnostics, assessed presentation-only save compatibility and reusable verification. `workflow-2d` is an editable small example. Native platform evidence remains separate: see the Android/iOS qualification records and current release evidence before claiming a device behavior.
 
@@ -36,7 +40,15 @@ Use schema version 2 for the expanded project format. Version 1 projects retain 
 
 Registry IDs are stable project-local names. A module returns a Luau table; `require("inventory")` loads only a registered module, caches its result per VM and diagnoses cycles. Use `engine.definitions()` to retrieve registered JSON data. Modules and all registered data participate in source revisions, checkpoints, copies and reloads even if not used by the active scene. UI and external model inputs belong to this graph too. Paths use `/`, stay inside the project, and cannot name reserved `.langmake` content, parent traversal or network locations.
 
+New Windows/Android source builds can compile explicitly marked `--!native` Luau entry scripts and registered modules using the pinned Luau native compiler. Numeric annotations help hot loops. Unmarked code remains interpreted; unsupported platforms/functions or exhausted native allocation fall back to bytecode. Each VM has an additional bounded 8 MiB native code allocator. The existing 50 ms hook limit and VM memory limit still apply, including native loop interrupts. Runtime statistics expose `script_native_functions` and `script_native_code_bytes`; measure the actual target rather than assuming a speedup. This does not qualify historical players or enable native compilation on Apple platforms.
+
+The source sprite renderer packs compatible animation frames into padded GPU atlases and batches consecutive sprites sharing a texture. Stable draw order, alpha, flip and transforms are preserved; no asset schema or game code change is required. Frame counts and GPU allocation remain bounded. Large assets that do not fit an atlas use individual textures. Historical packaged renderers may still submit one draw per sprite.
+
+Ordinary real-time play yields to presentation after approximately one 60 Hz frame's worth of simulation catch-up work (a single expensive tick can exceed that duration). Excess backlog is capped at one tick. This keeps rendering and input responsive under overload; simulation may slow on a device that cannot sustain its workload. Offline simulation, requested fixed-frame runs and explicit scenario ticks retain their exact fixed-tick behavior.
+
 An entry script returns optional hooks:
+
+The source runtime also supports an optional `on_recover()` hook for player recovery after an interrupted update. Opting in keeps a known-good world snapshot from initialization or the last completed game save/load. The player restores that snapshot transactionally, runs `on_load()` and then `on_recover()`, clears transient input, and resumes updates so the game can show a recovery dialog. Use the hook to freeze gameplay and offer a checkpoint restart; never continue the partially mutated failed update. Save checkpoints promptly through `engine.save_game` to limit lost progress. Recovery failures are bounded, and `script-failure.json` retains the original diagnostic. This is a source feature; historical packaged players do not implement it.
 
 ```luau
 local Inventory = require("inventory")
@@ -59,7 +71,9 @@ Store persistent progression using `state_get(key, default?)` / `state_set(key, 
 
 ## Scenes and persistent saves
 
-A scene JSON file overrides `entities`, `script`, `camera`, `game_camera`, `gravity`, `music`, `audio`, `navigation`, `state` or `ui` from the root project. Only one scene runs at a time. `engine.change_scene("relay")` queues a transition at the tick boundary. `engine.scene()` returns the current scene ID.
+A scene JSON file overrides `entities`, `script`, `camera`, `game_camera`, `gravity`, `music`, `audio`, `navigation`, `state` or `ui` from the root project. Source builds also support complete replacement of `assets`, `modules`, `prefabs` and `definitions` per scene; an omitted registry inherits the root, and an empty object clears it. Registry paths remain project-relative. The same ID may refer to different content in different scenes, and each resolved scene retains the 256-asset limit. Script checking, cooking, revision tracking and inactive-scene save validation include those local registries. This requires a newly built runtime; older packaged players reject these fields.
+
+Only one scene runs at a time. `engine.change_scene("relay")` queues a transition at the tick boundary. `engine.scene()` returns the current scene ID. Scene registries do not isolate declared global state: assign each game's state its own keys. Asset discovery commands describe the selected entry scene. The full source graph still resides in memory, with bounded catalog/source-copy estimates; this is not on-demand disk streaming.
 
 The first visit constructs the scene and calls `start()` while carrying global declared game state. A revisit restores that scene's saved entities/systems and calls `on_load()` rather than awarding startup items again. Scene construction happens before replacing the active scene, so a failed transition retains the prior world. A session supports at most 64 distinct visited scenes, including its active scene; existing scenes remain revisitable at that limit. This is not background simulation or streaming of inactive areas.
 
@@ -87,6 +101,16 @@ end
 ```
 
 Migration receives and returns the complete saved document in an isolated sandbox VM. Update saved entities/scene data as needed when content changes; a passthrough is appropriate only after assessing compatibility. Engine-owned clock/RNG/spawn metadata is preserved. Missing/failing migration or invalid returned data leaves the existing game intact. Increment the version when deliberately changing your game save contract. A source checkpoint is a different feature: it restores authored files, not player progress.
+
+Full-save migration conversion permits up to 1,048,576 JSON values so a valid
+4,096-entity save is not rejected by the smaller per-state conversion limit.
+The 16 MiB save, 16-level nesting, entity and field validation limits still
+apply. Ordinary `state_set`/UI conversions retain their 65,536-value limit;
+this does not increase the 50 ms script execution budget.
+Bounded native decoding of a migration's input snapshot runs inside a protected
+Lua call for allocation safety, before starting the authored hook's 50 ms clock.
+The input is checked for supported data/nesting and still obeys save and VM
+memory bounds. Infinite migration scripts remain subject to the same timeout.
 
 ## Entities, prefabs and collision
 
@@ -304,7 +328,7 @@ engine.stop_music()
 
 The shared mixer supports one background score and eight simultaneous SFX, bounded preparation/command queues and measured dropped commands. Avoid emitting repeated play requests every tick. Pause freezes playback clocks. Live and offline use the same synthesis/effects/mixing implementation, and deterministic scheduled event tests compare PCM across render block sizes. This does not mean audio-device timing is synchronized sample-for-sample with visual frames.
 
-`asset render --id theme --output theme.wav` exports one score. `simulate --steps N --input timeline.json --audio-output mixed.wav` renders the game's collected audio events, scene music/configuration and bus changes through the same mixer at 48 kHz stereo, with a bounded tail. Its report includes peak, RMS, clipped frames and dropped commands. Device playback can continue without audio if no device initializes. Keep levels below clipping; saturation is not a mastering workflow. Recorded samples, SoundFonts, vocals and acoustic/rock instrument realism remain future work.
+`asset render --id theme --output theme.wav` exports one score. `simulate --steps N --input timeline.json --audio-output mixed.wav` renders the game's collected audio events, scene music/configuration and bus changes through the same mixer at 48 kHz stereo, with a bounded tail. Its report includes peak, RMS, clipped frames and dropped commands. Device playback can continue without audio if no device initializes. Keep levels below clipping; saturation is not a mastering workflow. Audio feature revision 1 adds recorded WAV/FLAC music and SFX, an optional sampled-instrument text-authoring tool, adaptive stems, EQ, compression and limiting. Read [the music and sound guide](30-music-and-sound-guide.md) for commands, budgets and limitations. SoundFont/plugin hosting and native singing remain unsupported; imported vocal/rock recordings are supported playback assets, not generated performances.
 
 ## Editable gameplay building blocks
 
@@ -326,4 +350,13 @@ Dialogue choice rewards use an explicit stable `reward_id` and a `rewards` item-
 
 Use [Android qualification](20-android-qualification.md), preserved [Windows/Studio evidence](19-release-evidence.md) and [0.3 reference evidence](14-release-evidence.md) for executed scenarios and exact environment qualification. Available measurements include script memory, entity/navigation counts and per-step script/navigation/physics/total timings. `profile` measures the same fixed-step workload as simulation. Rendering/capture measurements depend on GPU, resolution, source and scene; a small reference pass is not a general production performance guarantee.
 
-Current release support is Windows/D3D11 and Android/GLES3 within documented device coverage. The evolving iOS/Metal source port has 2D/3D simulator evidence, nine signed iPhone capture/state checks and positive initial human feedback; its exact coverage and remaining gates are in [iOS qualification](24-ios-qualification.md). The engine has no model provider integration. Remaining major boundaries include one active scene, primitive axis-aligned physics, bounded ground navigation, CPU skinning/simple materials, no networking/streaming and no sample/vocal synthesis. Larger creative games should grow through human-directed playable milestones, with source checkpoints, explicit save migrations, technical scenarios and human feedback at each stage.
+Current release support is Windows/D3D11 and Android/GLES3 within documented device coverage. The evolving iOS/Metal source port has 2D/3D simulator evidence, nine signed iPhone capture/state checks and positive initial human feedback; its exact coverage and remaining gates are in [iOS qualification](24-ios-qualification.md). The engine has no model provider integration. Remaining major boundaries include one active scene, primitive axis-aligned physics, bounded ground navigation, CPU skinning/simple materials, no networking/streaming and no native vocal generation or arbitrary plugin hosting. Larger creative games should grow through human-directed playable milestones, with source checkpoints, explicit save migrations, technical scenarios and human feedback at each stage.
+
+### Dragging a scrollable list
+
+A container with `data-drag-scroll="true"` and `overflow-y:auto` (or `scroll`) accepts vertical content dragging with a mouse or touch. Use an explicit bounded height and keep exit buttons outside it. Movement beyond 4 dp scrolls; release produces no game click. Nested controls and the native scrollbar retain their own input. Hiding, replacing, or resetting the container cancels its drag. This opt-in behavior does not change existing held game actions.
+
+
+For the 0.5.0 correction aligning flat-sprite rotation with Box2D polygon contacts, see [2D sprite rotation and contact verification](32-sprite-rotation-correction.md). This rendering correction changes no physics API or saved angles.
+
+Native material boards use contiguous channels, a bounded classic chemistry kernel, active chunks, dynamic sprite surfaces and lazy state providers. See [material grids and bound state](38-material-grid-guide.md). This feature is Windows-qualified; existing mobile qualification does not cover it.

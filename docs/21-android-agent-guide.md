@@ -1,5 +1,7 @@
 # Android game creation: instructions for AI agents
 
+For sampled music or recorded sound effects, also read [the music and sound guide](30-music-and-sound-guide.md). Bake on the authoring host, include only native recipes/recordings in the APK, inspect decoded memory, and use a player declaring audio feature revision 1. Historical player binaries may support synthesis only. Consult [audio qualification](31-audio-qualification.md) for actual new-feature coverage.
+
 **Read this first whenever the human asks for an Android game or an Android version of an existing game.** This is the ordered workflow for Langmake 0.5.0. It applies to external directory/CLI agents and the optional Studio worker. It does not require a particular model or AI service.
 
 Begin with `langmake context --project GAME` and the [per-game workflow](26-game-workflow.md). Configure this game's explicit target independently; do not copy device/Mac/SSH settings from another game. Portable application icons/versions, named presentation profiles, custom held-action RML buttons, scenario/receipt tools and generated handoffs are now supported. The direct Android commands below remain available for diagnosis. Native platform qualification and human feedback remain separate from host checks.

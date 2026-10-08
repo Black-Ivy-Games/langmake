@@ -18,6 +18,13 @@ Json script_api(){
         {"rotation","(id: string) -> (number,number,number)"},{"angular_velocity","(id: string) -> number"},{"set_angular_velocity","(id: string,degrees_per_second: number) -> ()"},
         {"set_visible","(id: string,visible: boolean) -> ()"},{"set_rotation","(id: string,x: number,y: number,z: number) -> ()"},{"set_velocity","(id: string,x: number,y: number,z: number) -> ()"},
         {"play_animation","(id: string,clip: string,restart: boolean?,fade: number?) -> ()"},{"play_sound","(asset: string,bus: string?) -> ()"},{"play_music","(asset: string,loop: boolean?,bus: string?) -> ()"},{"stop_music","() -> ()"},
+        {"state_bind","(key: string,provider: (() -> any)?) -> ()"},
+        {"material_effects","(grid: any) -> {any}"},{"material_new","(width: number,height: number,scale: number?) -> any"},{"material_pack","(grid: any) -> string"},
+        {"material_unpack","(grid: any,cells: string,width: number,height: number) -> ()"},{"material_counts","(grid: any) -> any"},
+        {"material_line","(grid: any,x: number,y: number,tx: number,ty: number,endpoint: boolean) -> boolean"},
+        {"material_pull","(grid: any,x: number,y: number,radius: number,blocked: any?,strength: number?,hold: boolean?) -> number"},
+        {"material_step","(grid: any,blocked: any?,environment: any?,grate: any?,lift: any?) -> number"},
+        {"material_revision","(grid: any) -> number"},{"material_surface","(grid: any,entity: string,palette: any) -> ()"},
         {"state_get","(key: string,default: any?) -> any"},{"state_set","(key: string,value: any) -> ()"},{"spawn","(prefab: string,overrides: any?) -> string"},{"destroy","(id: string) -> boolean"},{"exists","(id: string) -> boolean"},
         {"set_asset","(id: string,asset: string,animation: string?) -> ()"},{"set_visual_scale","(id: string,x: number,y: number,z: number) -> ()"},{"set_opacity","(id: string,opacity: number) -> ()"},{"set_collision_enabled","(id: string,enabled: boolean) -> ()"},
         {"raycast","(x: number,y: number,z: number,x2: number,y2: number,z2: number,options: any?) -> any"},{"shape_cast","(x: number,y: number,z: number,x2: number,y2: number,z2: number,options: any?) -> any"},
@@ -26,6 +33,7 @@ Json script_api(){
         {"change_scene","(id: string) -> ()"},{"scene","() -> string"},{"camera_set","(configuration: any) -> ()"},{"camera_get","() -> any"},{"viewport","() -> any"},
         {"navigation_path","(x: number,y: number,z: number,x2: number,y2: number,z2: number) -> any"},{"navigate","(id: string,x: number,y: number,z: number,speed: number?) -> any"},
         {"navigation_stop","(id: string) -> ()"},{"navigation_status","(id: string) -> any"},{"navigation_rebuild","() -> ()"},
+        {"set_music_layer","(id: string,gain: number,fade_seconds: number?,quantization: string?) -> ()"},
         {"set_audio_bus","(id: string,gain: number,pan: number,mute: boolean) -> ()"},{"random","() -> number"},{"tick","() -> number"},
         {"definitions","() -> any"},{"entities","(role: string?) -> {any}"},{"grounded","(id: string) -> boolean"},
         {"save_game","(slot: string) -> ()"},{"load_game","(slot: string) -> ()"},
@@ -48,7 +56,13 @@ struct Config:Luau::ConfigResolver {Luau::Config config;const Luau::Config& getC
 }
 Json check_scripts(const Project& project){
     Resolver resolver;resolver.sources=project.modules;resolver.sources["@entry"]=project.script_source;
-    for(auto&[id,scene]:project.scenes)resolver.sources["@scene:"+id]=scene->script_source;
+    // Catalogs are scene-local: the same module ID can resolve to different
+    // source files. Shared catalogs keep the previous single-frontend path.
+    std::vector<std::pair<std::string,Project>> local_catalogs;
+    for(auto&[id,scene]:project.scenes) {
+        if(scene->modules==project.modules)resolver.sources["@scene:"+id]=scene->script_source;
+        else {auto isolated=*scene;isolated.scenes.clear();local_catalogs.emplace_back(id,std::move(isolated));}
+    }
     Config config;Luau::FrontendOptions options;options.moduleTimeLimitSec=2.0;options.applyInternalLimitScaling=true;
     Luau::Frontend frontend(&resolver,&config,options);Luau::registerBuiltinGlobals(frontend,frontend.globals);
     auto definition=frontend.loadDefinitionFile(frontend.globals,frontend.globals.globalScope,script_types(),"@langmake",false);
@@ -59,6 +73,11 @@ Json check_scripts(const Project& project){
         Json diagnostic{{"code","script_type"},{"module",error.moduleName},{"line",error.location.begin.line+1},{"column",error.location.begin.column+1},{"message",Luau::toString(error,Luau::TypeErrorToStringOptions{&resolver})}};
         if(seen.insert(diagnostic.dump()).second)errors.push_back(std::move(diagnostic));
     }}
-    return {{"ok",errors.empty()},{"source_revision",project.revision},{"modules_checked",resolver.sources.size()},{"diagnostics",errors}};
+    std::size_t checked_count=resolver.sources.size();
+    for(const auto&[id,scene]:local_catalogs) {
+        auto checked=check_scripts(scene);checked_count+=checked["modules_checked"].get<std::size_t>();
+        for(auto diagnostic:checked["diagnostics"]) {diagnostic["scene"]=id;errors.push_back(std::move(diagnostic));}
+    }
+    return {{"ok",errors.empty()},{"source_revision",project.revision},{"modules_checked",checked_count},{"diagnostics",errors}};
 }
 }

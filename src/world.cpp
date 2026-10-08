@@ -1,5 +1,6 @@
 #include "langmake/collision2d.hpp"
 #include "langmake/world.hpp"
+#include "langmake/material_grid.hpp"
 #include "langmake/project.hpp"
 #include "langmake/mobile_platform.hpp"
 #include "langmake/navigation.hpp"
@@ -27,10 +28,14 @@
 #include <box2d/box2d.h>
 #include <flecs.h>
 #include <Luau/Compiler.h>
+#ifdef LANGMAKE_LUAU_NATIVE
+#include <Luau/CodeGen.h>
+#endif
 #include <lua.h>
 #include <lualib.h>
 
 #include <algorithm>
+#include <atomic>
 #include <chrono>
 #ifdef LANGMAKE_MOBILE
 #include <time.h>
@@ -160,6 +165,8 @@ struct World::Impl {
         std::size_t used = 0;
         static constexpr std::size_t limit = 16 * 1024 * 1024;
     } script_memory;
+    std::size_t native_functions = 0;
+    std::size_t native_code_bytes = 0;
     std::unique_ptr<lua_State, LuaCloser> script;
     int script_table = LUA_NOREF;
     std::chrono::steady_clock::time_point deadline;
@@ -178,6 +185,7 @@ struct World::Impl {
     std::string current_music;
     std::string current_music_bus="music";
     bool current_music_loop=true;
+    Json music_layers=Json::object();
     bool did_win = false;
     int collection_count = 0;
     std::string status_message;
@@ -702,15 +710,25 @@ struct World::Impl {
         const bool loop = lua_isnoneornil(state, 2) || lua_toboolean(state, 2);
         const std::string bus=lua_isnoneornil(state,3)?"music":luaL_checkstring(state,3);
         if(!self.buses.contains(bus))luaL_error(state,"unknown audio bus '%s'",bus.c_str());
-        self.current_music = asset;
+        self.current_music = asset;self.music_layers=Json::object();
         self.current_music_bus=bus;self.current_music_loop=loop;
         self.emit_sound(state, "music", asset, loop);
         self.sounds.back()["bus"]=bus;
         return 0;
     }
+    static int script_music_layer(lua_State* vm) {
+        auto& self=owner(vm);const std::string id=luaL_checkstring(vm,1);const float gain=number(vm,2);
+        const float fade=lua_isnoneornil(vm,3)?.1f:number(vm,3);const std::string q=lua_isnoneornil(vm,4)?"immediate":luaL_checkstring(vm,4);
+        if(!self.compiled.music.contains(self.current_music)||!music_has_layer(*self.compiled.music.at(self.current_music),id))luaL_error(vm,"unknown layer in current recorded music: '%s'",id.c_str());
+        if(gain<0||gain>2||fade<0||fade>10||(q!="immediate"&&q!="beat"&&q!="bar"))luaL_error(vm,"layer requires gain 0..2, fade 0..10, and immediate/beat/bar");
+        if(++self.audio_count>32)luaL_error(vm,"audio event limit is 32 per update");
+        self.music_layers[id]={{"gain",gain},{"fade_seconds",fade},{"quantization",q},{"requested_tick",self.tick}};
+        self.sounds.push_back({{"serial",++self.audio_serial},{"tick",self.tick},{"scene",self.project.scene_id},{"action","layer"},{"layer",id},{"gain",gain},{"fade_seconds",fade},{"quantization",q}});
+        if(self.sounds.size()>128)self.sounds.erase(self.sounds.begin());return 0;
+    }
     static int script_stop_music(lua_State* state) {
         auto& self = owner(state);
-        self.current_music.clear();
+        self.current_music.clear();self.music_layers=Json::object();
         self.emit_sound(state, "stop_music", "", false);
         return 0;
     }
@@ -726,7 +744,7 @@ struct World::Impl {
         lua_settop(script.get(), 0);
         throw std::runtime_error(details.dump());
     }
-    void protected_call(const char* phase, int arguments, int results) {
+    void begin_script_budget() {
         deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(50);
 #ifdef LANGMAKE_MOBILE
         timespec began{};
@@ -735,11 +753,25 @@ struct World::Impl {
 #endif
         executing_script = true;
         budget_exceeded = false;
+    }
+    void protected_call(const char* phase, int arguments, int results) {
+        begin_script_budget();
         const int code = lua_pcall(script.get(), arguments, results, 0);
         executing_script = false;
         if (code != LUA_OK || budget_exceeded) script_error(phase, code);
     }
+    void compile_native(lua_State* vm) {
+#ifdef LANGMAKE_LUAU_NATIVE
+        if (!Luau::CodeGen::isNativeExecutionEnabled(vm)) return;
+        Luau::CodeGen::CompilationStats stats;
+        // Only explicitly marked modules opt in. Unsupported functions remain bytecode.
+        Luau::CodeGen::compile(vm, -1, Luau::CodeGen::CodeGen_OnlyNativeModules, &stats);
+        native_functions += stats.functionsCompiled;
+        native_code_bytes += stats.nativeCodeSizeBytes + stats.nativeDataSizeBytes + stats.nativeMetadataSizeBytes;
+#endif
+    }
     #include "world_services.inc"
+    #include "world_materials.inc"
 
     void load_script(bool start = true) {
         if (project.script_source.size() > 1024 * 1024)
@@ -747,6 +779,11 @@ struct World::Impl {
         script.reset(lua_newstate(allocate_script, &script_memory));
         if (!script) throw std::runtime_error("Could not initialize Luau VM");
         auto* vm = script.get();
+        native_functions = native_code_bytes = 0;
+#ifdef LANGMAKE_LUAU_NATIVE
+        if (Luau::CodeGen::isSupported())
+            Luau::CodeGen::create(vm, 256 * 1024, 8 * 1024 * 1024, nullptr, nullptr);
+#endif
         lua_callbacks(vm)->userdata = this;
         lua_callbacks(vm)->interrupt = interrupt;
         luaL_openlibs(vm);
@@ -759,7 +796,10 @@ struct World::Impl {
             {"rotation",script_get_rotation},{"angular_velocity",script_spin},{"set_angular_velocity",script_set_spin},{"set_visible", script_visible}, {"set_rotation", script_rotation}, {"set_velocity", script_velocity},
             {"play_animation", script_animation}, {"play_sound", script_sound},
             {"play_music", script_music}, {"stop_music", script_stop_music},
-            {"state_get",script_state_get},{"state_set",script_state_set},
+            {"state_get",script_state_get},{"state_set",script_state_set},{"state_bind",script_state_bind},
+            {"material_effects",script_material_effects},{"material_new",script_material_new},{"material_pack",script_material_pack},{"material_unpack",script_material_unpack},
+            {"material_counts",script_material_counts},{"material_line",script_material_line},{"material_pull",script_material_pull},
+            {"material_step",script_material_step},{"material_revision",script_material_revision},{"material_surface",script_material_surface},
             {"spawn",script_spawn},{"destroy",script_destroy},{"exists",script_exists},
             {"set_asset",script_asset},{"set_visual_scale",script_scale},{"set_opacity",script_opacity},
             {"set_collision_enabled",script_collision},{"raycast",script_raycast},{"overlap",script_overlap},{"shape_cast",script_raycast},
@@ -769,7 +809,7 @@ struct World::Impl {
             {"camera_set",script_camera},{"camera_get",script_camera_get},{"viewport",script_viewport},
             {"navigation_path",script_nav_path},{"navigate",script_navigate},{"navigation_stop",script_nav_stop},
             {"navigation_status",script_nav_status},{"navigation_rebuild",script_nav_rebuild},
-            {"set_audio_bus",script_bus},{"random",script_random},{"tick",script_tick},
+            {"set_music_layer",script_music_layer},{"set_audio_bus",script_bus},{"random",script_random},{"tick",script_tick},
             {"definitions",script_definitions},{"entities",script_entities},{"grounded",script_grounded},
             {"save_game",script_save_game},{"load_game",script_load_game},
             {"animation_events",script_animation_events},{"joint_position",script_joint_position},{"contacts",script_contacts}};
@@ -787,11 +827,13 @@ struct World::Impl {
         luaL_sandbox(vm);
         luaL_sandboxthread(vm);
         const std::string source = project.script_source.empty() ? "return {}" : project.script_source;
-        const std::string bytecode = Luau::compile(source);
+        Luau::CompileOptions options;options.typeInfoLevel = 1;
+        const std::string bytecode = Luau::compile(source, options);
         if (bytecode.size() > 8 * 1024 * 1024) throw std::runtime_error("Compiled script exceeds 8 MiB limit");
         const std::string chunk = "@" + project.script_file.generic_string();
         const int code = luau_load(vm, chunk.c_str(), bytecode.data(), bytecode.size(), 0);
         if (code != LUA_OK) script_error("compile", code);
+        compile_native(vm);
         protected_call("load", 0, 1);
         if (!lua_istable(vm, -1)) {
             lua_pushliteral(vm, "game script must return a table with optional start() and update(dt) functions");
@@ -872,11 +914,18 @@ Json World::take_requests() { return std::exchange(impl_->session_requests,Json:
 const Project& World::current_project() const { return impl_->project; }
 Json World::presentation() const { return {{"camera",impl_->camera},{"ui",impl_->ui_state},{"scene",impl_->project.scene_id},{"tick",impl_->tick},{"time",impl_->elapsed}}; }
 void World::set_scene_prepare(std::function<void(const Project&, const CompiledAssets&)> prepare) { scene_prepare_=std::move(prepare); }
+const std::map<std::string,DynamicSurface>& World::surfaces() const { return impl_->dynamic_surfaces; }
 Json World::save() const {
+    impl_->flush_state_providers();
     auto result=impl_->save_state();result["scene_states"]=impl_->scene_states;
     if(result.dump().size()>16*1024*1024)throw std::runtime_error("Save exceeds 16 MiB");return result;
 }
-void World::restore(const Json& saved) {
+bool World::supports_recovery() const {
+    auto* vm=impl_->script.get();if(!vm || impl_->script_table==LUA_NOREF)return false;lua_getref(vm,impl_->script_table);
+    lua_rawgetfield(vm,-1,"on_recover");const bool present=lua_isfunction(vm,-1);lua_pop(vm,2);return present;
+}
+void World::restore(const Json& saved) { restore(saved,false); }
+void World::restore(const Json& saved, bool recovery) {
     Json data=saved;
     const auto project_id=impl_->project.document.is_object()?impl_->project.document.value("project_id",impl_->project.title):impl_->project.title;
     const int version=impl_->project.document.is_object()?impl_->project.document.value("save_version",1):1;
@@ -932,11 +981,16 @@ void World::restore(const Json& saved) {
     if(data.contains("scene_states")&&data["scene_states"].is_object())for(auto&[id,state]:data["scene_states"].items())
         if(impl_->scene_catalog.contains(id)){auto scene_project=*impl_->scene_catalog.at(id);scene_project.scenes=impl_->scene_catalog;stamp(state,scene_project);}
     auto next=Impl::from_save(project,data,impl_->viewport_state);next->scene_states=data.value("scene_states",Json::object());
+    if(recovery){next->call_hook("on_recover",false,0);next->flush_entities();}
     if(!next->scene_states.is_object()||next->scene_states.size()>64)throw std::runtime_error("Save scene_states must be an object with at most 64 scenes");
     for(const auto& [id,state]:next->scene_states.items()){
         if(!next->scene_catalog.contains(id))throw std::runtime_error("Save references unknown stored scene");
-        Impl::validate_saved_state(state,*next->scene_catalog.at(id));
-        for(const auto& value:state["entities"]){const auto entity=Impl::entity_from_json(value);next->validate_visual(entity);}
+        const auto& stored_project=*next->scene_catalog.at(id);
+        Impl::validate_saved_state(state,stored_project);
+        // Inactive entities reference their own scene's registry, which can
+        // intentionally omit or reuse IDs from the active scene.
+        const auto stored_assets=id==next->project.scene_id?next->compiled:compile_assets(stored_project);
+        for(const auto& value:state["entities"]){const auto entity=Impl::entity_from_json(value);Impl::validate_visual(entity,stored_project,stored_assets);}
     }
     next->audio_serial=impl_->audio_serial;
     for(auto& event:next->sounds)event["serial"]=++next->audio_serial;
@@ -947,6 +1001,7 @@ void World::change_scene(const std::string& scene) {
     if(!impl_->scene_catalog.contains(scene))throw std::runtime_error("Unknown scene '"+scene+"'");
     if(scene==impl_->project.scene_id)return;
     Project project=*impl_->scene_catalog.at(scene);project.scenes=impl_->scene_catalog;
+    impl_->flush_state_providers();
     auto saved_scenes=impl_->scene_states;saved_scenes[impl_->project.scene_id]=impl_->save_state();
     if(saved_scenes.size()+(saved_scenes.contains(scene)?0:1)>64)throw std::runtime_error("Session supports at most 64 saved scenes including the active scene");
     std::unique_ptr<Impl> next;
@@ -964,6 +1019,7 @@ void World::change_scene(const std::string& scene) {
     for(auto& event:next->sounds){event["serial"]=++next->audio_serial;combined.push_back(event);}
     combined.push_back({{"serial",++next->audio_serial},{"tick",next->tick},{"action",next->current_music.empty()?"stop_music":"music"},
                        {"scene",next->project.scene_id},{"asset",next->current_music},{"loop",next->current_music_loop},{"bus",next->current_music_bus}});
+    for(const auto&[id,layer]:next->music_layers.items())combined.push_back({{"serial",++next->audio_serial},{"tick",next->tick},{"scene",next->project.scene_id},{"action","layer"},{"layer",id},{"gain",layer.at("gain")},{"fade_seconds",0},{"quantization","immediate"}});
     while(combined.size()>128)combined.erase(combined.begin());next->sounds=std::move(combined);
     Json requests=impl_->session_requests;for(const auto& request:next->session_requests)requests.push_back(request);next->session_requests=std::move(requests);
     next->scene_states=std::move(saved_scenes);
@@ -973,6 +1029,9 @@ void World::change_scene(const std::string& scene) {
 Json World::statistics() const {
     auto result=impl_->tick_statistics;result["entities"]=impl_->index.size();result["entity_capacity"]=4096;
     result["script_memory_bytes"]=impl_->script_memory.used;result["modules_loaded"]=impl_->loaded_modules.size();
+    result["script_native_functions"]=impl_->native_functions;result["script_native_code_bytes"]=impl_->native_code_bytes;
+    size_t samples=0,active_chunks=0;for(const auto&weak:impl_->material_grids)if(auto grid=weak.lock()){samples+=grid->n;active_chunks+=std::count(grid->active.begin(),grid->active.end(),uint8_t(1));}
+    result["material_samples"]=samples;result["material_active_chunks"]=active_chunks;result["material_surfaces"]=impl_->dynamic_surfaces.size();
     result["navigation_agents"]=impl_->nav_agents.size();result["navigation"]=impl_->navigation?impl_->navigation->inspect():Json();
     result["physics_bodies"]=impl_->physics?impl_->physics->GetNumBodies():b2World_GetCounters(impl_->box.id).bodyCount;
     result["runtime_slots"]=impl_->records.size();
@@ -1011,13 +1070,14 @@ std::vector<Entity> World::entities() const {
 }
 
 Json World::snapshot() const {
+    impl_->flush_state_providers();
     Json result{{"tick", impl_->tick}, {"dimension", impl_->project.dimension},
         {"won", won()}, {"collected", collected()}, {"message", message()},
         {"source_revision", impl_->project.revision},{"authored_graph_revision",impl_->project.source_revision},{"profile",impl_->project.profile}, {"time", impl_->elapsed},
         {"presentation_profile",impl_->project.profile},{"viewport",impl_->viewport_state},
         {"music", impl_->current_music},{"music_bus",impl_->current_music_bus},{"music_loop",impl_->current_music_loop}, {"audio_events", impl_->sounds}, {"entities", Json::array()},
         {"scene",impl_->project.scene_id},{"state",impl_->game_state},{"ui",impl_->ui_state},{"camera",impl_->camera},
-        {"audio_buses",impl_->buses},{"navigation_agents",impl_->nav_agents},{"input_events",impl_->last_input_events},
+        {"music_layers",impl_->music_layers},{"audio_buses",impl_->buses},{"navigation_agents",impl_->nav_agents},{"input_events",impl_->last_input_events},
         {"statistics",{{"entities",impl_->index.size()},{"entity_capacity",4096},{"navigation_agents",impl_->nav_agents.size()},
                        {"modules_loaded",impl_->loaded_modules.size()}}},{"contacts",impl_->contacts}};
     result["asset_revisions"] = Json::object();

@@ -1,0 +1,1 @@
+{"steps":420,"input":{"events":[{"from":60,"to":61,"actions":{"drums":1}},{"from":180,"to":181,"actions":{"chime":1}},{"from":300,"to":301,"actions":{"drums":1}}]},"capture_ticks":[0,61,420],"assertions":[{"path":"/state/drums","equals":true},{"path":"/state/chimes","equals":1},{"path":"/music_layers/drums/gain","equals":1}],"save_roundtrip":true}

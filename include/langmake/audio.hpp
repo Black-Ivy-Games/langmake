@@ -12,6 +12,7 @@ public:
     // Submit commands from the owning game thread. Assets are compiled before
     // submission; audio rendering never loads assets or executes game scripts.
     void set_music(std::shared_ptr<const MusicScore> score, bool loop = true, const std::string& bus = "music");
+    void set_music_layer(const std::string& id,float gain,float seconds=.1f,const std::string& quantization="immediate");
     void stop_music();
     void stop_all();
     void play_sfx(std::shared_ptr<const MusicScore> score, const std::string& bus = "sfx");

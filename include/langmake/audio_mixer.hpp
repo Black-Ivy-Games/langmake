@@ -29,6 +29,7 @@ public:
     void play(float frequency, float seconds = .13f);
     void set_music(std::shared_ptr<const MusicScore> score, bool loop = true, const std::string& bus = "music");
     void play_sfx(std::shared_ptr<const MusicScore> score, const std::string& bus = "sfx");
+    void set_music_layer(const std::string& id,float gain,float seconds=.1f,const std::string& quantization="immediate");
     void stop_music();
     void stop_all(bool clear_effects = true);
     void set_bus(const std::string& bus, float gain, float pan = 0, bool mute = false);

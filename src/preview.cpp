@@ -44,6 +44,12 @@
 #include <sys/file.h>
 #include <unistd.h>
 #endif
+#if defined(__APPLE__) && !defined(LANGMAKE_IOS)
+#include <SDL3/SDL_metal.h>
+#include <fcntl.h>
+#include <sys/file.h>
+#include <unistd.h>
+#endif
 
 namespace lm {
 namespace {
@@ -58,7 +64,7 @@ struct PreviewLock {
     }
     ~PreviewLock() { if (handle != INVALID_HANDLE_VALUE) CloseHandle(handle); }
 };
-#elif defined(LANGMAKE_MOBILE)
+#elif defined(LANGMAKE_MOBILE) || defined(__APPLE__)
 struct PreviewLock {
     int descriptor=-1;
     explicit PreviewLock(const std::filesystem::path& path) {
@@ -68,6 +74,8 @@ struct PreviewLock {
     }
     ~PreviewLock(){if(descriptor>=0)close(descriptor);}
 };
+#endif
+#ifdef LANGMAKE_MOBILE
 struct MobileLifecycle {
     std::atomic<bool> background{false},terminating{false},memory_warning{false};
     std::atomic<std::uint64_t> background_epoch{0};
@@ -306,7 +314,7 @@ struct PreviewTask {
 }
 
 static PreviewTask preview_frames(Project project, PreviewOptions options, PreviewEvents* events) {
-#if !defined(_WIN32) && !defined(LANGMAKE_MOBILE)
+#if !defined(_WIN32) && !defined(LANGMAKE_MOBILE) && !defined(__APPLE__)
     throw std::runtime_error("Graphical preview is available on Windows, Android and iOS player builds; headless operations remain available.");
     co_return Json{};
 #else
@@ -371,7 +379,12 @@ static PreviewTask preview_frames(Project project, PreviewOptions options, Previ
     auto* window=SDL_CreateWindowWithProperties(properties);SDL_DestroyProperties(properties);
     std::unique_ptr<MobileControls> mobile;
 #else
-    auto* window = SDL_CreateWindow(("Langmake | " + project.title).c_str(), options.width, options.height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY);
+    auto flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY;
+#ifdef __APPLE__
+    flags |= SDL_WINDOW_METAL;
+    SDL_MetalView metal_view = nullptr;
+#endif
+    auto* window = SDL_CreateWindow(("Langmake | " + project.title).c_str(), options.width, options.height, flags);
 #endif
     if (!window) {
         const std::string error=SDL_GetError();
@@ -402,6 +415,12 @@ static PreviewTask preview_frames(Project project, PreviewOptions options, Previ
         // UIKit/layer ownership stays on this thread, including shutdown.
         bgfx::renderFrame();
 #endif
+#elif defined(__APPLE__)
+        metal_view=SDL_Metal_CreateView(window);
+        if(!metal_view)throw std::runtime_error(SDL_GetError());
+        init.type=bgfx::RendererType::Metal;init.swapChain.nwh=SDL_Metal_GetLayer(metal_view);
+        if(!init.swapChain.nwh)throw std::runtime_error("SDL did not provide a Metal layer");
+        bgfx::renderFrame();
 #else
         init.type = bgfx::RendererType::Direct3D11;
         init.swapChain.nwh = SDL_GetPointerProperty(SDL_GetWindowProperties(window), SDL_PROP_WINDOW_WIN32_HWND_POINTER, nullptr);
@@ -443,6 +462,7 @@ static PreviewTask preview_frames(Project project, PreviewOptions options, Previ
             if(reset_cursor)audio_serial=0;
             const auto state=world->snapshot();const auto music=state.value("music",project.music);
             if(!music.empty())audio->set_music(world->assets().music.at(music),state.value("music_loop",true),state.value("music_bus",std::string("music")));
+            if(state.contains("music_layers"))for(auto&[id,layer]:state["music_layers"].items())audio->set_music_layer(id,layer.at("gain").get<float>(),0,"immediate");
             if(state.contains("audio_buses"))for(auto&[id,bus]:state["audio_buses"].items())audio->set_bus(id,bus.value("gain",1.f),bus.value("pan",0.f),bus.value("mute",false));
         };
         auto update_audio = [&] {
@@ -452,6 +472,7 @@ static PreviewTask preview_frames(Project project, PreviewOptions options, Previ
                 audio_serial=serial;
                 if(event.value("scene",project.scene_id)!=project.scene_id)continue;
                 auto action = event.at("action").get<std::string>();
+                if(action=="layer")audio->set_music_layer(event.at("layer").get<std::string>(),event.value("gain",1.f),event.value("fade_seconds",.1f),event.value("quantization",std::string("immediate")));
                 if(action=="bus")audio->set_bus(event.at("bus").get<std::string>(),event.value("gain",1.f),event.value("pan",0.f),event.value("mute",false));
                 else if (action == "stop_music") audio->stop_music();
                 else if(action=="stop_all")audio->stop_all();
@@ -517,10 +538,12 @@ static PreviewTask preview_frames(Project project, PreviewOptions options, Previ
             state["recovery"]=recovery_status;state["low_memory_observed"]=lifecycle.memory_warning.load();
             if(!rejected_recovery.is_null())state["rejected_recovery"]=rejected_recovery;
             state["storage_directory"]=storage.string();if(mobile)state["touch"]=mobile->inspect();
-            if(ui)state["ui_renderer"]=ui->inspect();
+#elif defined(__APPLE__)
+            state["renderer"]="Metal";state["platform"]="macos";
 #else
             state["renderer"] = "Direct3D 11";
 #endif
+            if(ui)state["ui_renderer"]=ui->inspect();
             state["audio_available"] = audio->available(); state["frame_ms"] = frame_ms;
             state["audio_dropped_commands"] = audio->dropped_commands();
             state["audio_mixer"]=audio->measurements();
@@ -627,12 +650,16 @@ static PreviewTask preview_frames(Project project, PreviewOptions options, Previ
             if(relative.empty()||relative.is_absolute()||std::any_of(relative.begin(),relative.end(),[](const auto& part){return part=="..";}))throw std::runtime_error("Save path escapes runtime storage");
             return target;
         };
+        // Opt-in recovery uses only completed snapshots, never the partially
+        // mutated world left by an interrupted script update.
+        Json safe_script_save=world->supports_recovery()?world->save():Json();
+        Json script_failure;unsigned recovery_failures=0,healthy_steps=0;
         auto game_requests = [&] {
             for(auto& request:world->take_requests()) {
                 try {
                     auto path=slot_path(request.at("slot").get<std::string>());
-                    if(request.at("action")=="save")write_json_atomic(path,world->save());
-                    else {world->restore(read_json_shared(path,16*1024*1024));sync_scene();ui->reset_input();pending_input_events=Json::array();start_music();}
+                    if(request.at("action")=="save"){auto saved=world->save();write_json_atomic(path,saved);if(world->supports_recovery())safe_script_save=std::move(saved);}
+                    else {world->restore(read_json_shared(path,16*1024*1024));if(world->supports_recovery())safe_script_save=world->save();sync_scene();ui->reset_input();pending_input_events=Json::array();start_music();}
                 }catch(const std::exception& e){error=e.what();}
             }
         };
@@ -653,14 +680,27 @@ static PreviewTask preview_frames(Project project, PreviewOptions options, Previ
         };
         refresh_ui();
         auto step = [&](Input input) {
-            try { refresh_viewport();world->step(1.0f / 60.0f, input);sync_scene();game_requests();refresh_ui();update_audio(); }
+            try { refresh_viewport();world->step(1.0f / 60.0f, input);sync_scene();game_requests();refresh_ui();update_audio();if(++healthy_steps>=600)recovery_failures=0; }
             catch (const std::exception& e) {
                 error = runtime_error_text = e.what(); paused = true; reload_status = "SCRIPT FAILED  /  PAUSED";
+                healthy_steps=0;script_failure={{"diagnostic",error},{"tick",world->snapshot().value("tick",0)},{"recovered",false}};
+                // Avoid a recursive recovery loop if the recovery UI itself fails.
+                if(!safe_script_save.is_null() && recovery_failures++<2)try {
+                    world->restore(safe_script_save,true);sync_scene();ui->reset_input();
+                    pending_input_events=Json::array();start_music();refresh_ui();
+                    script_failure["recovered"]=true;error.clear();runtime_error_text.clear();
+                    paused=false;reload_status="RESTORED SAFE SAVE / AWAITING PLAYER";
+                }catch(const std::exception& recovery_error){error+=std::string("; recovery failed: ")+recovery_error.what();}
+
+                try{write_json_atomic(bridge/"script-failure.json",script_failure);}catch(...){}
+                if(paused&&!safe_script_save.is_null()&&options.steps<0&&!options.frames){
+                    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Game interrupted","Please reopen the game. Your saved progress has been kept.",window);running=false;
+                }
             }
         };
 #ifdef LANGMAKE_MOBILE
         auto save_recovery=[&] {
-            if(options.frames||options.steps>=0||!recovery_writable)return;
+            if(options.frames||options.steps>=0||!recovery_writable||!runtime_error_text.empty())return;
             try{write_json_atomic(slot_path(recovery_slot),world->save());recovery_status="saved";}
             catch(const std::exception& exception){recovery_status=std::string("Recovery save failed: ")+exception.what();}
         };
@@ -850,6 +890,7 @@ static PreviewTask preview_frames(Project project, PreviewOptions options, Previ
             } else if (!paused && (options.frames == 0 || frame < options.frames)) {
                 accumulator += options.frames > 0 ? 1.0 / 60.0 : dt;
                 int steps = 0;
+                const auto catchup_started = std::chrono::steady_clock::now();
                 while (accumulator >= 1.0 / 60.0 && steps++ < 6 && !paused) {
                     input=hardware_input;input.events=pending_input_events;
                     if(!options.isolated)ui->apply(input);
@@ -860,6 +901,13 @@ static PreviewTask preview_frames(Project project, PreviewOptions options, Previ
 #ifdef LANGMAKE_MOBILE
                     if(mobile)mobile->consume_tick();
 #endif
+                    // An overloaded simulation must still present and consume new
+                    // input. Never spend six expensive ticks hiding the next frame.
+                    // Fixed-frame/scenario verification retains exact tick behavior.
+                    if(options.frames==0 && std::chrono::duration<double>(std::chrono::steady_clock::now()-catchup_started).count()>=1.0/60.0) {
+                        accumulator=std::min(accumulator,1.0/60.0);
+                        break;
+                    }
                 }
             }
 
@@ -965,6 +1013,7 @@ static PreviewTask preview_frames(Project project, PreviewOptions options, Previ
                 }
             }
             submit_mesh(vertices, indices, layout, program, 0, true);
+            assets->sync_surfaces(world->surfaces());
             assets->draw(entities, program, flat, {eye.x,eye.y,eye.z});
             if(!options.debug.empty())debug_lines(entities,world->snapshot(),options.debug,layout,program);
             refresh_ui();ui->draw();
@@ -1062,6 +1111,9 @@ static PreviewTask preview_frames(Project project, PreviewOptions options, Previ
 #endif
         events->lifecycle={};
         if (controller) SDL_CloseGamepad(controller);
+#if defined(__APPLE__) && !defined(LANGMAKE_IOS)
+        if(metal_view){SDL_Metal_DestroyView(metal_view);metal_view=nullptr;}
+#endif
         SDL_DestroyWindow(window); SDL_Quit();
         co_return Json{{"ok", true}, {"frames", frame}, {"captures", completed}, {"state", final_state}};
     } catch (...) {
@@ -1074,6 +1126,9 @@ static PreviewTask preview_frames(Project project, PreviewOptions options, Previ
 #endif
         events->lifecycle={};
         if (controller) SDL_CloseGamepad(controller);
+#if defined(__APPLE__) && !defined(LANGMAKE_IOS)
+        if(metal_view){SDL_Metal_DestroyView(metal_view);metal_view=nullptr;}
+#endif
         SDL_DestroyWindow(window); SDL_Quit();
         publications.latest(live_path, {{"running", false}, {"session", session}, {"source_revision", project.revision},{"published_at_ms",wall_time_ms()}});
         throw;

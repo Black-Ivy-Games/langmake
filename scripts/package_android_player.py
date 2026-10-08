@@ -74,6 +74,7 @@ def main():
         validation = android.verify_native_library(library, abi)
         write_json(folder / 'player.json', {
             'format_version': 1, 'engine_version': lock['release'],
+            'audio_feature_revision': 1 if b'langmake_recorded_audio_v1' in source.read_bytes() else 0,
             'abi': abi, 'configuration': configuration, 'development': configuration == 'debug',
             'sha256': validation['sha256'], 'source_library_sha256': android.digest(source),
             'page_alignment': validation['page_alignment'], 'symbols': 'stripped; retained in source build',

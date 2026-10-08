@@ -428,6 +428,130 @@
     {
       "path": "licenses/Android-NDK/NOTICE.toolchain",
       "sha256": "789714a9076571c580cf531bdcebec776a4d889c12c3c1108adafc6e4338710a"
+    },
+    {
+      "path": "licenses/sfizz/AUTHORS.md",
+      "sha256": "7b16ce92bc3f53e90d9513e7760162980646999c5cc3ef9dcdd91b739a5edd22"
+    },
+    {
+      "path": "licenses/sfizz/external/abseil-cpp/AUTHORS",
+      "sha256": "0910105ebe1c54c0051fd9e9da3148ae507f9f6c9d73b4ed3c7da4df66873bb5"
+    },
+    {
+      "path": "licenses/sfizz/external/abseil-cpp/LICENSE",
+      "sha256": "f54fff0b905df5b3464527c652a30e903b172d6dcab4d89b5e6f105d5e4a4603"
+    },
+    {
+      "path": "licenses/sfizz/external/atomic_queue/LICENSE",
+      "sha256": "1cf86bb57e333e5f21bde84390af4ffd3e47a71602624e18a9daaa7120e258e0"
+    },
+    {
+      "path": "licenses/sfizz/external/cephes/LICENSE.txt",
+      "sha256": "a94cdf6936f7a3e3da295d878b1f56472d78583938c85815a591b51cfa2a866f"
+    },
+    {
+      "path": "licenses/sfizz/external/cxxopts/LICENSE",
+      "sha256": "9d42d0185ebc939a1d14b5fdc1befad19c6e3f4acd8c70f35590e1861d41242a"
+    },
+    {
+      "path": "licenses/sfizz/external/filesystem/LICENSE",
+      "sha256": "41af490f2d3dbeaba890ca8ad198bedc604492e718e673d82f8eff7a5e75abd5"
+    },
+    {
+      "path": "licenses/sfizz/external/fmidi/LICENSE.md",
+      "sha256": "983b0cdcdebe27cb88c770a2488581a82060c176fc4dbcc80e83b50b44923a5e"
+    },
+    {
+      "path": "licenses/sfizz/external/jsl/LICENSE.md",
+      "sha256": "983b0cdcdebe27cb88c770a2488581a82060c176fc4dbcc80e83b50b44923a5e"
+    },
+    {
+      "path": "licenses/sfizz/external/simde/COPYING",
+      "sha256": "83e48417dd53d380432ca08c1aabc35af5a8b8d4cac037f066510d0bcda8f2c0"
+    },
+    {
+      "path": "licenses/sfizz/external/simde/test/munit/COPYING",
+      "sha256": "f8d986689d89cc590fcad06225f575b7e95e0f6ae671bf5b92f47a7996049fef"
+    },
+    {
+      "path": "licenses/sfizz/external/st_audiofile/LICENSE.md",
+      "sha256": "5a0f3a21542e5fbcacd62c0c3b35a4ee9184737b562abec7d266003b52f0b8e2"
+    },
+    {
+      "path": "licenses/sfizz/external/st_audiofile/thirdparty/dr_libs/LICENSE",
+      "sha256": "a13603628866863f196c0201891a6dcc8062481e83b5d686f34cf9e45ceec899"
+    },
+    {
+      "path": "licenses/sfizz/external/st_audiofile/thirdparty/dr_libs/tests/external/miniaudio/LICENSE",
+      "sha256": "b1fe35ea581d1a2028d2f5a5aa22c0ec5eb890225203c5ebc08203273bbb1376"
+    },
+    {
+      "path": "licenses/sfizz/external/st_audiofile/thirdparty/libaiff/LICENSE",
+      "sha256": "2a092ea42cab9f8665307e0e5f60818df94d0ae065d7763d82585c7dc1594921"
+    },
+    {
+      "path": "licenses/sfizz/external/st_audiofile/thirdparty/stb_vorbis/LICENSE",
+      "sha256": "11dd149dbc50748419a22fcec275b5bcfb4c2d86d9fba8802e5c4ffd40c94609"
+    },
+    {
+      "path": "licenses/sfizz/external/st_audiofile/thirdparty/wavpack/AUTHORS",
+      "sha256": "bd51828a45fc80ef048927cafb23da65830d1e1879424cbe9d74a0e24a031e24"
+    },
+    {
+      "path": "licenses/sfizz/external/st_audiofile/thirdparty/wavpack/COPYING",
+      "sha256": "c580b15e1391e59164d17c642df7019cb11946ab89281b5d781b43c732d4bf97"
+    },
+    {
+      "path": "licenses/sfizz/external/st_audiofile/thirdparty/wavpack/license.txt",
+      "sha256": "c580b15e1391e59164d17c642df7019cb11946ab89281b5d781b43c732d4bf97"
+    },
+    {
+      "path": "licenses/sfizz/external/st_audiofile/thirdparty/wavpack/xmms/COPYING",
+      "sha256": "af25a3c72421164933416473b0247f9d8e304dfb69ed889627f3b890cdcc9804"
+    },
+    {
+      "path": "licenses/sfizz/LICENSE",
+      "sha256": "7a705870ea48835de61975ddc052fad098497c00c4a8bd5799b203ef12524ac9"
+    },
+    {
+      "path": "licenses/sfizz/src/external/cpuid/LICENSE.rst",
+      "sha256": "5a6b008d32ff099154fba4ec45f841f3908681e8f7f447cbea810c3468b4eaef"
+    },
+    {
+      "path": "licenses/sfizz/src/external/cpuid/platform/LICENSE.rst",
+      "sha256": "a354a615d8f862a66fac30d1e94ed96c5bdb8b441e620b2b58c59153487eaab0"
+    },
+    {
+      "path": "licenses/sfizz/src/external/hiir/license.txt",
+      "sha256": "a7dea6b02c25b101ca92d21fb23a0a752e02b62cdc52c965bdb50b223c49e881"
+    },
+    {
+      "path": "licenses/sfizz/src/external/kiss_fft/COPYING",
+      "sha256": "b338c6ad7c4109f19ef8af177f11c12a2e511819e3b71c67ee10875e22e55cc5"
+    },
+    {
+      "path": "licenses/sfizz/src/external/pugixml/LICENSE.md",
+      "sha256": "9c2e5a97cc6733efd0ffc2e4cf23bf306e415dde068230e2a0b6b83c97e8bae1"
+    },
+    {
+      "path": "licenses/sfizz/src/external/spline/LICENSE",
+      "sha256": "a96f6b74594e70337f6e5533d0b612116c2f49dcc5b67402b4bfbe6c57f78df8"
+    },
+    {
+      "path": "licenses/sfizz/src/external/tunings/LICENSE.md",
+      "sha256": "d28d9cd501e65ef5011c9aa0ecf9aa5df99eace7193e2bf6e2aaa6854d1ff037"
+    },
+    {
+      "path": "licenses/sfizz/tests/catch2/LICENSE.txt",
+      "sha256": "beb8e42e9d6b4284e03304d05a81a0755200a965fc8d0a5e0aea1e84cf805d6e"
+    },
+    {
+      "path": "licenses/VSCO-CE/Info.txt",
+      "sha256": "a3bd9d49720187b10269e78b091316d043dcd7b059ec77edb582195152aaf1ce"
+    },
+    {
+      "path": "licenses/VSCO-CE/LICENSE",
+      "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
     }
   ],
   "toolchain": {
@@ -656,5 +780,42 @@
       "license": "OFL-1.1",
       "modified": false
     }
-  ]
+  ],
+  "optional_music_authoring": {
+    "feature_revision": 1,
+    "sfizz": {
+      "repository": "https://github.com/sfztools/sfizz.git",
+      "version": "1.2.3",
+      "revision": "4e70dc0bef53b41f2853ed46e26f5911114c92d0",
+      "submodules": [
+        "c2435f8342c2d0ed8101cb43adfd605fdc52dca2 external/abseil-cpp (c2435f8)",
+        " 8a2edd6d92ed820521d42c94d179462bf06b5ed3 external/filesystem (8a2edd6)",
+        " 2bf459d4ed6d7ed6b9f31bd9e07c91bace5009e0 external/simde (2bf459d)",
+        " da8f73412998e4f1adf1100dc187533a51af77fd external/simde/test/munit (da8f734)",
+        " 4b3d07849537ce0b71b22180c0b1335eacc6e9be external/st_audiofile/thirdparty/dr_libs (4b3d078)",
+        " d1a166c83ab445b1c14bc83d37c84e18d172e5f5 external/st_audiofile/thirdparty/dr_libs/tests/external/miniaudio (d1a166c)",
+        " 78864a4a2e769e426be8cfd78ae7f5f72e236c33 external/st_audiofile/thirdparty/libaiff (heads/master)",
+        " 07ffb331d23c16e2d2979370441f63ea722760bc external/st_audiofile/thirdparty/wavpack (07ffb33)"
+      ],
+      "build_options": {
+        "SFIZZ_SHARED": true,
+        "SFIZZ_JACK": false,
+        "SFIZZ_RENDER": false,
+        "SFIZZ_TESTS": false,
+        "SFIZZ_DEMOS": false,
+        "SFIZZ_DEVTOOLS": false,
+        "SFIZZ_USE_SNDFILE": false,
+        "ENABLE_LTO": false
+      },
+      "player_dependency": false
+    },
+    "instrument_pack": {
+      "manifest": "scripts/music/packs/vsco-ce.json",
+      "sha256": "6892ad22d0b10a429f22d62833de9703e08db6fe6ca42bb1bb2da186aac20c60",
+      "repository": "https://github.com/sgossner/VSCO-2-CE",
+      "revision": "440300901dfe9275fd84e0b7763af1f8443ae62e",
+      "license": "CC0-1.0",
+      "source_bank_bundled": false
+    }
+  }
 }

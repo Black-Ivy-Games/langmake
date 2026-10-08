@@ -170,3 +170,5 @@ python scripts/android/android.py devices
 The optional pinned AOSP API 36 image uses `emulator-5556` and needs no Google account. It starts without a window; use `--visible` when the human wants to interact with it. `--accel off` is an explicit slow fallback when acceleration is unavailable. This tooling never installs a hypervisor. Emulator evidence must be reported separately from physical-phone evidence. APK builds use `--abi x86_64` for this emulator.
 
 Run host tooling checks with `python scripts/android/test_android.py`. These checks exercise packaging and path/authorization contracts; they do not claim Android rendering, lifecycle, touch or audio qualification.
+
+Binary pull transport encodes bytes as base64 on the device and validates/decodes them before atomic host publication. This preserves remote exit status while avoiding Windows ADB newline conversion, which can corrupt PNG/WAV/save evidence even with `shell -T`. Invalid encoding or a failed read leaves earlier output intact.

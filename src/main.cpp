@@ -80,8 +80,15 @@ int workflow_command(int argc,char** argv) {
     const char* base=SDL_GetBasePath();if(!base)throw std::runtime_error(std::string("Cannot resolve runtime directory: ")+SDL_GetError());
     auto executable=std::filesystem::path(base);
     if(executable.filename().empty())executable=executable.parent_path();
-    auto script=executable/"scripts/workflow/workflow.py";
-    if(!std::filesystem::is_regular_file(script))script=executable.parent_path()/"scripts/workflow/workflow.py";
+    const auto relative=std::string(argv[1])=="music"?"scripts/music/music.py":"scripts/workflow/workflow.py";
+    auto script=executable/relative;
+    // Support isolated build/<configuration> checkouts as well as portable roots.
+    for(auto directory=executable.parent_path(); !std::filesystem::is_regular_file(script) && directory!=directory.root_path(); directory=directory.parent_path()) {
+        if(std::filesystem::is_regular_file(directory/"CMakeLists.txt") && std::filesystem::is_regular_file(directory/"AGENTS.md")) {
+            script=directory/relative;
+            break;
+        }
+    }
     if(!std::filesystem::is_regular_file(script))throw std::runtime_error("Authoring workflow tools are missing; use a current complete source or runtime package.");
     const char* configured=std::getenv("LANGMAKE_PYTHON");
 #ifdef _WIN32
@@ -151,7 +158,7 @@ Json help() {
             {"ui-check", "Headless UI/layout/glyph diagnostics: --width --height --density --safe-area x,y,w,h"},
             {"save-check", "Report assessed save compatibility: --project PATH --file SAVE.json [--profile NAME]"},
             {"capabilities", "List implemented systems and honest platform status"},
-            {"cook", "Validate and bundle the full source graph: --project PATH --target android|ios|windows --output NEW_DIRECTORY"},
+            {"cook", "Validate and bundle the full source graph: --project PATH --target android|ios|macos|windows --output NEW_DIRECTORY"},
             {"schema", "Return the version 1/2 project JSON schema"},
             {"script-api", "Generated Luau declarations and function metadata"},
             {"check", "Offline Luau checking across registered modules and scenes"},
@@ -169,6 +176,7 @@ Json help() {
             {"capture", "Render evidence: --output image.png [--frames N], or --steps N --input timeline.json --ticks 0,N --output-dir DIR; optional --no-overlay --debug collision,navigation,targeting,camera"},
             {"control", "Control a live preview: --action pause|resume|reset|snapshot|step|capture [--steps N] [--input input.json]"},
             {"new", "Copy a starter: --dimension 2d|3d or --template rockets-2d|rockets-3d|adventure|strategy|shared-2d|workflow-2d --output NEW_DIRECTORY"},
+            {"music", "Text composition tools: status, setup, instruments, pack-install, pack-verify, schema, validate, audition, render, transform, import. See docs/30-music-and-sound-guide.md."},
             {"asset schema", "Recipe schema: --type sprite|mesh|music|model"},
             {"asset list", "Compile and describe registered assets: --project DIR"},
             {"asset inspect", "Describe one compiled asset: --project DIR --id ID"},
@@ -247,7 +255,7 @@ Json export_asset(const lm::Project& project, const lm::CompiledAssets& compiled
 
 int main(int argc, char** argv) {
     try {
-        if(argc>1){const std::set<std::string> commands{"context","target","deploy","operation","verify","receipt","handoff","session"};if(commands.contains(argv[1]))return workflow_command(argc,argv);}
+        if(argc>1){const std::set<std::string> commands{"music","context","target","deploy","operation","verify","receipt","handoff","session"};if(commands.contains(argv[1]))return workflow_command(argc,argv);}
         Arguments args(argc, argv);
         Json result;
         auto command = args.command;
@@ -363,7 +371,7 @@ int main(int argc, char** argv) {
             Json audio_events=Json::array();std::uint64_t last_audio=0;
             const auto audio_origin=world.presentation().at("tick").get<std::uint64_t>();
             std::map<std::string,std::shared_ptr<const lm::MusicScore>> audio_scores;
-            std::map<std::string,Json> audio_configurations,audio_bus_states;
+            std::map<std::string,Json> audio_configurations,audio_bus_states,audio_layer_states;
             std::map<std::string,std::string> audio_music,audio_music_bus;
             std::map<std::string,bool> audio_music_loop;
             std::string mixer_scene;
@@ -373,7 +381,7 @@ int main(int argc, char** argv) {
                 if(mixer_scene!=id) {
                     const auto state=world.snapshot();
                     audio_configurations[id]=scene.document.value("audio",Json::object());
-                    audio_bus_states[id]=state.value("audio_buses",Json::object());
+                    audio_bus_states[id]=state.value("audio_buses",Json::object());audio_layer_states[id]=state.value("music_layers",Json::object());
                     const auto music=state.value("music",scene.music);audio_music[id]=music.empty()?"":id+"::"+music;
                     audio_music_bus[id]=state.value("music_bus",std::string("music"));audio_music_loop[id]=state.value("music_loop",true);
                 }
@@ -383,6 +391,7 @@ int main(int argc, char** argv) {
                     {"music_bus",audio_music_bus.at(scene)},{"music_loop",audio_music_loop.at(scene)}});
                 for(const auto& [id,bus]:audio_bus_states.at(scene).items())audio_events.push_back({{"tick",tick},{"action","bus"},{"bus",id},
                     {"gain",bus.value("gain",1.f)},{"pan",bus.value("pan",0.f)},{"mute",bus.value("mute",false)}});
+                for(const auto& [id,layer]:audio_layer_states.at(scene).items())audio_events.push_back({{"tick",tick},{"action","layer"},{"layer",id},{"gain",layer.at("gain")},{"fade_seconds",0},{"quantization","immediate"}});
                 mixer_scene=scene;
             };
             auto collect_audio=[&] {

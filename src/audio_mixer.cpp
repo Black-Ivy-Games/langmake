@@ -29,7 +29,7 @@ bool boolean(const Json& value,const char* key,bool fallback=false) {
     return value[key].get<bool>();
 }
 struct Effect {
-    enum class Kind { lowpass, highpass, delay, reverb } kind;
+    enum class Kind { lowpass, highpass, delay, reverb, eq, compressor, limiter } kind;
     float wet=1, feedback=0, coefficient=0, damping=0;
     std::array<float,2> filter{};
     std::vector<float> delay;
@@ -37,6 +37,9 @@ struct Effect {
     struct Comb { std::vector<float> samples; std::size_t cursor=0; float damped=0; };
     std::array<Comb,8> combs;
     double tail=0;
+    std::array<double,5> biquad{1,0,0,0,0};
+    std::array<std::array<double,2>,2> history{};
+    float threshold=.5f,ratio=4,attack=.01f,release=.001f,makeup=1,envelope=0,limiter_gain=1;
     void process(float& left,float& right) {
         if (kind==Kind::lowpass || kind==Kind::highpass) {
             float* channels[]{&left,&right};
@@ -44,6 +47,15 @@ struct Effect {
                 filter[i]+=coefficient*(*channels[i]-filter[i]);
                 *channels[i]=kind==Kind::lowpass ? filter[i] : *channels[i]-filter[i];
             }
+        } else if(kind==Kind::eq) {
+            float* channels[]{&left,&right};
+            for(int c=0;c<2;++c){const double x=*channels[c];double y=biquad[0]*x+history[c][0];history[c][0]=biquad[1]*x-biquad[3]*y+history[c][1];history[c][1]=biquad[2]*x-biquad[4]*y;*channels[c]=float(y);}
+        } else if(kind==Kind::compressor) {
+            const auto peak=std::max(std::abs(left),std::abs(right));const auto k=peak>envelope?attack:release;envelope+=k*(peak-envelope);
+            const auto gain=envelope>threshold?std::pow(envelope/threshold,1/ratio-1):1.f;left*=gain*makeup;right*=gain*makeup;
+        } else if(kind==Kind::limiter) {
+            const auto peak=std::max(std::abs(left),std::abs(right));const auto target=peak>threshold?threshold/peak:1.f;
+            limiter_gain=target<limiter_gain?target:limiter_gain+release*(target-limiter_gain);left*=limiter_gain;right*=limiter_gain;
         } else if (kind==Kind::delay) {
             const float delayed_left=delay[cursor], delayed_right=delay[cursor+1];
             delay[cursor]=left+delayed_left*feedback; delay[cursor+1]=right+delayed_right*feedback;
@@ -62,7 +74,7 @@ struct Effect {
         }
     }
     void reset() {
-        filter={}; cursor=0; std::fill(delay.begin(),delay.end(),0.f);
+        filter={}; history={}; envelope=0;limiter_gain=1; cursor=0; std::fill(delay.begin(),delay.end(),0.f);
         for(auto& comb:combs) { comb.cursor=0; comb.damped=0; std::fill(comb.samples.begin(),comb.samples.end(),0.f); }
     }
 };
@@ -78,6 +90,20 @@ std::vector<Effect> compile_effects(const Json& list,int rate) {
             const double cutoff=number(item,"cutoff_hz",1000,20,20000);
             effect.coefficient=float(1-std::exp(-tau*std::min(cutoff,rate*.45)/rate));
             effect.tail=.1;
+        } else if(type=="eq") {
+            object(item,{"type","frequency_hz","gain_db","q"});effect.kind=Effect::Kind::eq;
+            const auto omega=tau*std::min(number(item,"frequency_hz",1000,20,20000),rate*.45)/rate;
+            const auto A=std::pow(10.,number(item,"gain_db",0,-18,18)/40),alpha=std::sin(omega)/(2*number(item,"q",.707,.1,10)),a0=1+alpha/A;
+            effect.biquad={(1+alpha*A)/a0,(-2*std::cos(omega))/a0,(1-alpha*A)/a0,(-2*std::cos(omega))/a0,(1-alpha/A)/a0};effect.tail=.1;
+        } else if(type=="compressor") {
+            object(item,{"type","threshold_db","ratio","attack_ms","release_ms","makeup_db"});effect.kind=Effect::Kind::compressor;
+            effect.threshold=float(std::pow(10.,number(item,"threshold_db",-12,-60,0)/20));effect.ratio=float(number(item,"ratio",4,1,20));
+            effect.attack=float(1-std::exp(-1/(number(item,"attack_ms",10,.1,200)*.001*rate)));
+            effect.release=float(1-std::exp(-1/(number(item,"release_ms",100,1,2000)*.001*rate)));
+            effect.makeup=float(std::pow(10.,number(item,"makeup_db",0,0,18)/20));
+        } else if(type=="limiter") {
+            object(item,{"type","ceiling_db","release_ms"});effect.kind=Effect::Kind::limiter;
+            effect.threshold=float(std::pow(10.,number(item,"ceiling_db",-1,-20,0)/20));effect.release=float(1-std::exp(-1/(number(item,"release_ms",100,1,2000)*.001*rate)));
         } else if(type=="delay") {
             object(item,{"type","seconds","feedback","wet"}); effect.kind=Effect::Kind::delay;
             const double seconds=number(item,"seconds",.2,.001,2);
@@ -114,6 +140,9 @@ Json audio_effects_schema() {
     return {{"type","array"},{"maxItems",4},{"items",{{"oneOf",Json::array({
         shape({{"type",{{"enum",{"lowpass","highpass"}}}},{"cutoff_hz",range(20,20000,1000)}}),
         shape({{"type",{{"const","delay"}}},{"seconds",range(.001,2,.2)},{"feedback",range(0,.95,.3)},{"wet",range(0,1,.25)}}),
+        shape({{"type",{{"const","eq"}}},{"frequency_hz",range(20,20000,1000)},{"gain_db",range(-18,18,0)},{"q",range(.1,10,.707)}}),
+        shape({{"type",{{"const","compressor"}}},{"threshold_db",range(-60,0,-12)},{"ratio",range(1,20,4)},{"attack_ms",range(.1,200,10)},{"release_ms",range(1,2000,100)},{"makeup_db",range(0,18,0)}}),
+        shape({{"type",{{"const","limiter"}}},{"ceiling_db",range(-20,0,-1)},{"release_ms",range(1,2000,100)}}),
         shape({{"type",{{"const","reverb"}}},{"room_size",range(0,1,.5)},{"damping",range(0,.99,.5)},{"wet",range(0,1,.2)}})})}}}};
 }
 Json audio_mixer_schema() {
@@ -145,10 +174,10 @@ Json validate_audio_mixer(const Json& configuration) {
 
 struct GameAudioMixer::Impl {
     static constexpr int slot_count=32,sfx_count=8,queue_count=128;
-    enum class Kind {tone,music,stop,stop_all,stop_sources,sfx,bus};
+    enum class Kind {tone,music,stop,stop_all,stop_sources,sfx,bus,layer};
     enum class SlotState {free,prepared,active,retired};
     struct Slot {std::unique_ptr<MusicVoice> voice; std::atomic<SlotState> state{SlotState::free}; int bus=0;};
-    struct Command {Kind kind=Kind::stop; int slot=-1,bus=0; float gain=1,pan=0,frequency=440,seconds=.13f; bool mute=false;};
+    struct Command {Kind kind=Kind::stop; int slot=-1,bus=0; float gain=1,pan=0,frequency=440,seconds=.13f; bool mute=false; std::array<char,65> layer{}; int quantization=0;};
     struct Bus {
         std::string id; std::unique_ptr<AudioEffects> effects;
         float gain=1,pan=0,target_gain=1,target_pan=0,gain_step=0,pan_step=0;
@@ -206,6 +235,7 @@ struct GameAudioMixer::Impl {
             const auto command=commands[head];
             if(command.kind==Kind::tone){frequency=command.frequency;duration=std::max(1,int(command.seconds*48000));remaining=duration;phase=0;}
             else if(command.kind==Kind::stop || command.kind==Kind::stop_all || command.kind==Kind::stop_sources){retire(music);music=-1;if(command.kind!=Kind::stop){for(auto& effect:sfx){retire(effect);effect=-1;}remaining=0;if(command.kind==Kind::stop_all)for(auto& bus:buses)bus.effects->reset();}}
+            else if(command.kind==Kind::layer){if(music<0||!slots[music].voice->set_layer(command.layer.data(),command.gain,command.seconds,command.quantization))dropped.fetch_add(1,std::memory_order_relaxed);}
             else if(command.kind==Kind::bus)buses[command.bus].controls(command.gain,command.pan,command.mute);
             else if(command.kind==Kind::music){retire(music);music=command.slot;slots[music].state.store(SlotState::active,std::memory_order_release);}
             else {auto available=std::find(sfx.begin(),sfx.end(),-1);int index=available==sfx.end()?replace_effect:int(available-sfx.begin());if(available==sfx.end())replace_effect=(replace_effect+1)%sfx_count;retire(sfx[index]);sfx[index]=command.slot;slots[command.slot].state.store(SlotState::active,std::memory_order_release);}
@@ -227,6 +257,11 @@ void GameAudioMixer::stop_all(bool clear_effects){impl_->reclaim();impl_->push({
 void GameAudioMixer::set_bus(const std::string& bus,float gain,float pan,bool mute) {
     if(!std::isfinite(gain)||gain<0||gain>2||!std::isfinite(pan)||pan< -1||pan>1)throw std::runtime_error("Audio bus gain must be 0..2 and pan -1..1");
     Impl::Command command;command.kind=Impl::Kind::bus;command.bus=impl_->bus_index(bus);command.gain=gain;command.pan=pan;command.mute=mute;impl_->reclaim();impl_->push(command);
+}
+void GameAudioMixer::set_music_layer(const std::string& id,float gain,float seconds,const std::string& quantization) {
+    if(id.empty()||id.size()>64||!std::isfinite(gain)||gain<0||gain>2||!std::isfinite(seconds)||seconds<0||seconds>10)throw std::runtime_error("Invalid music layer ID, gain (0..2), or fade seconds (0..10)");
+    if(quantization!="immediate"&&quantization!="beat"&&quantization!="bar")throw std::runtime_error("Music quantization must be immediate, beat or bar");
+    Impl::Command c;c.kind=Impl::Kind::layer;std::copy(id.begin(),id.end(),c.layer.begin());c.gain=gain;c.seconds=seconds;c.quantization=quantization=="beat"?1:quantization=="bar"?2:0;impl_->reclaim();impl_->push(c);
 }
 void GameAudioMixer::set_paused(bool paused){impl_->paused.store(paused,std::memory_order_release);}
 std::uint64_t GameAudioMixer::dropped_commands()const{return impl_->dropped.load(std::memory_order_relaxed);}
@@ -281,6 +316,10 @@ Json render_game_audio_wav(const std::map<std::string,std::shared_ptr<const Musi
             if(!event.contains("bus") || !event["bus"].is_string() || !event.contains("gain"))throw std::runtime_error("Audio bus event requires bus and gain");
             if(!active_config["buses"].contains(event["bus"].get<std::string>()))throw std::runtime_error("Unknown audio bus in event");
             number(event,"gain",1,0,2);number(event,"pan",0,-1,1);boolean(event,"mute");
+        } else if(action=="layer") {
+            const auto id=event.at("layer").get<std::string>();if(id.empty()||id.size()>64)throw std::runtime_error("Invalid music layer ID");
+            number(event,"gain",1,0,2);number(event,"fade_seconds",.1,0,10);
+            const auto q=event.value("quantization",std::string("immediate"));if(q!="immediate"&&q!="beat"&&q!="bar")throw std::runtime_error("Invalid layer quantization");
         } else if(action=="configure") {
             active_config=validate_audio_mixer(event.at("configuration"));
             if(event.contains("music")&&!event.at("music").get<std::string>().empty())score(event.at("music").get<std::string>());
@@ -304,6 +343,7 @@ Json render_game_audio_wav(const std::map<std::string,std::shared_ptr<const Musi
             else if(action=="sound")mixer->play_sfx(score(event.at("asset").get<std::string>()),event.value("bus",std::string("sfx")));
             else if(action=="stop_music")mixer->stop_music();
             else if(action=="stop_all")mixer->stop_all();
+            else if(action=="layer")mixer->set_music_layer(event.at("layer").get<std::string>(),event.value("gain",1.f),event.value("fade_seconds",.1f),event.value("quantization",std::string("immediate")));
             else if(action=="bus")mixer->set_bus(event.at("bus").get<std::string>(),event.at("gain").get<float>(),event.value("pan",0.f),event.value("mute",false));
             else if(action=="configure") {accumulate();mixer=std::make_unique<GameAudioMixer>(event.at("configuration"));const auto music=event.value("music",std::string());if(!music.empty())mixer->set_music(score(music),event.value("music_loop",true),event.value("music_bus",std::string("music")));}
             else throw std::runtime_error("Unknown audio event action: "+action);

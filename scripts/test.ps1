@@ -51,7 +51,7 @@ foreach ($testFile in $testFiles) {
 
 Push-Location $projectRoot
 try {
-    foreach ($relativeTest in @('ios/test_ios.py','android/test_android.py','test_mobile_assets.py','windows/test_windows.py','workflow/test_verify.py','workflow/test_operations.py')) {
+    foreach ($relativeTest in @('music/test_music.py','ios/test_ios.py','android/test_android.py','test_mobile_assets.py','windows/test_windows.py','workflow/test_verify.py','workflow/test_operations.py')) {
         & python (Join-Path $PSScriptRoot $relativeTest)
         if ($LASTEXITCODE -ne 0) { throw "Authoring tools test failed: $relativeTest" }
     }
@@ -59,6 +59,8 @@ try {
     if ($Graphics) { $authoringArguments += '--graphics' }
     & python @authoringArguments
     if ($LASTEXITCODE -ne 0) { throw 'Per-game workflow integration tests failed.' }
+    & python (Join-Path $PSScriptRoot 'music/integration_tests.py') --engine $executable
+    if ($LASTEXITCODE -ne 0) { throw 'Recorded music source/authoring integration tests failed.' }
     $integrationArguments = @($integrationTests, '--engine', $executable)
     if ($Graphics) { $integrationArguments += '--graphics' }
     & python @integrationArguments
@@ -71,6 +73,8 @@ try {
     }
     & python (Join-Path $PSScriptRoot 'cook_tests.py') --engine $executable
     if ($LASTEXITCODE -ne 0) { throw "Player content bundle tests failed with exit code $LASTEXITCODE." }
+    & python (Join-Path $PSScriptRoot 'scene_catalog_tests.py') --engine $executable
+    if ($LASTEXITCODE -ne 0) { throw 'Scene-local catalog tests failed.' }
     $assetArguments = @($assetTests, '--engine', $executable)
     if ($Graphics) { $assetArguments += '--graphics' }
     & python @assetArguments

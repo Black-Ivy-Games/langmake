@@ -1,0 +1,9 @@
+<rml><head><title>Langmake Music Room</title><link type="text/rcss" href="music.rcss"/></head><body>
+<div id="room"><h1>Music Room</h1><p>Original music authored as text. Choose a cue and listen.</p>
+<div class="row"><button id="quiet-button" data-action="quiet">1 · Lanterns</button><button id="adventure-button" data-action="adventure">2 · Storm Gate</button><button id="playful-button" data-action="playful">3 · Clockwork</button></div>
+<h2 id="cue"></h2><p id="layer"></p><p id="count"></p>
+<div class="row"><button id="drums-button" data-action="drums">D · Toggle drums on bar</button><button id="chime-button" data-action="chime">Space · Recorded chime</button></div>
+<div class="row"><button id="save-button" data-action="save">Save (F6)</button><button id="load-button" data-action="load">Load (F9)</button></div>
+
+<p class="note">Technical demo, not an approved soundtrack. Load restarts the cue; Escape exits on desktop.</p></div>
+</body></rml>

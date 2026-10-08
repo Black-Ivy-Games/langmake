@@ -32,3 +32,7 @@ Authentication and billing are provider-specific. A subscription is usable only 
 Studio is independently buildable and packageable. A distribution including Studio contains a normal runtime package; a runtime-only distribution remains usable by external agents. Android exports use the same public build/deployment tools in either route.
 
 Do not hand-edit copied distribution documentation. Update canonical source guides and prompts, regenerate the packages, and verify their manifests. Keep the prior release available until the new artifact's tests and limitations have been recorded.
+
+## September 22, 2026 usability update
+
+See [Studio usability and upgrade](37-studio-usability.md) for the implemented studio2 changes, local-server setup and qualification boundaries. The editor entry point is now labeled **UI editor**. Provider model discovery is an explicit human GET request, and the runtime remains provider-independent.
