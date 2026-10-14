@@ -1,5 +1,28 @@
 # Langmake — an agent-first game engine
 
+## Games made with Langmake
+
+A few examples of games made with Langmake, shown in short gameplay clips.
+
+<table>
+  <tr>
+    <th>Matterfall</th>
+    <th>Emberbound</th>
+  </tr>
+  <tr>
+    <td align="center" width="50%"><img src="docs/media/matterfall.gif" alt="Matterfall gameplay: dropping and merging atoms" height="320"></td>
+    <td align="center" width="50%"><img src="docs/media/emberbound.gif" alt="Emberbound gameplay: wizard combat and a summoned dragon" width="360"></td>
+  </tr>
+  <tr>
+    <th>Voidrunner</th>
+    <th>Birds</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/media/voidrunner.gif" alt="Voidrunner gameplay: flying and firing through space" width="360"></td>
+    <td align="center"><img src="docs/media/birds.gif" alt="Birds gameplay: guiding a growing flock through the sky" width="360"></td>
+  </tr>
+</table>
+
 Continuing engine, Studio or UI-editor development in a new agent context? Start with the [comprehensive development handoff](docs/36-engine-development-handoff.md), then follow the current [AGENTS.md](AGENTS.md). The handoff records the September 22, 2026 source/package checkpoint, uncommitted work, architecture, tests and qualification boundaries.
 
 For expressive music and sound, start with [the music authoring guide](docs/30-music-and-sound-guide.md): text compositions, a CC0 acoustic instrument pack, synchronized WAV/FLAC tracks, adaptive layers and shared effects. `langmake music status` checks optional authoring setup. See [audio qualification](docs/31-audio-qualification.md) for this revision; old mobile evidence does not qualify new audio automatically.
