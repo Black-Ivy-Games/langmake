@@ -128,7 +128,7 @@ This is a foundation for larger iterative games, with concrete smaller reference
 | [Historical 0.1 evidence](docs/09-validation.md) | Preserved first-release results |
 | [Foundations](docs/01-foundations.md), [architecture](docs/02-product-and-architecture.md), [platforms](docs/03-platforms.md) | Design rationale and future direction |
 
-Original Langmake code and example content use the [MIT license](LICENSE). Third-party terms and exact revisions are recorded in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md), [dependencies.lock.json](dependencies.lock.json) and `licenses/`.
+Langmake is owned by Black Ivy Games LLC. Original Langmake code and example content use the [MIT license](LICENSE). For questions about Langmake, contact [business@blackivygames.com](mailto:business@blackivygames.com). Third-party terms and exact revisions are recorded in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md), [dependencies.lock.json](dependencies.lock.json) and `licenses/`.
 
 MIT permits commercial use, proprietary engine forks and games under the creator's chosen license; retain the applicable copyright and license notices. For the sanitized source snapshot, history-preserving publication copy and the boundary between public source and private development state, read [public source release](docs/41-public-source-release.md).
 
