@@ -28,7 +28,48 @@ No actual password, passphrase, provider token or private key was identified in 
 audited tracked source or reachable Git history. This is the result of a pattern
 scan and manual review, not a guarantee that arbitrary future content is safe.
 
-## Upload boundary
+## October 14, 2026 history-preserving publication copy
+
+The separate `dist/Langmake-public-history-2026-10-14` checkout preserves all six
+original `main` commits, with their messages, author/committer dates, parent order
+and file modes. Fourteen historical blob versions were redacted across fourteen
+paths. Personal commit identities were replaced with
+`Langmake contributors <contributors@langmake.invalid>`. The neutral `.invalid`
+address is a reserved placeholder, not a contact address. Commit hashes changed;
+historical engineering records may still cite internal pre-rewrite revision IDs.
+
+The cleaned historical repository was audited across all 499 stored source blobs
+and all six commit objects, including unreachable objects. All six rewritten
+revisions were compared against their originals: the only source differences are
+the approved privacy redactions and synthetic test identifiers. Their latest
+source tree matches the already-sanitized October 13 release tree. `git fsck
+--full` passes and no known private identity or unreviewed secret/address match
+remains. A publication-guide commit records this handoff; it is separate from the
+six historical development commits. See the [historical audit checkpoint](releases/public-history-review-20261014.json).
+This does not claim new native/runtime or platform qualification.
+
+The original development checkout, local target configuration and Gitea connection
+remain unchanged. Only `refs/heads/main` is retained in the public copy; local
+Codex capture/checkpoint refs and remote-tracking refs are excluded. No remote is
+configured and nothing has been pushed. The matching history bundle is
+`dist/Langmake-public-history-2026-10-14.bundle` and can be cloned into a new
+working directory without copying the original checkout's `.git` directory.
+
+To publish with history, use this cleaned copy and an empty GitHub repository:
+
+```powershell
+# From the development workspace root; use the cleaned copy below.
+Set-Location dist/Langmake-public-history-2026-10-14
+git remote add origin https://github.com/YOUR_GITHUB_USERNAME/langmake.git
+git push -u origin main
+```
+
+Keep the cleaned publication lineage for future GitHub commits. Do not merge or
+fetch the unfiltered Gitea history into it. Review any newly copied changes before
+committing; commit using a public-safe identity. The local neutral identity is
+configured only in the publication copy, not globally or in the original checkout.
+
+## Snapshot upload boundary
 
 The prepared `dist/Langmake-public-source-2026-10-13.zip` and matching extracted
 directory contain the sanitized source snapshot and license inventory. They contain

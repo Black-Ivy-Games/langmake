@@ -1,0 +1,46 @@
+{
+  "ok": true,
+  "date": "2026-10-14",
+  "original_historical_commits": 6,
+  "preserved_historical_commits": 6,
+  "publication_commits": 6,
+  "messages_dates_parent_order_and_file_modes_preserved": true,
+  "original_checkout_unchanged": true,
+  "private_identity_hits": 0,
+  "redacted_unique_blob_versions": 14,
+  "redacted_paths": [
+    "docs/22-ios-plan.md",
+    "docs/24-ios-qualification.md",
+    "docs/26-game-workflow.md",
+    "docs/31-audio-qualification.md",
+    "docs/34-ui-editor-guide.md",
+    "docs/36-engine-development-handoff.md",
+    "docs/40-frontend-script-execution-handoff.md",
+    "docs/briefs/matterfall-agent-prompt.md",
+    "docs/proposals/agent-game-workflow-lessons.md",
+    "docs/releases/ios-phone-smoke-evidence-20260920.json",
+    "docs/releases/ios-simulator-evidence-20260920.json",
+    "scripts/ios/test_ios.py",
+    "studio/test/api.test.cjs",
+    "studio/test/ios.test.cjs"
+  ],
+  "all_stored_objects_scanned": {
+    "blob_objects": 499,
+    "blob_bytes": 6645572,
+    "commit_objects": 6,
+    "commit_bytes": 3862
+  },
+  "classified_patterns": {
+    "public_attribution_or_synthetic_email": 129,
+    "authorization_header_prefix_without_token": 4,
+    "upstream_notice_address_or_version": 4,
+    "synthetic_device_fixture": 12,
+    "TEST_NET_fixture": 2
+  },
+  "fsck_passed": true,
+  "only_ref": "refs/heads/main",
+  "remotes": 0,
+  "author_policy": "Langmake contributors <contributors@langmake.invalid>",
+  "head": "37b96280678c72dbcb03a1f6de33dd88607e8c1e",
+  "scope": "six rewritten historical main commits before the publication-guide commit"
+}

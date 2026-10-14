@@ -39,6 +39,15 @@ Use current capabilities for the first milestone. A larger ambition can be recor
 
 ## Compatibility and maintenance
 
+October 14, 2026 public-history review: reviewed platform, provider-handoff and
+workflow briefs after redacting historical target details and commit identities.
+Their existing placeholders, explicit target selection and authorization boundaries
+remain valid. The six historical commits are preserved in the separate public
+lineage; only its publication guide and audit record were added. See
+`docs/41-public-source-release.md`. This is repository/documentation verification,
+not new runtime or platform qualification; no binary distributions were regenerated.
+
+
 October 13, 2026 public-source privacy review: reviewed the workflow, platform,
 provider-handoff and UI-layout briefs for local account/device/target details.
 Their explicit placeholders and authorization requirements remain valid. Canonical
