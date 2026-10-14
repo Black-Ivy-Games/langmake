@@ -130,4 +130,6 @@ This is a foundation for larger iterative games, with concrete smaller reference
 
 Original Langmake code and example content use the [MIT license](LICENSE). Third-party terms and exact revisions are recorded in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md), [dependencies.lock.json](dependencies.lock.json) and `licenses/`.
 
+MIT permits commercial use, proprietary engine forks and games under the creator's chosen license; retain the applicable copyright and license notices. For the sanitized source snapshot and the boundary between public source and private development state, read [public source release](docs/41-public-source-release.md).
+
 Native material boards use contiguous channels, a bounded classic chemistry kernel, active chunks, dynamic sprite surfaces and lazy state providers. See [material grids and bound state](docs/38-material-grid-guide.md). This feature is Windows-qualified; existing mobile qualification does not cover it.

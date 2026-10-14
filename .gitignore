@@ -62,3 +62,27 @@ Thumbs.db
 *.keystore
 *.mobileprovision
 local.properties
+
+# Other local authentication material, including public keys with account metadata.
+**/.credentials/
+**/.secrets/
+.netrc
+_netrc
+.npmrc
+*.ppk
+*.pub
+*.cer
+*.crt
+*.credentials.json
+*.secrets.json
+id_rsa
+id_rsa.*
+id_ed25519
+id_ed25519.*
+id_ecdsa
+id_ecdsa.*
+id_dsa
+id_dsa.*
+known_hosts
+known_hosts.*
+ssh_config

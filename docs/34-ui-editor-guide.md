@@ -29,13 +29,13 @@ node scripts/ui-editor/ui-editor.cjs .cache/ui-request.json
 Example request (use actual authorized paths):
 
 ```json
-{"root":"PATH_TO_AUTHORIZED_GAME","engine":"./build/langmake.exe","action":"open","config":{"profile":"phone","width":780,"height":1440,"density":2,"tick":0,"safe_area":"0,48,780,1344"}}
+{"root":"PATH_TO_AUTHORIZED_GAME","engine":"PATH_TO_LANGMAKE_EXECUTABLE","action":"open","config":{"profile":"phone","width":780,"height":1440,"density":2,"tick":0,"safe_area":"0,48,780,1344"}}
 ```
 
 `open` returns a `session`, `version`, selected document, inline properties and native capture sidecar. CLI output omits image base64; use `.langmake/ui-editor/SESSION/` and the capture filenames in `session.json`, or `export` to obtain ordinary evidence paths. Every mutating request includes the last returned session/version:
 
 ```json
-{"root":"PATH_TO_AUTHORIZED_GAME","engine":"./build/langmake.exe","action":"patch","session":"RETURNED-UUID","version":1,"id":"pause-button","properties":{"right":"24dp","width":"120dp","color":"#ffffff"}}
+{"root":"PATH_TO_AUTHORIZED_GAME","engine":"PATH_TO_LANGMAKE_EXECUTABLE","action":"patch","session":"RETURNED-UUID","version":1,"id":"pause-button","properties":{"right":"24dp","width":"120dp","color":"#ffffff"}}
 ```
 
 Actions are `discover`, `open`, `read`, `capture`, `patch`, `undo`, `redo`, `note`, `apply`, `export`, `discard`. `note` takes `id`, `text` and boolean `locked`. `read` needs the session but not a version. `discover` lists profiles, documents, scenarios and saved drafts. `config.input` can reference an ordinary timeline or a scenario with an `input` member. A new configuration requires a new draft; use the same tick and input to compare layouts reproducibly. A draft can be continued by Studio or the CLI using its shared on-disk session. Studio workers can read reviews through their normal file/image tools; provider calls do not receive unrestricted editor process execution.

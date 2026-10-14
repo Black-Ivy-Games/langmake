@@ -1,4 +1,5 @@
 """Host-side iOS contracts. These tests do not claim an Apple build or device run."""
+# Device and signing identifiers below are synthetic fixtures, not local hardware.
 import argparse
 import importlib.util
 import io

@@ -1,4 +1,5 @@
 'use strict';
+// Non-loopback examples use TEST-NET addresses; credentials are test fixtures.
 const test=require('node:test'),assert=require('node:assert/strict'),http=require('node:http');
 const {runApi,listModels,endpoint}=require('../providers/api.cjs');
 async function server(t,handler){const s=http.createServer(handler);await new Promise(r=>s.listen(0,'127.0.0.1',r));t.after(()=>{s.closeAllConnections();s.close();});return 'http://127.0.0.1:'+s.address().port+'/v1';}

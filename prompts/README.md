@@ -39,6 +39,15 @@ Use current capabilities for the first milestone. A larger ambition can be recor
 
 ## Compatibility and maintenance
 
+October 13, 2026 public-source privacy review: reviewed the workflow, platform,
+provider-handoff and UI-layout briefs for local account/device/target details.
+Their explicit placeholders and authorization requirements remain valid. Canonical
+guides now use portable links and omit private historical target settings. The
+source upload snapshot retains MIT and excludes local state and Git history; see
+`docs/41-public-source-release.md`. This is source/documentation verification, not
+new runtime or platform qualification. Existing ignored binary packages are not
+part of this source release.
+
 **Last reviewed:** September 23, 2026, against Langmake 0.5.0 discovery, workflow tools, runtime documentation and bundled starter layouts. The prompt texts have been reviewed for supported scope; these proposed games have not been executed as tests. Engine release evidence lives separately.
 
 September 22, 2026 large-save repair review: reviewed shared workflow, feedback,

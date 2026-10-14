@@ -1,4 +1,5 @@
 'use strict';
+// Device and signing identifiers below are synthetic fixtures, not local hardware.
 const test=require('node:test'),assert=require('node:assert/strict'),path=require('node:path'),fs=require('node:fs/promises'),{randomUUID}=require('node:crypto');
 const ios=require('../core/ios.cjs'),{Broker}=require('../core/broker.cjs'),{Tools}=require('../core/tools.cjs');
 const {runtimeCandidates,executableFilters}=require('../core/host.cjs');
